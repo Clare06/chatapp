@@ -1,9 +1,54 @@
 
-<div class="log-conatiner">
+<!-- <div class="log-conatiner">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <label for="userid">User ID</label>
+  <input type="text" id="userid" formControlName="userid" />
 
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm.value)">
+  <label for="passwordhash">Password Hash</label>
+  <input type="password" id="passwordhash" formControlName="passwordhash" />
 
-  </form>
-
-
+  <button type="submit">Submit</button>
+</form>
+</div> -->
+<div class="log-container">
+<div class="container mt-5 log-form" >
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header ch">
+          Login
+        </div>
+        <div class="card-body cb">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="userid" class="form-label">User ID</label>
+              <input type="text" id="userid" class="form-control" formControlName="userid">
+              <div *ngIf="loginForm.get('userid')?.invalid && loginForm.get('userid')?.touched">
+                <div  *ngIf="loginForm.get('userid')?.errors">
+                    <label class="warne">*UserID required</label>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" class="form-control" formControlName="passwordhash">
+              <div *ngIf="loginForm.get('passwordhash')?.invalid && loginForm.get('passwordhash')?.touched">
+                <div  *ngIf="loginForm.get('passwordhash')?.errors">
+                    <label class="warne">*Password required</label>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-between">
+            <a href="#" class="text-muted">Forgot Password?</a>
+            <button class="btn btn-link" >Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>

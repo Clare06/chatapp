@@ -11,24 +11,36 @@ import { Usercred } from 'src/app/schemas/usercred.interface';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  myForm: FormGroup;
+  loginForm!: FormGroup;
   token: any;
   constructor (private fb:FormBuilder, private http:HttpClient){
-    this.myForm=fb.group({
-      'email':['',Validators.required],
-      'password':['',Validators.required]
+
+  }
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      userid: ['', Validators.required],            // Add Validators.required
+      passwordhash: ['', Validators.required]
     });
   }
+  onSubmit(){
 
-  onSubmit(user: Usercred){
-      this.http.post<Usercred>(ENDPOINTS.LOGIN, user).toPromise().then(
+    if (this.loginForm.invalid) {
+      return;  // Exit if the form is invalid
+    }
+
+    const user =this.loginForm.value;
+    console.log(user.passwordhash + user.userid)
+      this.http.post(ENDPOINTS.LOGIN, user,{responseType: 'text'}).toPromise().then(
         (data) => {
-          
+          this.token = data;
+
         }
       ).catch(
         (error) => {
 
         }
       );
+
+      console.log(this.token);
   }
 }

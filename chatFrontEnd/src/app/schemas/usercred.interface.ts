@@ -1,4 +1,4 @@
 export interface Usercred {
-  email: string;
-  password: string;
+  userid: string;
+  passwordhash: string;
 }
