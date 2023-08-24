@@ -38,6 +38,9 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="errorMes != null">
+              <label class="warne">{{errorMes}}</label>
+            </div>
             <button type="submit" class="btn btn-primary">Login</button>
           </form>
         </div>

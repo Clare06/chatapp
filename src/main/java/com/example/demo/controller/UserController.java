@@ -27,6 +27,11 @@ public class UserController {
             String token = jwtUtil.generateToken(user);
             return ResponseEntity.ok(token);
         }
-         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-}
+         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+    }
+
+    @GetMapping("check")
+    public ResponseEntity<?> check (){
+        return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.OK);
+    }
 }

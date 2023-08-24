@@ -23,28 +23,28 @@ public class JwtUtil {
     @Autowired
     public JwtUtil(UserService userService){this.userService=userService;}
 
+    private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-//    public String extractUsername(String token) {
+    //    public String extractUsername(String token) {
 //        return extractClaim(token, Claims::getSubject);
 //    }
 //
-//    public Date extractExpiration(String token) {
-//        return extractClaim(token, Claims::getExpiration);
-//    }
-//
-//    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-//        final Claims claims = extractAllClaims(token);
-//        return claimsResolver.apply(claims);
-//    }
-//
-//    public Claims extractAllClaims(String token) {
-//        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-//    }
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
 
-//    private Boolean isTokenExpired(String token) {
-//        return extractExpiration(token).before(new Date());
-//    }
-    private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
 
     public String generateToken(User user) {
         Optional<User> usr = userService.getUser(user.getUserid());

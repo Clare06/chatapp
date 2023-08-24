@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
 import { Usercred } from 'src/app/schemas/usercred.interface';
 
@@ -13,7 +14,8 @@ import { Usercred } from 'src/app/schemas/usercred.interface';
 export class LoginComponent {
   loginForm!: FormGroup;
   token: any;
-  constructor (private fb:FormBuilder, private http:HttpClient){
+  errorMes: string | null= null
+  constructor (private fb:FormBuilder, private http:HttpClient, private router:Router){
 
   }
   ngOnInit(): void {
@@ -33,11 +35,16 @@ export class LoginComponent {
       this.http.post(ENDPOINTS.LOGIN, user,{responseType: 'text'}).toPromise().then(
         (data) => {
           this.token = data;
-
+          this.errorMes= null;
+          localStorage.setItem('token', this.token);
+          this.router.navigate(['../home']).then(()=>
+                {
+                  window.location.reload();
+                });
         }
       ).catch(
         (error) => {
-
+            this.errorMes = "Login Failed";
         }
       );
 
