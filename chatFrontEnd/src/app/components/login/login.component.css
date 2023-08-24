@@ -9,7 +9,7 @@
   height: 100vh;
   background: rgb(238,174,202);
   background: radial-gradient(circle, rgba(238,174,202,0.3) 0%, rgba(148,187,233,0.3931547619047619) 100%);
-  
+
 }
 
 /* .log-form{
@@ -17,12 +17,4 @@
 
 
 } */
-.cb
-{
-  /* background: rgb(210,122,160);
-background: linear-gradient(90deg, rgba(210,122,160,0.9) 0%, rgba(120,177,245,0.9) 100%); */
-}
-.ch{
-  /* background: rgb(210,122,160);
-background: linear-gradient(90deg, rgba(210,122,160,1) 0%, rgba(120,177,245,1) 100%); */
-}
+
