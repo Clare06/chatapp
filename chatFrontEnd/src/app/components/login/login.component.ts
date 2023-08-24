@@ -14,7 +14,8 @@ import { Usercred } from 'src/app/schemas/usercred.interface';
 export class LoginComponent {
   loginForm!: FormGroup;
   token: any;
-  errorMes: string | null= null
+  errorMes: string | null= null;
+
   constructor (private fb:FormBuilder, private http:HttpClient, private router:Router){
 
   }
@@ -23,6 +24,7 @@ export class LoginComponent {
       userid: ['', Validators.required],            // Add Validators.required
       passwordhash: ['', Validators.required]
     });
+
   }
   onSubmit(){
 
@@ -50,4 +52,6 @@ export class LoginComponent {
 
       console.log(this.token);
   }
+
+
 }

@@ -32,6 +32,6 @@ public class UserController {
 
     @GetMapping("check")
     public ResponseEntity<?> check (){
-        return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
