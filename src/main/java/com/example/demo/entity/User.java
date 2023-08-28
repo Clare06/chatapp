@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -18,6 +20,22 @@ public class User implements Serializable {
     private String role;
     private String passwordhash;
 
+    @ElementCollection
+    private List<String> frienduidList;
+
+    public List<String> getFrienduidList() {
+        return frienduidList;
+    }
+
+    public void setFrienduidList(List<String> frienduidList) {
+        this.frienduidList = frienduidList;
+    }
+    public void addFriend(String friendUid) {
+        if (frienduidList == null) {
+            frienduidList = new ArrayList<>();
+        }
+        frienduidList.add(friendUid);
+    }
     public Integer getUid() {
         return uid;
     }

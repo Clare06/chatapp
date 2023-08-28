@@ -25,6 +25,7 @@ public class UserController {
 
         if (userService.auth(user)){
             String token = jwtUtil.generateToken(user);
+//            userService.setUser();
             return ResponseEntity.ok(token);
         }
          return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();

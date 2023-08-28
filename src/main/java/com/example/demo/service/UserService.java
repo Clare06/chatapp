@@ -27,5 +27,13 @@ public class UserService {
         Optional<User> usr=userRepo.findByUserId(userid);
         return usr;
     }
+//    public void setUser(){
+//        Optional<User> usr = userRepo.findByUserId("hash1");
+//
+//        User us= usr.get();
+//
+//        us.addFriend("hash2");
+//        userRepo.save(us);
+//    }
 
 }

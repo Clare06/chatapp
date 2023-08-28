@@ -13,11 +13,13 @@ import { HomeComponent } from './components/home/home.component';
 import { HttpInterceptorRecieverService } from './services/http-interceptor-reciever.service';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+
   ],
   imports: [
     BrowserModule,

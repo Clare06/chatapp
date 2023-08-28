@@ -1,15 +1,25 @@
 import { Injectable } from '@angular/core';
-import jwt_decode from 'jwt-decode';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class JwtService {
+  userID!: string;
+  private jwtHelper: JwtHelperService = new JwtHelperService();
 
-  jwt_decode(token: string){
 
-    const decodedToken = jwt_decode(token);
-    return decodedToken;
+  public getID () : string {
+    const token = localStorage.getItem('token');
+
+    if(token){
+      this.userID = this.jwtHelper.decodeToken(token).userid;
+      return this.userID;
+    }
+
+    return  "";
+
   }
 
 }
