@@ -22,19 +22,40 @@ public class User implements Serializable {
 
     @ElementCollection
     private List<String> frienduidList;
+    @ElementCollection
+    private List<String> friendReq;
 
+    public List<String> getFriendReq() {
+        return friendReq;
+    }
+    public void addFriendReq(String friendUid) {
+        if (friendReq == null) {
+            friendReq = new ArrayList<>();
+        }
+        if (!friendReq.contains(friendUid)) {
+            friendReq.add(friendUid);
+        }
+    }
     public List<String> getFrienduidList() {
         return frienduidList;
     }
 
-    public void setFrienduidList(List<String> frienduidList) {
-        this.frienduidList = frienduidList;
-    }
+//    public void setFrienduidList(List<String> frienduidList) {
+//        this.frienduidList = frienduidList;
+//    }
     public void addFriend(String friendUid) {
         if (frienduidList == null) {
             frienduidList = new ArrayList<>();
         }
-        frienduidList.add(friendUid);
+        if(!frienduidList.contains(friendUid)){
+            frienduidList.add(friendUid);
+        }
+    }
+    public void removeFriend(String friendUid) {
+        frienduidList.remove(friendUid);
+    }
+    public void remFrdReq(String friendUid){
+        friendReq.remove(friendUid);
     }
     public Integer getUid() {
         return uid;

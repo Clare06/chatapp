@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
 import { ChatMessageDto } from 'src/app/schemas/chatMessageDto';
 import { JwtService } from 'src/app/services/jwtservice.service';
@@ -16,7 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   friendList: string[] = [];
   usrID: string | null = null;
   activeFrien: string = "";
-  constructor(public webSocketService: WebsocketService, private jwtdeco:JwtService, private http:HttpClient) {
+  constructor(public webSocketService: WebsocketService, private jwtdeco:JwtService, private http:HttpClient, private router:Router) {
   }
 
   ngOnInit(): void {
@@ -44,4 +45,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.activeFrien = userId;
     console.log(this.activeFrien);
    }
+   logout(){
+    localStorage.removeItem('token');
+    this.router.navigate(["/login"]).then(()=>{
+      window.location.reload();
+    })
+  }
 }

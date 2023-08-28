@@ -36,5 +36,39 @@ public class UserService {
         List<String> friends = usr.getFrienduidList();
         return friends;
     }
+    public void acceptFriend(String userid, String friendid){
+        Optional<User> user = userRepo.findByUserId(userid);
+        User usr= user.get();
+        usr.addFriend(friendid);
+
+        Optional<User> friend = userRepo.findByUserId(friendid);
+        User frd= friend.get();
+        frd.addFriend(userid);
+        userRepo.save(usr);
+        userRepo.save(frd);
+    }
+    public void addFriendReq(String userid , String frienid){
+        Optional<User> user = userRepo.findByUserId(userid);
+        User usr = user.get();
+        usr.addFriendReq(frienid);
+        userRepo.save(usr);
+    }
+    public void removeFriend(String userid, String friendid){
+        Optional<User> usr = userRepo.findByUserId(userid);
+        User user = usr.get();
+        user.removeFriend(friendid);
+        userRepo.save(user);
+
+        Optional<User> friend = userRepo.findByUserId(friendid);
+        User frd= friend.get();
+        frd.removeFriend(userid);
+        userRepo.save(frd);
+    }
+    public void decReq (String userid , String friendid){
+        Optional<User> user = userRepo.findByUserId(userid);
+        User usr = user.get();
+        usr.remFrdReq(friendid);
+        userRepo.save(usr);
+    }
 
 }

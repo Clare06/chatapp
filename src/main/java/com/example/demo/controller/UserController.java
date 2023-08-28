@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.SenderReciever;
 import com.example.demo.entity.User;
 import com.example.demo.jwt.JwtUtil;
 import com.example.demo.service.UserService;
@@ -38,5 +39,34 @@ public class UserController {
     public ResponseEntity<List<String>> getFriends(@PathVariable("id") String userID){
         List<String> friends = userService.getFriends(userID);
         return new ResponseEntity<>(friends,HttpStatus.OK);
+    }
+    @PostMapping("add-friend-req")
+    public ResponseEntity<String> addReq(@RequestBody SenderReciever senderReciever){
+
+        userService.addFriendReq(senderReciever.getUserid(), senderReciever.getFriendid());
+
+        return ResponseEntity.ok("Request Sent");
+    }
+    @PostMapping("add-friend")
+    public ResponseEntity<String> addFrnd(@RequestBody SenderReciever senderReciever){
+
+        userService.acceptFriend(senderReciever.getUserid(), senderReciever.getFriendid());
+//        userService.removeFriend(senderReciever.getUserid(), senderReciever.getFriendid());
+
+        return ResponseEntity.ok("Request Accepted");
+    }
+    @PutMapping("remove-friend")
+    public ResponseEntity<String> removeFriend(@RequestBody SenderReciever senderReciever){
+
+        userService.removeFriend(senderReciever.getUserid(),senderReciever.getFriendid());
+
+        return  ResponseEntity.ok("Friend Removed");
+    }
+    @PutMapping("decline-req")
+    public ResponseEntity<String> decReq(@RequestBody SenderReciever senderReciever){
+
+        userService.decReq(senderReciever.getUserid(),senderReciever.getFriendid());
+
+        return ResponseEntity.ok("Declined");
     }
 }
