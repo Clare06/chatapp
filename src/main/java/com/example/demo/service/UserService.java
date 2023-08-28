@@ -5,6 +5,7 @@ import com.example.demo.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,13 +28,13 @@ public class UserService {
         Optional<User> usr=userRepo.findByUserId(userid);
         return usr;
     }
-//    public void setUser(){
-//        Optional<User> usr = userRepo.findByUserId("hash1");
-//
-//        User us= usr.get();
-//
-//        us.addFriend("hash2");
-//        userRepo.save(us);
-//    }
+    public List<String> getFriends (String userid) {
+        System.out.println(userid);
+        Optional<User> user= userRepo.findByUserId(userid);
+        System.out.println(user);
+        User usr = user.get();
+        List<String> friends = usr.getFrienduidList();
+        return friends;
+    }
 
 }

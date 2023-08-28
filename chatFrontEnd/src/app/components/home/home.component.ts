@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
 import { ChatMessageDto } from 'src/app/schemas/chatMessageDto';
 import { JwtService } from 'src/app/services/jwtservice.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
@@ -12,11 +13,21 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
+  friendList: string[] = [];
+  usrID: string | null = null;
+  activeFrien: string = "";
   constructor(public webSocketService: WebsocketService, private jwtdeco:JwtService, private http:HttpClient) {
   }
 
   ngOnInit(): void {
-
+    this.usrID = this.jwtdeco.getID();
+    console.log(this.usrID);
+    this.http.get<string[]>(ENDPOINTS.GETFRIEND+this.usrID).subscribe(
+      (data) => {
+        this.friendList = data;
+      }
+    )
+    console.log(this.friendList[0]);
     this.webSocketService.openWebSocket();
   }
 
@@ -25,8 +36,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(sendForm: NgForm) {
-    const chatMessageDto = new ChatMessageDto(this.jwtdeco.getID(), sendForm.value.message, "hash2");
+    const chatMessageDto = new ChatMessageDto(this.jwtdeco.getID(), sendForm.value.message, this.activeFrien);
     this.webSocketService.sendMessage(chatMessageDto);
     sendForm.controls['message'].reset();
   }
+   public textTo (userId : string): void{
+    this.activeFrien = userId;
+    console.log(this.activeFrien);
+   }
 }

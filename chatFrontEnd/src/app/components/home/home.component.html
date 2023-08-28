@@ -36,5 +36,10 @@
           </div>
       </form>
   </div>
-
+  <div>
+    <div *ngFor="let friend of friendList" (click)="textTo(friend)">
+      {{ friend }}
+    </div>
+    
+  </div>
 </main>
