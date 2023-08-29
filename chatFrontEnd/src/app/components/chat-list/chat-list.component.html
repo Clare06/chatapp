@@ -1,0 +1,15 @@
+<div class="profile">
+
+</div>
+
+<div class="search">
+
+  
+</div>
+
+<div class="list">
+  <div *ngFor="let friend of friendList" (click)="textTo(friend)" [ngClass]="{active: activeFrien==friend}">
+    {{ friend }}
+  </div>
+  
+</div>

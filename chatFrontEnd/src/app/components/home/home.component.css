@@ -1,0 +1,31 @@
+.home-container{
+
+    height: 100vh;
+    width: 100%;
+    background: rgb(181,38,95);
+    background: linear-gradient(90deg, rgba(181,38,95,1) 0%, rgba(44,69,145,1) 100%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+
+}
+.chat-list{
+
+    height: 95vh;
+    width: 30%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+
+}
+.chat-message-container{
+  
+      height: 95vh;
+      width: 65%;
+      background-color: rgba(255, 255, 255, 0.369);
+      border-radius: 5px;
+
+}

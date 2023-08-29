@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './components/home/home.component';
 import { HttpInterceptorRecieverService } from './services/http-interceptor-reciever.service';
 import { HttpInterceptorService } from './services/http-interceptor.service';
+import { ChatListComponent } from './components/chat-list/chat-list.component';
+import { ChatMessageContainerComponent } from './components/chat-message-container/chat-message-container.component';
 
 
 @NgModule({
@@ -19,6 +21,8 @@ import { HttpInterceptorService } from './services/http-interceptor.service';
     AppComponent,
     LoginComponent,
     HomeComponent,
+    ChatListComponent,
+    ChatMessageContainerComponent,
 
   ],
   imports: [

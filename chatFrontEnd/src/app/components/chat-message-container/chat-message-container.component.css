@@ -1,0 +1,40 @@
+.message-header{
+  width: 100%;
+  height: 9.5vh;
+  background-color: #fcfdfe;
+  border-top-left-radius: 5px; 
+  border-top-right-radius: 5px;
+
+}
+.message-content{
+  width: 100%;
+  height: 76vh;
+  overflow: auto;
+}
+.send{
+  width: 100%;
+  height: 9.5vh;
+  background-color: #fcfdfed4;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  border-bottom-left-radius: 5px; 
+  border-bottom-right-radius: 5px;
+
+}
+
+.send-message{
+  margin-top: 1vh;
+  margin-left: 2.5%;
+  height: 7vh;
+  width: 77.5%;
+  background-color: #a9a9a97b;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.send-button{
+  height: 9.5vh;
+  width: 10%;
+}

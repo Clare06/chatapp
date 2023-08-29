@@ -1,4 +1,4 @@
-<header>
+<!-- <header>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Chat app</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,15 @@
     <div *ngFor="let friend of friendList" (click)="textTo(friend)">
       {{ friend }}
     </div>
-    <button (click)="logout()">Logout</button>
+   
   </div>
-</main>
+</main> -->
+<!-- <button (click)="logout()">Logout</button> -->
+<div class="home-container">
+  <div class="chat-list">
+      <app-chat-list></app-chat-list>
+  </div>
+  <div class="chat-message-container">
+      <app-chat-message-container></app-chat-message-container>
+  </div>
+</div>
