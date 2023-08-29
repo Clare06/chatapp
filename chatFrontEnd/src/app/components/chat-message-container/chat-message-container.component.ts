@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./chat-message-container.component.css']
 })
 export class ChatMessageContainerComponent {
+send() {
+throw new Error('Method not implemented.');
+}
 
 }

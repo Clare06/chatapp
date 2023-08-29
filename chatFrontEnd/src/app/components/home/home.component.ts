@@ -45,10 +45,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.activeFrien = userId;
     console.log(this.activeFrien);
    }
-   logout(){
-    localStorage.removeItem('token');
-    this.router.navigate(["/login"]).then(()=>{
-      window.location.reload();
-    })
-  }
+   
 }

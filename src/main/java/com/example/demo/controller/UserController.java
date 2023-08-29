@@ -51,7 +51,6 @@ public class UserController {
     public ResponseEntity<String> addFrnd(@RequestBody SenderReciever senderReciever){
 
         userService.acceptFriend(senderReciever.getUserid(), senderReciever.getFriendid());
-//        userService.removeFriend(senderReciever.getUserid(), senderReciever.getFriendid());
 
         return ResponseEntity.ok("Request Accepted");
     }
@@ -69,5 +68,5 @@ public class UserController {
 
         return ResponseEntity.ok("Declined");
     }
-    
+
 }

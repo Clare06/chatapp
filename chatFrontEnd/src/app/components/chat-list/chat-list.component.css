@@ -28,19 +28,66 @@
 }
 .list div {
   width: 100%;
-  height: 50px;
+  height: 75px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid #000; 
+  border-top: 2px solid #14375e; 
   border-bottom-left-radius: 5px; 
   border-bottom-right-radius: 5px;
+  color: #88296E;
+  font-size: large;
+  
 }
 .list div:hover{
   background-color: rgba(189, 186, 186, 0.16);
   cursor: pointer;
+
 }
 .active{
-  background-color: rgba(189, 186, 186, 0.436) !important;
+  background: rgb(44,69,145);
+  background: linear-gradient(90deg, rgba(44,69,145,0.304359243697479) 0%, rgba(44,69,145,0.23153011204481788) 100%);
+}
+.add-friend{
+  position: absolute;
+  display: flex;
+  bottom: 2vh;
+  right: 2vh;
+  z-index: 999;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #2C4491;
+  align-items: center;
+  justify-content: center;
+}
+.add-friend a{
+  padding: 10px;
+}
+.search input {
+  padding: 10px;
+  width: 100%;
+  height: 6vh;
+  border: none; 
+  outline: none;
+  background-color: transparent;
+  color: #041d39;
+  font-size: larger;
+
+}
+.logout{
+  position: absolute;
+  display: flex;
+  top: 2vh;
+  right: 2vh;
+  z-index: 999;
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.logout a{
+  padding: 10px;
+  cursor: pointer;
 }
