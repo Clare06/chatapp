@@ -38,7 +38,7 @@
   border-bottom-right-radius: 5px;
   color: #88296E;
   font-size: large;
-  
+  letter-spacing: 2px; 
 }
 .list div:hover{
   background-color: rgba(189, 186, 186, 0.16);

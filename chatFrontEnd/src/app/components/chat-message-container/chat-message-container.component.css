@@ -63,7 +63,7 @@
 .send-button button{
   border: none;
   background-color: transparent;
-  color: rgb(0, 102, 255); /* Customize text color */
+  color: rgb(0, 102, 255); 
   font-size: inherit;
   padding: 0;
   margin: 0;
@@ -78,11 +78,28 @@
 .message-li {
   /* right: 0; */
   text-align: right;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin-right: 25px;
+  margin-bottom: 15px;
+  
+
+  
 }
 
 .messageotherend{
   text-align: left !important;
   margin-left: 10px;
+}
+.message-text{
+  padding: 8px;
+  background-color: rgba(70, 203, 252, 0.487);
+  font-size: large;
+  color: #041d39;
+  border-radius: 15px 0 15px 15px; 
+  display: inline-block;
+  max-width: 80%;
+}
+.messagefrdiv{
+  border-radius: 0 15px 15px 15px !important;
+  background-color: rgba(255, 255, 255, 0.506)!important;
+  
 }

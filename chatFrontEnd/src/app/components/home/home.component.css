@@ -14,7 +14,7 @@
 .chat-list{
     position: relative;
     height: 95vh;
-    width: 30%;
+    width: 25%;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -24,7 +24,7 @@
 .chat-message-container{
   
       height: 95vh;
-      width: 65%;
+      width: 70%;
       background-color: rgba(255, 255, 255, 0.369);
       border-radius: 5px;
 
