@@ -3,19 +3,25 @@
 </div>
 
 <div class="message-content">
-  
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item" *ngFor="let chatMessage of webSocketService.chatMessages">
+        <strong>{{chatMessage.user}}: </strong>
+        <span>{{chatMessage.message}}</span>
+    </li>
+</ul>
 
 </div>
 
-<div class="send">
+<form class="send" (ngSubmit)="sendMessage(sendForm)" #sendForm="ngForm">
   <div class="send-message">
-    <input placeholder="Type message here ..."/>
+    <input name="message" placeholder="Type message here ..." ngModel/>
   </div>
   <div class="send-button">
-    <a href="" >
+    <button type="submit">
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
       <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
     </svg>
-    </a>
+    </button>
   </div>
-</div>
+</form>
+  

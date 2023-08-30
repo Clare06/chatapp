@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
 import { ChatMessageDto } from 'src/app/schemas/chatMessageDto';
 import { JwtService } from 'src/app/services/jwtservice.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
@@ -17,7 +18,11 @@ export class ChatListComponent implements OnInit, OnDestroy {
   usrID: string | null = null;
   activeFrien: string = "";
   // active: boolean = false;
-  constructor(public webSocketService: WebsocketService, private jwtdeco:JwtService, private http:HttpClient, private router:Router) {
+  constructor(public webSocketService: WebsocketService,
+     private jwtdeco:JwtService, 
+     private http:HttpClient, 
+     private router:Router,
+     private shared: SharedService) {
   }
 
   ngOnInit(): void {
@@ -36,14 +41,11 @@ export class ChatListComponent implements OnInit, OnDestroy {
     // this.webSocketService.closeWebSocket();
   }
 
-  sendMessage(sendForm: NgForm) {
-    const chatMessageDto = new ChatMessageDto(this.jwtdeco.getID(), sendForm.value.message, this.activeFrien);
-    this.webSocketService.sendMessage(chatMessageDto);
-    sendForm.controls['message'].reset();
-  }
+  
    public textTo (userId : string): void{
     this.activeFrien = userId;
-    console.log(this.activeFrien);
+    // console.log(this.activeFrien);
+    this.shared.triggerFunction(userId);
    }
    logout(){
     localStorage.removeItem('token');
@@ -51,4 +53,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
       window.location.reload();
     })
   }
+  // callService(userId : string){
+
+  // }
 }
