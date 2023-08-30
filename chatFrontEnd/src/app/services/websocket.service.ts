@@ -1,16 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ChatMessageDto } from '../schemas/chatMessageDto';
 import { JwtService } from './jwtservice.service';
+import { SharedchatService } from './sharedchat.service';
+import { Status } from '../schemas/enum';
+import { SharedService } from './shared.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
-
+  index: number = 0;
   webSocket!: WebSocket;
   chatMessages: ChatMessageDto[] = [];
-
-  constructor(private jwtgetid:JwtService) { }
+  // activeChat: ChatMessageDto[] = [];
+  activeFrien: string = "";
+  constructor(private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService) {
+     this.shared.triggerFunction$.subscribe((event) => {
+      this.activeFrien=event.value;
+     })
+  }
 
   public openWebSocket(){
 
@@ -25,6 +33,7 @@ export class WebsocketService {
       const chatMessageDto = JSON.parse(event.data);
       console.log('Message: ', chatMessageDto);
       this.chatMessages.push(chatMessageDto);
+
     };
 
     this.webSocket.onclose = (event) => {
@@ -36,8 +45,19 @@ export class WebsocketService {
     this.webSocket.send(JSON.stringify(chatMessageDto));
     console.log('Message sent: ', JSON.stringify(chatMessageDto));
     this.chatMessages.push(chatMessageDto);
+    console.log(this.chatMessages[this.index]);
   }
-
+  public filterChatMessages(): ChatMessageDto[] {
+    const filteredMessages: ChatMessageDto[] = this.chatMessages.filter((chatMessageDto) => {
+      return (
+        (chatMessageDto.user === this.jwtdeco.getID() && chatMessageDto.sendTo === this.activeFrien) ||
+        (chatMessageDto.user === this.activeFrien && chatMessageDto.sendTo === this.jwtdeco.getID())
+      );
+    });
+  
+    return filteredMessages;
+  }
+  
   public closeWebSocket() {
     this.webSocket.close();
   }

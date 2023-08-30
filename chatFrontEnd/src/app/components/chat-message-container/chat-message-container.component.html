@@ -3,8 +3,8 @@
 </div>
 
 <div class="message-content">
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item" *ngFor="let chatMessage of webSocketService.chatMessages">
+  <ul class="message-ul">
+    <li class="message-li" *ngFor="let chatMessage of webSocketService.filterChatMessages()">
         <strong>{{chatMessage.user}}: </strong>
         <span>{{chatMessage.message}}</span>
     </li>

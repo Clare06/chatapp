@@ -36,11 +36,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.webSocketService.closeWebSocket();
   }
 
-  sendMessage(sendForm: NgForm) {
-    const chatMessageDto = new ChatMessageDto(this.jwtdeco.getID(), sendForm.value.message, this.activeFrien);
-    this.webSocketService.sendMessage(chatMessageDto);
-    sendForm.controls['message'].reset();
-  }
+  // sendMessage(sendForm: NgForm) {
+  //   const chatMessageDto = new ChatMessageDto(this.jwtdeco.getID(), sendForm.value.message, this.activeFrien);
+  //   this.webSocketService.sendMessage(chatMessageDto);
+  //   sendForm.controls['message'].reset();
+  // }
    public textTo (userId : string): void{
     this.activeFrien = userId;
     console.log(this.activeFrien);

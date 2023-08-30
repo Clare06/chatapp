@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ChatMessageDto } from '../schemas/chatMessageDto';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class SharedService {
 
   triggerFunction$ = this.triggerFunctionSubject.asObservable();
 
-  triggerFunction(value: any) {
-    this.triggerFunctionSubject.next(value);
+  triggerFunction(value: any, chat: ChatMessageDto[]) {
+    const paylod ={value,chat}
+    this.triggerFunctionSubject.next(paylod);
   }
 }
