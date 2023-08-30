@@ -9,7 +9,11 @@
 .message-content{
   width: 100%;
   height: 76vh;
-  overflow: auto;
+  overflow-y: auto;
+  display:flex;
+  flex-direction: column-reverse;
+  /* align-items: flex-end;  */
+
 }
 .send{
   width: 100%;
@@ -64,4 +68,21 @@
   padding: 0;
   margin: 0;
   cursor: pointer;
+}
+.message-ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.message-li {
+  /* right: 0; */
+  text-align: right;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.messageotherend{
+  text-align: left !important;
+  margin-left: 10px;
 }

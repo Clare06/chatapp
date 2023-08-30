@@ -15,8 +15,9 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 })
 export class ChatMessageContainerComponent {
   activeFrien: string = "";
+message: any;
   // chat: ChatMessageDto[] = [];
-  constructor(public webSocketService: WebsocketService, private jwtdeco:JwtService,
+  constructor(public webSocketService: WebsocketService, public jwtdeco:JwtService,
      private http:HttpClient, private router:Router,
      private shared:SharedService) {
       this.shared.triggerFunction$.subscribe((event) => {
