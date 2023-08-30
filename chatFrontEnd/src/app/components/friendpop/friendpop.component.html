@@ -1,0 +1,9 @@
+<div class="popup-overlay" [ngClass]="{popupactive: isOpen }">
+  <div class="popup">
+    <h2>Popup Message</h2>
+    <p>This is a sample popup message.</p>
+    <div class="popup-buttons">
+      <button (click)="close.emit()">Close</button>
+    </div>
+  </div>
+</div>

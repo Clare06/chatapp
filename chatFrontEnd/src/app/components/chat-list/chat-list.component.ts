@@ -19,10 +19,9 @@ export class ChatListComponent implements OnInit, OnDestroy {
   friendList: string[] = [];
   usrID: string | null = null;
   activeFrien: string = "";
-  // tempChat:ChatMessageDto[]=[];
   chat: ChatMessageDto[] = [];
-  // active: boolean = false;
   x: number = 0;
+  isPopupOpen = false;
   constructor(public webSocketService: WebsocketService,
      private jwtdeco:JwtService, 
      private http:HttpClient, 
@@ -40,36 +39,18 @@ export class ChatListComponent implements OnInit, OnDestroy {
       }
     )
     console.log(this.friendList[0]);
-    // this.webSocketService.openWebSocket();
+   
   }
 
   ngOnDestroy(): void {
-    // this.webSocketService.closeWebSocket();
+   
   }
 
-  // callFunctionActive(){
-  //   this.webSocketService.chatMessages.forEach((chatMessageDto, index) => {
-  //     // console.log(chatMessageDto.status+"   status");
-  //     // console.log("condition" + ((chatMessageDto.user===this.jwtdeco.getID() && chatMessageDto.sendTo===this.activeFrien) || (chatMessageDto.user===this.activeFrien && chatMessageDto.sendTo===this.jwtdeco.getID())) && chatMessageDto.status)
-  //     // console.log(this.chat.length);
-
-  //     if ((chatMessageDto.user===this.jwtdeco.getID() && chatMessageDto.sendTo===this.activeFrien) || (chatMessageDto.user===this.activeFrien && chatMessageDto.sendTo===this.jwtdeco.getID())){
-  //       chatMessageDto.status=false;
-  //       // console.log(chatMessageDto.status + " " + index);
-  //       this.chat.push(chatMessageDto);
-  //       this.chatshared.activeFunction(index);
-  //     }
-  //   });
-  // }
+  
    public textTo (userId : string): void{
     this.activeFrien = userId;
     this.shared.triggerFunction(userId,this.chat);
-    // this.callFunctionActive();
-   
-    // for(this.x=0;this.x<this.chat.length;this.x++){
-    //   console.log(this.chat[this.x]);
-    // }
-    
+     
    }
    logout(){
     localStorage.removeItem('token');
@@ -77,7 +58,18 @@ export class ChatListComponent implements OnInit, OnDestroy {
       window.location.reload();
     })
   }
-  // callService(userId : string){
+  
 
-  // }
+  
+
+  openPopup() {
+    this.isPopupOpen = true;
+    console.log(this.isPopupOpen);
+  }
+
+  closePopup() {
+    this.isPopupOpen = false;
+  }
+
+  
 }

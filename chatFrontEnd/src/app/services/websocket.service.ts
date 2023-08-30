@@ -23,7 +23,7 @@ export class WebsocketService {
   public openWebSocket(){
 
     const userId = this.jwtgetid.getID(); // Replace with the actual user ID
-    this.webSocket = new WebSocket(`ws://10.10.21.162:8080/chat?${encodeURIComponent(userId)}`);
+    this.webSocket = new WebSocket(`ws://192.168.8.181:8080/chat?${encodeURIComponent(userId)}`);
 
     this.webSocket.onopen = (event) => {
       console.log('Open: ', event);

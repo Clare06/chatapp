@@ -14,6 +14,7 @@ import { HttpInterceptorRecieverService } from './services/http-interceptor-reci
 import { HttpInterceptorService } from './services/http-interceptor.service';
 import { ChatListComponent } from './components/chat-list/chat-list.component';
 import { ChatMessageContainerComponent } from './components/chat-message-container/chat-message-container.component';
+import { FriendpopComponent } from './components/friendpop/friendpop.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ChatMessageContainerComponent } from './components/chat-message-contain
     HomeComponent,
     ChatListComponent,
     ChatMessageContainerComponent,
+    FriendpopComponent,
 
   ],
   imports: [
