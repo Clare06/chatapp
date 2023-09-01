@@ -48,9 +48,9 @@ public class UserService {
         userRepo.save(frd);
     }
     public void addFriendReq(String userid , String frienid){
-        Optional<User> user = userRepo.findByUserId(userid);
+        Optional<User> user = userRepo.findByUserId(frienid);
         User usr = user.get();
-        usr.addFriendReq(frienid);
+        usr.addFriendReq(userid);
         userRepo.save(usr);
     }
     public void removeFriend(String userid, String friendid){
@@ -70,5 +70,9 @@ public class UserService {
         usr.remFrdReq(friendid);
         userRepo.save(usr);
     }
-
+    public List<String> getFReq(String userid) {
+        Optional<User> user = userRepo.findByUserId(userid);
+        List<String> req= user.get().getFriendReq();
+    return req;
+    }
 }

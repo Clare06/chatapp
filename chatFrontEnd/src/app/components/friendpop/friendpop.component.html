@@ -1,9 +1,37 @@
 <div class="popup-overlay" [ngClass]="{popupactive: isOpen }">
   <div class="popup">
-    <h2>Popup Message</h2>
-    <p>This is a sample popup message.</p>
+    <!-- <ul>
+      <li *ngFor="let frd of friendReq">
+          {{frd}}
+      </li>
+    </ul> -->
+
+
     <div class="popup-buttons">
-      <button (click)="close.emit()">Close</button>
+      <button (click)="close.emit()">X</button>
     </div>
+    <div class="search">
+      
+    </div>
+
+    <div class="friendreq">
+      <h5> Friend Requests </h5>
+      <div class="reqlist" *ngFor="let frd of friendReq">
+           <div class="reqname">
+            {{frd}}
+           </div>
+
+           <div class="reqbutton">
+
+            <button (click)="acceptFriend(frd)">Accept</button>
+            <button (click)="rejectFriend(frd)">Reject</button>
+           </div>
+      </div>
+    </div>
+
+    <div class="globaluser">
+      
+    </div>
+
   </div>
 </div>

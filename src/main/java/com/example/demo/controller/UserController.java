@@ -51,7 +51,7 @@ public class UserController {
     public ResponseEntity<String> addFrnd(@RequestBody SenderReciever senderReciever){
 
         userService.acceptFriend(senderReciever.getUserid(), senderReciever.getFriendid());
-
+        userService.decReq(senderReciever.getUserid(), senderReciever.getFriendid());
         return ResponseEntity.ok("Request Accepted");
     }
     @PutMapping("remove-friend")
@@ -67,6 +67,11 @@ public class UserController {
         userService.decReq(senderReciever.getUserid(),senderReciever.getFriendid());
 
         return ResponseEntity.ok("Declined");
+    }
+    @GetMapping("get-req/{id}")
+    public ResponseEntity<List<String>> getReq(@PathVariable("id") String id){
+        List<String> reqList= userService.getFReq(id);
+        return new ResponseEntity<>(reqList,HttpStatus.OK);
     }
 
 }
