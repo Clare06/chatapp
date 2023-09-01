@@ -36,17 +36,16 @@
 
 .popup-buttons {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  margin-top: 10px;
+  top: 5px;
+  right: 5px;
+  /* margin-top: 5px; */
 }
 
-.popup button {
+.popup-buttons button {
   padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
+  background:transparent;
+  color: black;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -70,4 +69,35 @@
   /* background-color: #82aedd; */
   /* border-radius: 0px 0px 5px 5px; */
 
+}
+.reqlist{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+}
+.reqlist button{
+  color: #000;
+  background: transparent;
+  border: none;
+}
+.search input{
+  padding: 10px;
+  margin-right: 1vw;
+  margin-top: 2vh;
+  width: 80%;
+  height: 5vh;
+  border: none; 
+  outline: none;
+  background-color: rgba(191, 195, 196, 0.227);
+  color: #041d39;
+  font-size: larger;
+  border-radius: 5px;
+}
+.display{
+  display: none !important;
+}
+.fulldisplay{
+  height: 70vh !important;
 }

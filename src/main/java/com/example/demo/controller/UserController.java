@@ -74,4 +74,11 @@ public class UserController {
         return new ResponseEntity<>(reqList,HttpStatus.OK);
     }
 
+    @GetMapping("search/{id}/{searchQuery}")
+    public ResponseEntity<List<String>> searchUser(@PathVariable("id")String userid, @PathVariable("searchQuery") String searchQuery){
+        List<String> users = userService.searchUsers(userid,searchQuery);
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
+
+
 }

@@ -12,7 +12,7 @@
   margin-left: 5%;
   width: 90%;
   height: 5.5vh;
-  background-color: rgba(189, 186, 186, 0.473);
+  background-color: rgba(189, 186, 186, 0.228);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -92,3 +92,4 @@
   padding: 10px;
   cursor: pointer;
 }
+

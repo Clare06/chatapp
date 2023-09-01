@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -74,5 +75,15 @@ public class UserService {
         Optional<User> user = userRepo.findByUserId(userid);
         List<String> req= user.get().getFriendReq();
     return req;
+    }
+
+    public List<String> searchUsers(String userid, String searchQuery) {
+        List<String> users=userRepo.searchUsersByUserIdLike(searchQuery);
+        List<String> friends=userRepo.findByUserId(userid).get().getFrienduidList();
+
+        List<String> otherUsers = users.stream()
+                .filter(user -> !friends.contains(user) && !user.equals(userid))
+                .collect(Collectors.toList());
+        return otherUsers;
     }
 }

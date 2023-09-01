@@ -22,6 +22,8 @@ export class ChatListComponent implements OnInit, OnDestroy {
   chat: ChatMessageDto[] = [];
   x: number = 0;
   isPopupOpen = false;
+  searchQuery: string = '';
+
   constructor(public webSocketService: WebsocketService,
      private jwtdeco:JwtService, 
      private http:HttpClient, 

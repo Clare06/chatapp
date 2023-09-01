@@ -5,5 +5,6 @@ export const ENDPOINTS = {
   GETFRIEND: `${root}/friend-ids/`,
   GETREQ: `${root}/get-req/`,
   ACCEPTFRIEND: `${root}/add-friend`,
-  DECLINE:`${root}/decline-req`
+  DECLINE:`${root}/decline-req`,
+  SEARCHUSER: `${root}/search/`
 }

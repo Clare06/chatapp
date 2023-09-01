@@ -16,6 +16,9 @@ export class FriendpopComponent {
   friendReq: string[] = [];
   usrID: string = "";
   mess:string="";
+  searchQuery: string = '';
+  searchResults:string[] = [];
+  reqsAvailable:boolean= false ;
   // senderReciever: SenderReciever = new SenderReciever("", "");
   constructor(private http:HttpClient, private jwt:JwtService) { }
 
@@ -24,8 +27,10 @@ export class FriendpopComponent {
     this.http.get<string[]>(ENDPOINTS.GETREQ+this.usrID).subscribe(
       (data) => {
         this.friendReq = data;
+        this.reqsAvailable= this.friendReq.length > 0;
       }
     )
+
   }
   acceptFriend(frd:string){
     const senderReciever= new SenderReciever(this.usrID, frd);
@@ -47,5 +52,25 @@ export class FriendpopComponent {
           this.mess=data;
       }
     )
+    }
+
+    onSearch(){
+      if(this.searchQuery.trim()){
+          this.http.get<string[]>(ENDPOINTS.SEARCHUSER+this.usrID+"/"+this.searchQuery).subscribe(
+            (data) => {
+              this.searchResults = data;
+            }
+          )
+      }else{
+        this.searchResults = [];
+      }
+    }
+    addReq(frd:string){
+      const senderReciever= new SenderReciever(this.usrID, frd);
+      // this.http.post(ENDPOINTS.ACCEPTFRIEND,senderReciever, {responseType: 'text'}).subscribe(
+      //   (data) => {
+      //       this.mess=data;
+      //   }
+      // )
     }
 }

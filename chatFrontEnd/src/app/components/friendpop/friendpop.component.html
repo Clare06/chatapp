@@ -8,13 +8,15 @@
 
 
     <div class="popup-buttons">
-      <button (click)="close.emit()">X</button>
+      <button (click)="close.emit()"><i class="bi bi-x-circle"></i></button>
     </div>
     <div class="search">
       
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Search..." (ngModelChange)="onSearch()">
+
     </div>
 
-    <div class="friendreq">
+    <div class="friendreq" [ngClass]="{display: !reqsAvailable}">
       <h5> Friend Requests </h5>
       <div class="reqlist" *ngFor="let frd of friendReq">
            <div class="reqname">
@@ -29,8 +31,10 @@
       </div>
     </div>
 
-    <div class="globaluser">
-      
+    <div class="globaluser" [ngClass]="{fulldisplay : !reqsAvailable}">
+      <div *ngFor="let user of searchResults">
+        {{user}}
+      </div>
     </div>
 
   </div>
