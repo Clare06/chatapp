@@ -80,10 +80,28 @@ public class UserService {
     public List<String> searchUsers(String userid, String searchQuery) {
         List<String> users=userRepo.searchUsersByUserIdLike(searchQuery);
         List<String> friends=userRepo.findByUserId(userid).get().getFrienduidList();
+        List<String> frdreq=userRepo.findByUserId(userid).get().getFriendReq();
 
         List<String> otherUsers = users.stream()
-                .filter(user -> !friends.contains(user) && !user.equals(userid))
+                .filter(user -> !friends.contains(user) && !user.equals(userid) && !frdreq.contains(user))
                 .collect(Collectors.toList());
         return otherUsers;
+    }
+
+    public void addSentReq(String userid, String friendid){
+        Optional<User> user = userRepo.findByUserId(userid);
+        User usr = user.get();
+        usr.addSentReq(friendid);
+        userRepo.save(usr);
+    }
+
+    public void remSentReq(String userid, String friendid){
+        Optional<User> user = userRepo.findByUserId(userid);
+        User usr = user.get();
+        usr.removeSentReq(friendid);
+        userRepo.save(usr);
+    }
+    public  List<String> getSentReqList(String userid) {
+        return userRepo.findByUserId(userid).get().getSentReq();
     }
 }

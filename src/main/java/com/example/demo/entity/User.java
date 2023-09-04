@@ -25,6 +25,23 @@ public class User implements Serializable {
     @ElementCollection
     private List<String> friendReq;
 
+    @ElementCollection
+    private List<String> sentReq;
+
+    public List<String> getSentReq() {
+        return sentReq;
+    }
+    public void addSentReq(String friendUid) {
+        if (sentReq == null) {
+            sentReq = new ArrayList<>();
+        }
+        if (!sentReq.contains(friendUid)) {
+            sentReq.add(friendUid);
+        }
+    }
+    public void removeSentReq(String friendUid) {
+        sentReq.remove(friendUid);
+    }
     public List<String> getFriendReq() {
         return friendReq;
     }

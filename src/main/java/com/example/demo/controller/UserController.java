@@ -44,6 +44,7 @@ public class UserController {
     public ResponseEntity<String> addReq(@RequestBody SenderReciever senderReciever){
 
         userService.addFriendReq(senderReciever.getUserid(), senderReciever.getFriendid());
+        userService.addSentReq(senderReciever.getUserid(), senderReciever.getFriendid());
 
         return ResponseEntity.ok("Request Sent");
     }
@@ -52,6 +53,7 @@ public class UserController {
 
         userService.acceptFriend(senderReciever.getUserid(), senderReciever.getFriendid());
         userService.decReq(senderReciever.getUserid(), senderReciever.getFriendid());
+        userService.remSentReq(senderReciever.getFriendid(),senderReciever.getFriendid());
         return ResponseEntity.ok("Request Accepted");
     }
     @PutMapping("remove-friend")
@@ -65,6 +67,7 @@ public class UserController {
     public ResponseEntity<String> decReq(@RequestBody SenderReciever senderReciever){
 
         userService.decReq(senderReciever.getUserid(),senderReciever.getFriendid());
+        userService.remSentReq(senderReciever.getFriendid(),senderReciever.getFriendid());
 
         return ResponseEntity.ok("Declined");
     }
@@ -80,5 +83,10 @@ public class UserController {
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
+    @GetMapping("getsentreq/{id}")
+    public ResponseEntity<List<String>> getSent(@PathVariable("id") String usrid){
+        List<String> users = userService.getSentReqList(usrid);
+        return new ResponseEntity<List<String>>(users,HttpStatus.OK);
+    }
 
 }

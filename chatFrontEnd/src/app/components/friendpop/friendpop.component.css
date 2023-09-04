@@ -59,13 +59,19 @@
 }
 .friendreq{
   width: 100%;
-  height: 30vh; 
+  height: 20vh; 
+  overflow-y: auto;
   /* background-color: #275b93; */
 
 }
 .globaluser{
   width: 100%;
-  height: 40vh; 
+  height: 50vh; 
+  /* position: relative; */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
   /* background-color: #82aedd; */
   /* border-radius: 0px 0px 5px 5px; */
 
@@ -75,12 +81,17 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  
 
+}
+.reqname{
+  font-size: large;
 }
 .reqlist button{
   color: #000;
   background: transparent;
   border: none;
+  margin: 10px;
 }
 .search input{
   padding: 10px;
@@ -100,4 +111,22 @@
 }
 .fulldisplay{
   height: 70vh !important;
+}
+
+.globelist{
+  /* position: relative; */
+  width: 100%;
+  height: 4vh;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.globaluser button {
+  color: #000;
+  background: transparent;
+  border: none;
+}
+.usrname{
+  font-size: large;
 }
