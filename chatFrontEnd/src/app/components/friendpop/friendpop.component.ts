@@ -86,6 +86,8 @@ export class FriendpopComponent implements OnInit {
       this.http.post(ENDPOINTS.SENDREQ,senderReciever, {responseType: 'text'}).subscribe(
         (data) => {
             this.mess=data;
+            // const index=this.sentReq.indexOf(frd);
+            this.sentReq.push(frd);
         }
       )
     //  this.sentReq$= this.getSentReq();

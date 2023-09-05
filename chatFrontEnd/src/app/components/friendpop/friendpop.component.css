@@ -130,3 +130,7 @@
 .usrname{
   font-size: large;
 }
+.globelist div {
+
+  width: 50%;
+}
