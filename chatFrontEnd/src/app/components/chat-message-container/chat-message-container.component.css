@@ -2,8 +2,17 @@
   width: 100%;
   height: 9.5vh;
   background-color: #fcfdfe;
-  border-top-left-radius: 5px; 
+  border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 100px;
+  color: #041d39;
+  font-family: 'Lato', sans-serif;
+  font-size: x-large;
+  letter-spacing: 2px;
+  text-transform: capitalize;
 
 }
 .message-content{
@@ -23,7 +32,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
-  border-bottom-left-radius: 5px; 
+  border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 
 }
@@ -50,7 +59,7 @@
   margin-top: 1vh;
   width: 100%;
   height: 6vh;
-  border: none; 
+  border: none;
   outline: none;
   background-color: transparent;
   color: #041d39;
@@ -63,7 +72,7 @@
 .send-button button{
   border: none;
   background-color: transparent;
-  color: rgb(0, 102, 255); 
+  color: rgb(0, 102, 255);
   font-size: inherit;
   padding: 0;
   margin: 0;
@@ -80,9 +89,9 @@
   text-align: right;
   margin-right: 25px;
   margin-bottom: 15px;
-  
 
-  
+
+
 }
 
 .messageotherend{
@@ -94,12 +103,30 @@
   background-color: rgba(70, 203, 252, 0.487);
   font-size: large;
   color: #041d39;
-  border-radius: 15px 0 15px 15px; 
+  border-radius: 15px 0 15px 15px;
   display: inline-block;
   max-width: 80%;
 }
 .messagefrdiv{
   border-radius: 0 15px 15px 15px !important;
   background-color: rgba(255, 255, 255, 0.506)!important;
-  
+
+}
+
+.bubble-chat{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 95vh;
+  width: 100%;
+  color:#d1cdd1d1;
+  font-size: large;
+}
+.bubble-chat h2{
+    font-family: 'Pacifico', cursive;
+    margin-bottom: 20px;
+    /* font-weight: 300; */
+    /* font-size: xx-large; */
+
 }

@@ -21,5 +21,16 @@ export class JwtService {
     return  "";
 
   }
+  public getUserName () : string {
+    const token = localStorage.getItem('token');
+
+    if(token){
+      this.userID = this.jwtHelper.decodeToken(token).username;
+      return this.userID;
+    }
+
+    return  "";
+
+  }
 
 }

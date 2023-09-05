@@ -1,5 +1,5 @@
 <div class="profile">
-
+{{username}}
 </div>
 
 <div class="search">
@@ -10,7 +10,7 @@
 <div class="list">
   <div *ngFor="let friend of friendList" (click)="textTo(friend)" [ngClass]="{active: activeFrien==friend}">
     <strong>{{ friend }}</strong>
-  </div>  
+  </div>
 </div>
 <div class="add-friend">
   <a (click)="openPopup()">

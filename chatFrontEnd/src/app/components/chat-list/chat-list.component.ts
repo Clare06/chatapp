@@ -23,10 +23,11 @@ export class ChatListComponent implements OnInit, OnDestroy {
   x: number = 0;
   isPopupOpen = false;
   searchQuery: string = '';
+  username: string = '';
 
   constructor(public webSocketService: WebsocketService,
-     private jwtdeco:JwtService, 
-     private http:HttpClient, 
+     private jwtdeco:JwtService,
+     private http:HttpClient,
      private router:Router,
      private shared: SharedService,
      private chatshared:SharedchatService) {
@@ -34,25 +35,25 @@ export class ChatListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.usrID = this.jwtdeco.getID();
+    this.username = this.jwtdeco.getUserName();
     console.log(this.usrID);
     this.http.get<string[]>(ENDPOINTS.GETFRIEND+this.usrID).subscribe(
       (data) => {
         this.friendList = data;
       }
     )
-    console.log(this.friendList[0]);
-   
+    // console.log(this.friendList[0]);
   }
 
   ngOnDestroy(): void {
-   
+
   }
 
-  
+
    public textTo (userId : string): void{
     this.activeFrien = userId;
     this.shared.triggerFunction(userId,this.chat);
-     
+
    }
    logout(){
     localStorage.removeItem('token');
@@ -60,9 +61,9 @@ export class ChatListComponent implements OnInit, OnDestroy {
       window.location.reload();
     })
   }
-  
 
-  
+
+
 
   openPopup() {
     this.isPopupOpen = true;
@@ -74,5 +75,5 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.isPopupOpen = false;
   }
 
-  
+
 }
