@@ -70,6 +70,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   }
 
   closePopup() {
+    this.ngOnInit();
     this.isPopupOpen = false;
   }
 
