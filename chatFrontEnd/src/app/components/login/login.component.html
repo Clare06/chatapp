@@ -1,50 +1,3 @@
-<!--
-<div class="log-container">
-<div class="container mt-5 log-form" >
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header ch">
-          Login
-        </div>
-        <div class="card-body cb">
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label for="userid" class="form-label">User ID</label>
-              <input type="text" id="userid" class="form-control" formControlName="userid">
-              <div *ngIf="loginForm.get('userid')?.invalid && loginForm.get('userid')?.touched">
-                <div  *ngIf="loginForm.get('userid')?.errors">
-                    <label class="warne">*UserID required</label>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" id="password" class="form-control" formControlName="passwordhash">
-              <div *ngIf="loginForm.get('passwordhash')?.invalid && loginForm.get('passwordhash')?.touched">
-                <div  *ngIf="loginForm.get('passwordhash')?.errors">
-                    <label class="warne">*Password required</label>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="errorMes != null">
-              <label class="warne">{{errorMes}}</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-          </form>
-        </div>
-        <div class="card-footer">
-          <div class="d-flex justify-content-between">
-            <a href="#" class="text-muted">Forgot Password?</a>
-            <button class="btn btn-link" >Sign Up</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div> -->
-
 
 <div class="log-container">
 
@@ -113,10 +66,8 @@
           <div class="log-input">
             <label for="conpassword" class="loglabel">Confirm Password </label><br>
             <input type="password" id="conpassword" class="" formControlName="conpassword" placeholder="Confirm Password" autocomplete="new-password">
-            <div *ngIf="signForm.get('conpassword')?.invalid && signForm.get('conpassword')?.touched">
-              <div  *ngIf="signForm.get('conpassword')?.errors">
-                  <label class="warne">*Password couldn't match!</label>
-              </div>
+            <div *ngIf="signForm.get('conpassword')?.hasError('confirmPasswordMismatch') && signForm.get('conpassword')?.touched">
+              <label class="warne">*Passwords do not match!</label>
             </div>
             <div *ngIf="errorMes != null">
               <label class="warne">{{errorMes}}</label>

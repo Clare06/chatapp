@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
 import { SignUser } from 'src/app/schemas/signUser';
 import { Usercred } from 'src/app/schemas/usercred.interface';
+import { confirmPasswordValidator } from 'src/app/validators/validator';
 // declare var myExtObject: any;
 
 @Component({
@@ -13,6 +14,7 @@ import { Usercred } from 'src/app/schemas/usercred.interface';
   styleUrls: ['./login.component.css']
   // encapsulation: ViewEncapsulation.None
 })
+
 export class LoginComponent {
 
   loginForm!: FormGroup;
@@ -21,6 +23,7 @@ export class LoginComponent {
   errorMes: string | null= null;
   signup: boolean = false;
   message: string | null = null;
+
   constructor (private fb:FormBuilder, private http:HttpClient, private router:Router){
 
   }
@@ -37,10 +40,11 @@ export class LoginComponent {
       userid: ['', Validators.required],
       username: ['',Validators.required],
       password: ['',Validators.required],
-      conpassword: ['',Validators.required]            // Add Validators.required
+      conpassword: ['',[Validators.required, confirmPasswordValidator('password')]]            // Add Validators.required
     });
 
   }
+
   onSignSubmit() {
     if (this.signForm.invalid) {
       return;  // Exit if the form is invalid
@@ -114,5 +118,7 @@ export class LoginComponent {
   signupTri(){
     this.errorMes= null;
     this.signup = !this.signup;
+    this.loginForm.reset();
+    this.signForm.reset();
   }
 }
