@@ -9,4 +9,5 @@ export const ENDPOINTS = {
   SEARCHUSER: `${root}/search/`,
   SENDREQ: `${root}/add-friend-req`,
   GETSENT: `${root}/getsentreq/`,
+  SIGNUP: `${root}/signup`
 }

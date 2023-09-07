@@ -3,6 +3,7 @@ import { AfterViewInit, Component, ViewEncapsulation  } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
+import { SignUser } from 'src/app/schemas/signUser';
 import { Usercred } from 'src/app/schemas/usercred.interface';
 // declare var myExtObject: any;
 
@@ -19,6 +20,7 @@ export class LoginComponent {
   token: any;
   errorMes: string | null= null;
   signup: boolean = false;
+  message: string | null = null;
   constructor (private fb:FormBuilder, private http:HttpClient, private router:Router){
 
   }
@@ -35,7 +37,7 @@ export class LoginComponent {
       userid: ['', Validators.required],
       username: ['',Validators.required],
       password: ['',Validators.required],
-      conpassword: ['',Validators.required,this.matchPasswords.bind(this)]            // Add Validators.required
+      conpassword: ['',Validators.required]            // Add Validators.required
     });
 
   }
@@ -44,17 +46,42 @@ export class LoginComponent {
       return;  // Exit if the form is invalid
     }
     const user =this.signForm.value;
-    }
-  matchPasswords(control: FormGroup) {
-    const password = control.get('password')?.value;
-    const conpassword = control.get('conpassword')?.value;
+    const signUser = new SignUser(user.userid,user.username,user.password);
 
-    // Check if the passwords match
-    if (password === conpassword) {
-      return null; // Valid, passwords match
-    } else {
-      return { mismatch: true }; // Invalid, passwords don't match
-    }}
+
+    this.http.post(ENDPOINTS.SIGNUP, signUser,{responseType: 'text'}).subscribe(
+      {
+        next:(response) => {
+          this.errorMes=null;
+          this.message=response;
+
+        },
+        error: (error)=>{
+          this.message=null;
+          if(error.status===400){
+          this.errorMes=error.error;
+
+          }else{
+            this.errorMes="Server Error";
+          }
+        }
+      }
+    )
+    console.log(this.errorMes);
+    console.log(this.message);
+    }
+
+
+  // matchPasswords(control: FormGroup) {
+  //   const password = control.get('password')?.value;
+  //   const conpassword = control.get('conpassword')?.value;
+
+  //   // Check if the passwords match
+  //   if (password === conpassword) {
+  //     return null; // Valid, passwords match
+  //   } else {
+  //     return { mismatch: true }; // Invalid, passwords don't match
+  //   }}
 
   onSubmit(){
 

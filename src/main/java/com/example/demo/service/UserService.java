@@ -2,9 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,10 +21,9 @@ public class UserService {
     }
 
     public Boolean auth(User user) {
-
         Optional<User> usr = userRepo.findByUserId(user.getUserid());
         if(usr.isPresent()) {
-            return usr.get().getPasswordhash().equals(user.getPasswordhash());
+            return bcryptMatch(user.getPasswordhash(),usr.get().getPasswordhash());
         }
             return false;
     }
@@ -103,5 +105,24 @@ public class UserService {
     }
     public  List<String> getSentReqList(String userid) {
         return userRepo.findByUserId(userid).get().getSentReq();
+    }
+
+    public void saveUser(User user){
+        String encodedPass=bcryptPassword(user.getPasswordhash());
+        user.setPasswordhash(encodedPass);
+        User newUser=new User();
+        BeanUtils.copyProperties(user,newUser);
+        System.out.println(newUser.getUsername()+ "  eg"+ newUser.getUserid());
+        userRepo.save(newUser);
+    }
+    public String bcryptPassword(String password){
+        int strength = 10; // work factor of bcrypt
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        return encodedPassword;
+    }
+    public boolean bcryptMatch(String usrEntered, String dbPass) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return  encoder.matches(usrEntered,dbPass);
     }
 }

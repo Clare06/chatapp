@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -88,5 +89,15 @@ public class UserController {
         List<String> users = userService.getSentReqList(usrid);
         return new ResponseEntity<List<String>>(users,HttpStatus.OK);
     }
+    @PostMapping("signup")
+    public ResponseEntity<String> signup(@RequestBody User user){
+        Optional<User> usr = userService.getUser(user.getUserid());
 
+        if (usr.isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("UserID already available");
+        }
+        userService.saveUser(user);
+
+        return ResponseEntity.ok("Signed up");
+    }
 }
