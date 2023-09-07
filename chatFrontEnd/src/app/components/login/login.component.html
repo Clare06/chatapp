@@ -58,7 +58,7 @@
         <form *ngIf="!signup" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="log-input">
           <label for="userid" class="loglabel">User </label><br>
-          <input type="text" id="userid" formcontrolname="userid" placeholder="UserId" ng-reflect-name="userid" class="ng-untouched ng-pristine ng-invalid" autocomplete="username">
+          <input type="text" id="userid" formControlName="userid" placeholder="UserId" autocomplete="username">
           <div *ngIf="loginForm.get('userid')?.invalid && loginForm.get('userid')?.touched">
             <div  *ngIf="loginForm.get('userid')?.errors">
                 <label class="warne">*UserID required</label>
@@ -67,8 +67,7 @@
           </div>
           <div class="log-input">
           <label for="password" class="loglabel">Password</label><br>
-          <input type="password" id="password" formcontrolname="passwordhash" placeholder="Password" ng-reflect-name="passwordhash" class="ng-untouched ng-pristine ng-invalid" autocomplete="current-password">
-
+          <input type="password" id="password" formControlName="passwordhash" placeholder="Password" autocomplete="current-password">
           <div *ngIf="loginForm.get('passwordhash')?.invalid && loginForm.get('passwordhash')?.touched">
             <div  *ngIf="loginForm.get('passwordhash')?.errors">
                 <label class="warne">*Password required</label>

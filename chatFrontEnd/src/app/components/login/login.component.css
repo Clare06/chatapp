@@ -89,7 +89,7 @@
 }
 .log-input input:focus {
   border: none;
-  border-bottom: 1px solid #ffffff !important;
+  /* border-bottom: 1px solid #ffffff !important; */
   outline: none;
 }
 .loglabel {

@@ -86,6 +86,8 @@ export class LoginComponent {
   onSubmit(){
 
     if (this.loginForm.invalid) {
+      console.log(this.loginForm.value.userid)
+      console.log("invalid");
       return;  // Exit if the form is invalid
     }
 
