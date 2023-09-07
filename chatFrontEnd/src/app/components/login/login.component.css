@@ -4,17 +4,122 @@
 
 .log-container
 {
-  padding-top: 20vh !important;
+  /* padding-top: 20vh !important; */
   width: 100vw;
   height: 100vh;
-  background: rgb(238,174,202);
-  background: radial-gradient(circle, rgba(238,174,202,0.3) 0%, rgba(148,187,233,0.3931547619047619) 100%);
-
+  background-color: black;
+  display: flex;
+  flex-direction: row;
 }
 
+.theme{
+  width: 60vw;
+  height: 100vh;
+  background: transparent;
+  display: flex;
+  flex-wrap: wrap; /* Allow bubble divs to wrap to the next line */
+  justify-content: center; /* Spread divs horizontally */
+  align-content: center; /* Spread divs vertically */
+}
+
+/* Style for bubble-type divs */
+.bubble {
+  width: 30vw;
+  height: 30vw;
+  background: rgb(0, 255, 0);
+  background: radial-gradient(
+    circle,
+    rgba(0, 255, 0, 0.837) 40%, /* Inner color */
+    rgba(0, 128, 0, 0.6) 100%/* Middle color with transparency */
+    /* rgba(0, 0, 0, 0.2) 100% Outer color with transparency */
+  );
+  box-shadow: 0 4px 6px rgba(0, 128, 0, 0.5), 0 8px 10px rgba(0, 128, 0, 0.5);
+  font-family: 'Comic Sans MS', cursive;
+  font-size: xx-large;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  /* position: absolute; */
+  box-shadow: 0 0 10px rgba(0, 128, 0, 0.5);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble:hover {
+  transform: scale(1.1); /* Add a hover effect to make the bubble grow slightly */
+}
+
+
+.content{
+  width: 40vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
 /* .log-form{
-
-
-
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
 } */
 
+.log-input input {
+  width: 35vw;
+  height: 50px;
+  /* border-radius: 5px; */
+
+  background: transparent;
+  /* outline:none; */
+  border: none;
+  border-bottom: 1px  solid #ffffff !important;
+  font-size: 1.3rem;
+  color: #fefefe;
+  margin-bottom: 16px;
+  transition: background-color 0.3s;
+}
+.log-input input::placeholder {
+  color: rgba(120, 118, 118, 0.612);
+  font-size: medium;
+}
+.log-input input:focus {
+  border: none;
+  border-bottom: 1px solid #ffffff !important;
+  outline: none;
+}
+.loglabel {
+  font-size: 1.3rem;
+  color: #fefefe;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+.log-input input:hover{
+  background-color: #7573733a;
+}
+.formbutton
+{
+  width: 35vw;
+  height: 50px;
+  border-radius: 5px;
+  background: transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  letter-spacing: 2px;
+}
+.formbutton:hover{
+  background-color: #7573733a;
+}
+.signup {
+  width: 40vw;
+  display: flex;
+  justify-content: center;
+}

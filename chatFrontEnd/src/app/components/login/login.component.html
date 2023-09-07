@@ -1,15 +1,4 @@
-
-<!-- <div class="log-conatiner">
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <label for="userid">User ID</label>
-  <input type="text" id="userid" formControlName="userid" />
-
-  <label for="passwordhash">Password Hash</label>
-  <input type="password" id="passwordhash" formControlName="passwordhash" />
-
-  <button type="submit">Submit</button>
-</form>
-</div> -->
+<!--
 <div class="log-container">
 <div class="container mt-5 log-form" >
   <div class="row justify-content-center">
@@ -54,4 +43,91 @@
     </div>
   </div>
 </div>
+</div> -->
+
+
+<div class="log-container">
+
+  <div class="theme">
+    <div class="bubble">
+        <strong> Bubble <br> Chat</strong>
+    </div>
+  </div>
+
+  <div class="content">
+        <form *ngIf="!signup" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="log-input">
+          <label for="userid" class="loglabel">User </label><br>
+          <input type="text" id="userid" class="" formControlName="userid" placeholder="UserId">
+          <div *ngIf="loginForm.get('userid')?.invalid && loginForm.get('userid')?.touched">
+            <div  *ngIf="loginForm.get('userid')?.errors">
+                <label class="warne">*UserID required</label>
+            </div>
+          </div>
+          </div>
+          <div class="log-input">
+          <label for="password" class="loglabel">Password</label><br>
+          <input type="password" id="password" class="" formControlName="passwordhash" placeholder="Password">
+          <div *ngIf="loginForm.get('passwordhash')?.invalid && loginForm.get('passwordhash')?.touched">
+            <div  *ngIf="loginForm.get('passwordhash')?.errors">
+                <label class="warne">*Password required</label>
+            </div>
+          </div>
+          <div *ngIf="errorMes != null">
+            <label class="warne">{{errorMes}}</label>
+          </div>
+          </div>
+          <button type="submit" class="formbutton">Login</button>
+        </form>
+        <!--  -->
+        <!-- Sign UP -->
+        <!--  -->
+        <form *ngIf="signup" [formGroup]="signForm" (ngSubmit)="onSignSubmit()" >
+          <div class="log-input">
+            <label for="userid" class="loglabel">User </label><br>
+            <input type="text" id="userid" class="" formControlName="userid" placeholder="UserId">
+            <div *ngIf="signForm.get('userid')?.invalid && signForm.get('userid')?.touched">
+              <div  *ngIf="signForm.get('userid')?.errors">
+                  <label class="warne">*UserID required</label>
+              </div>
+            </div>
+          </div>
+          <div class="log-input">
+            <label for="username" class="loglabel">User Name </label><br>
+            <input type="text" id="username" class="" formControlName="username" placeholder="User Name">
+            <div *ngIf="signForm.get('username')?.invalid && signForm.get('username')?.touched">
+              <div  *ngIf="signForm.get('username')?.errors">
+                  <label class="warne">*User Name required</label>
+              </div>
+            </div>
+          </div>
+          <div class="log-input">
+            <label for="password" class="loglabel">Password </label><br>
+            <input type="text" id="password" class="" formControlName="password" placeholder="Password">
+            <div *ngIf="signForm.get('password')?.invalid && signForm.get('password')?.touched">
+              <div  *ngIf="signForm.get('password')?.errors">
+                  <label class="warne">*Password required</label>
+              </div>
+            </div>
+          </div>
+          <div class="log-input">
+            <label for="conpassword" class="loglabel">Confirm Password </label><br>
+            <input type="text" id="conpassword" class="" formControlName="conpassword" placeholder="Confirm Password">
+            <div *ngIf="signForm.get('conpassword')?.invalid && signForm.get('conpassword')?.touched">
+              <div  *ngIf="signForm.get('conpassword')?.errors">
+                  <label class="warne">*Password couldn't match!</label>
+              </div>
+            </div>
+            <div *ngIf="errorMes != null">
+              <label class="warne">{{errorMes}}</label>
+            </div>
+          </div>
+          <button type="submit" class="formbutton">Sign Up</button>
+        </form>
+        <div class="signup">
+          <button *ngIf="!signup" class="formbutton" (click)="signupTri()">Sign Up</button>
+          <button *ngIf="signup" class="formbutton" (click)="signupTri()">Back</button>
+        </div>
+  </div>
+
 </div>
