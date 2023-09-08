@@ -16,6 +16,7 @@ import { ChatListComponent } from './components/chat-list/chat-list.component';
 import { ChatMessageContainerComponent } from './components/chat-message-container/chat-message-container.component';
 import { FriendpopComponent } from './components/friendpop/friendpop.component';
 import { NewlineToBrPipe } from './services/newline-to-br.pipe';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { NewlineToBrPipe } from './services/newline-to-br.pipe';
     ChatMessageContainerComponent,
     FriendpopComponent,
     NewlineToBrPipe,
+    ForgotPasswordComponent,
 
   ],
   imports: [

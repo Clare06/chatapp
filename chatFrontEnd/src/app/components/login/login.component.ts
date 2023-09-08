@@ -17,6 +17,7 @@ import { confirmPasswordValidator } from 'src/app/validators/validator';
 
 export class LoginComponent {
 
+
   loginForm!: FormGroup;
   signForm !: FormGroup;
   token: any;
@@ -75,17 +76,9 @@ export class LoginComponent {
     console.log(this.message);
     }
 
-
-  // matchPasswords(control: FormGroup) {
-  //   const password = control.get('password')?.value;
-  //   const conpassword = control.get('conpassword')?.value;
-
-  //   // Check if the passwords match
-  //   if (password === conpassword) {
-  //     return null; // Valid, passwords match
-  //   } else {
-  //     return { mismatch: true }; // Invalid, passwords don't match
-  //   }}
+  forgotPass() {
+        this.router.navigate(['../forgotPassword'])
+      }
 
   onSubmit(){
 

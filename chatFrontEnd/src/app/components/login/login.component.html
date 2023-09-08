@@ -79,8 +79,13 @@
           <button type="submit" class="formbutton">Sign Up</button>
         </form>
         <div class="signup">
+          <div>
           <button *ngIf="!signup" class="formbutton" (click)="signupTri()">Sign Up</button>
           <button *ngIf="signup" class="formbutton" (click)="signupTri()">Back</button>
+          <br>
+          <p *ngIf="!signup" class="forgotPass"><a (click)="forgotPass()"> Forgot Password? </a></p>
+          </div>
+
         </div>
   </div>
 

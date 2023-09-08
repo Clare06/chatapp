@@ -122,4 +122,27 @@
   width: 40vw;
   display: flex;
   justify-content: center;
+  /* flex-direction: column; */
+}
+.signup div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.signup div a {
+  color: #ffffff;
+  font-size: 1rem;
+  text-decoration: none;
+  margin-top: 20px;
+  letter-spacing: 2px;
+
+}
+.signup div a:hover {
+
+  color: #757373;
+}
+.signup div p:hover {
+  cursor:pointer;
 }

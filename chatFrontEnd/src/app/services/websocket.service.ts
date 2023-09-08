@@ -54,10 +54,10 @@ export class WebsocketService {
         (chatMessageDto.user === this.activeFrien && chatMessageDto.sendTo === this.jwtdeco.getID())
       );
     });
-  
+
     return filteredMessages;
   }
-  
+
   public closeWebSocket() {
     this.webSocket.close();
   }
