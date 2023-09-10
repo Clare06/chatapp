@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 declare var PupilMovement:any;
 
 @Component({
@@ -9,8 +10,16 @@ declare var PupilMovement:any;
 })
 
 export class ForgotPasswordComponent {
+onSubmit() {
+throw new Error('Method not implemented.');
+}
+  forgotPassForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.forgotPassForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
+  }
 
-    constructor() { }
 
     ngOnInit() {
       PupilMovement.init();

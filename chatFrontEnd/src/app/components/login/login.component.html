@@ -55,6 +55,16 @@
             </div>
           </div>
           <div class="log-input">
+            <label for="email" class="loglabel">Email </label><br>
+            <input type="email" id="email" formControlName="email" placeholder="Email" autocomplete="username">
+            <div *ngIf="signForm.get('email')?.hasError('required') && signForm.get('email')?.touched">
+              <label class="warne">*Email is required.</label>
+            </div>
+            <div *ngIf="signForm.get('email')?.hasError('email') && signForm.get('email')?.touched">
+              <label class="warne">*Invalid email format.</label>
+            </div>
+          </div>
+          <div class="log-input">
             <label for="password" class="loglabel">Password </label><br>
             <input type="password" id="password" class="" formControlName="password" placeholder="Password" autocomplete="current-password">
             <div *ngIf="signForm.get('password')?.invalid && signForm.get('password')?.touched">
@@ -69,6 +79,7 @@
             <div *ngIf="signForm.get('conpassword')?.hasError('confirmPasswordMismatch') && signForm.get('conpassword')?.touched">
               <label class="warne">*Passwords do not match!</label>
             </div>
+
             <div *ngIf="errorMes != null">
               <label class="warne">{{errorMes}}</label>
             </div>

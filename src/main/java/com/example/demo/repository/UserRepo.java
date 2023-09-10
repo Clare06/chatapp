@@ -17,4 +17,7 @@ public interface UserRepo extends JpaRepository<User,Integer> {
 
     @Query("SELECT u.userid FROM User u WHERE u.userid LIKE %:searchTerm%")
     List<String> searchUsersByUserIdLike(@Param("searchTerm") String searchTerm);
+
+    @Query("SELECT u from User u WHERE u.email=:email")
+    Optional<User> findUserByEmail(@Param("email") String email);
 }

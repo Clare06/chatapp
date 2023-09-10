@@ -125,4 +125,16 @@ public class UserService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return  encoder.matches(usrEntered,dbPass);
     }
+
+
+    public Optional<User> findUserByEmail(String email) {
+        return userRepo.findUserByEmail(email);
+    }
+
+    public void updatePassword(User user, String newPassword) {
+        // Update the user's password
+        String encodedPassword=this.bcryptPassword(newPassword);
+        user.setPasswordhash(encodedPassword);
+        userRepo.save(user);
+    }
 }

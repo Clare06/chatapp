@@ -41,7 +41,8 @@ export class LoginComponent {
       userid: ['', Validators.required],
       username: ['',Validators.required],
       password: ['',Validators.required],
-      conpassword: ['',[Validators.required, confirmPasswordValidator('password')]]            // Add Validators.required
+      conpassword: ['',[Validators.required, confirmPasswordValidator('password')]],
+      email:['',[Validators.required, Validators.email]]            // Add Validators.required
     });
 
   }
@@ -51,7 +52,7 @@ export class LoginComponent {
       return;  // Exit if the form is invalid
     }
     const user =this.signForm.value;
-    const signUser = new SignUser(user.userid,user.username,user.password);
+    const signUser = new SignUser(user.userid,user.username,user.password,user.email);
 
 
     this.http.post(ENDPOINTS.SIGNUP, signUser,{responseType: 'text'}).subscribe(
@@ -77,7 +78,10 @@ export class LoginComponent {
     }
 
   forgotPass() {
-        this.router.navigate(['../forgotPassword'])
+        this.router.navigate(['../forgotPassword']).then(()=>
+        {
+          window.location.reload();
+        });
       }
 
   onSubmit(){
