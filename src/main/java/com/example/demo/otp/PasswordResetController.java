@@ -41,7 +41,7 @@ public class PasswordResetController {
 
         emailService.sendPasswordResetEmail(user.get().getEmail(), otp);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return  ResponseEntity.ok("Otp has been sent");
     }
     @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOtp(@RequestBody Otp otp){
@@ -49,9 +49,10 @@ public class PasswordResetController {
 
         if (otpTableService.verifyOtp(usr.get().getUid(),otp.getOtp())){
 
-           return new ResponseEntity(HttpStatus.OK);
+           return ResponseEntity.ok("Verified");
         }
-        return new  ResponseEntity(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body("Invalid");
+
     }
 
     @PostMapping("/new-pass")

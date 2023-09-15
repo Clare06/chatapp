@@ -24,6 +24,7 @@ export class LoginComponent {
   errorMes: string | null= null;
   signup: boolean = false;
   message: string | null = null;
+  signClicked: boolean = false;
 
   constructor (private fb:FormBuilder, private http:HttpClient, private router:Router){
 
@@ -54,16 +55,17 @@ export class LoginComponent {
     const user =this.signForm.value;
     const signUser = new SignUser(user.userid,user.username,user.password,user.email);
 
-
+    this.signClicked=true;
     this.http.post(ENDPOINTS.SIGNUP, signUser,{responseType: 'text'}).subscribe(
       {
         next:(response) => {
           this.errorMes=null;
           this.message=response;
-
+          this.signClicked=false;
         },
         error: (error)=>{
           this.message=null;
+          this.signClicked=false;
           if(error.status===400){
           this.errorMes=error.error;
 

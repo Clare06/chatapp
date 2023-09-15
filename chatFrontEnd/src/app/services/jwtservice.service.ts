@@ -7,6 +7,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class JwtService {
   userID!: string;
+  userName!: string;
+  verify: boolean=false;
   private jwtHelper: JwtHelperService = new JwtHelperService();
 
 
@@ -25,11 +27,22 @@ export class JwtService {
     const token = localStorage.getItem('token');
 
     if(token){
-      this.userID = this.jwtHelper.decodeToken(token).username;
-      return this.userID;
+      this.userName = this.jwtHelper.decodeToken(token).username;
+      return this.userName;
     }
 
     return  "";
+
+  }
+  public getVerify () : boolean {
+    const token = localStorage.getItem('token');
+
+    if(token){
+      this.verify = this.jwtHelper.decodeToken(token).verify;
+      return this.verify;
+    }
+
+    return  this.verify;
 
   }
 

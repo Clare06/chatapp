@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.entity.SenderReciever;
 import com.example.demo.entity.User;
 import com.example.demo.jwt.JwtUtil;
+import com.example.demo.otp.EmailServiceImpl;
 import com.example.demo.service.UserService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,9 @@ public class UserController {
     private final UserService userService;
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private EmailServiceImpl emailService;
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
@@ -90,14 +95,33 @@ public class UserController {
         return new ResponseEntity<List<String>>(users,HttpStatus.OK);
     }
     @PostMapping("signup")
-    public ResponseEntity<String> signup(@RequestBody User user){
+    public ResponseEntity<String> signup(@RequestBody User user) throws MessagingException {
         Optional<User> usr = userService.getUser(user.getUserid());
 
         if (usr.isPresent()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("UserID already available");
         }
+        String token= jwtUtil.generateSignUpToken(user);
+//        String token= "hey bro";
+        user.setTempToken(token);
+        user.setVerified(false);
         userService.saveUser(user);
-
+        emailService.sendVerificationEmail(user.getEmail(),token);
         return ResponseEntity.ok("Signed up");
+    }
+    @GetMapping("/verify-user")
+    public String verifyUser(@RequestParam(required = false) String token) {
+        if (token != null && !token.isEmpty()) {
+               Optional<User> user=userService.userWithToken(token);
+               if (user.isPresent()) {
+
+                   userService.updateVerification(user.get());
+                   return "Verified";
+               }
+            return "User not found with token: " + token;
+        } else {
+
+            return "Token not provided in the URL.";
+        }
     }
 }

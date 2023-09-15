@@ -22,6 +22,26 @@ public class User implements Serializable {
 
     private String email;
 
+    private String tempToken;
+
+    private boolean verified;
+
+    public String getTempToken() {
+        return tempToken;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setTempToken(String tempToken) {
+        this.tempToken = tempToken;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     public String getEmail() {
         return email;
     }

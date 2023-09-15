@@ -53,6 +53,14 @@ public class JwtUtil {
         claims.put("role", usr.get().getRole());
         claims.put("userid", usr.get().getUserid());
         claims.put("username",usr.get().getUsername());
+        claims.put("verify", usr.get().isVerified());
+        return createToken(claims);
+    }
+    public String generateSignUpToken(User user){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userid", user.getUserid());
+        claims.put("username",user.getUsername());
+        claims.put("email",user.getEmail());
         return createToken(claims);
     }
 

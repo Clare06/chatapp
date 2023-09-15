@@ -146,3 +146,10 @@
 .signup div p:hover {
   cursor:pointer;
 }
+.formbutton:disabled {
+
+  border-color: #000; /* Change the border color for disabled button */
+  color: #999999; /* Change the text color for disabled button */
+  cursor: not-allowed; /* Change cursor for disabled button */
+  /* Add any other styles you want for disabled button */
+}

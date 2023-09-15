@@ -137,4 +137,15 @@ public class UserService {
         user.setPasswordhash(encodedPassword);
         userRepo.save(user);
     }
+    public Optional<User> userWithToken(String token){
+
+        Optional<User> user = userRepo.findByToken(token);
+
+        return user;
+    }
+    public void updateVerification(User user){
+        user.setVerified(true);
+        user.setTempToken(null);
+        userRepo.save(user);
+    }
 }

@@ -2,9 +2,12 @@ package com.example.demo.otp;
 
 
 import com.example.demo.entity.User;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,12 +16,27 @@ public class EmailServiceImpl  {
     @Autowired
     private JavaMailSender javaMailSender;
 
-
+    private static final String ROOT_URL= "http://localhost:8080/";
     public void sendPasswordResetEmail(String to, String otp) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject("Password Reset");
         message.setText("Your OTP for password reset is: " + otp);
+
+        javaMailSender.send(message);
+    }
+    public void sendVerificationEmail(String to,String token) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        String subject = "Email Verification";
+        String text = "Click the link below to verify your email:\n";
+        String verificationLink = ROOT_URL+"verify-user?token="+token;
+        text += verificationLink;
+
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(text);
 
         javaMailSender.send(message);
     }

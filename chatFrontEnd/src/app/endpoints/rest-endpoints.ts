@@ -1,4 +1,4 @@
-const root="http://10.10.21.162:8080";
+const root="http://localhost:8080";
 
 export const ENDPOINTS = {
   LOGIN: `${root}/authenticate`,
@@ -9,5 +9,8 @@ export const ENDPOINTS = {
   SEARCHUSER: `${root}/search/`,
   SENDREQ: `${root}/add-friend-req`,
   GETSENT: `${root}/getsentreq/`,
-  SIGNUP: `${root}/signup`
+  SIGNUP: `${root}/signup`,
+  FORGOTPASS: `${root}/forgotpass/reset-password`,
+  OTP: `${root}/forgotpass/verify-otp`,
+  NEWPASS: `${root}/forgotpass/new-pass`,
 }

@@ -17,12 +17,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   friendList: string[] = [];
   usrID: string | null = null;
   activeFrien: string = "";
+  verify!: boolean;
   constructor(public webSocketService: WebsocketService, private jwtdeco:JwtService, private http:HttpClient, private router:Router) {
   }
 
   ngOnInit(): void {
     this.usrID = this.jwtdeco.getID();
-    console.log(this.usrID);
+    this.verify = this.jwtdeco.getVerify();
+    console.log(this.verify + " verification");
     this.http.get<string[]>(ENDPOINTS.GETFRIEND+this.usrID).subscribe(
       (data) => {
         this.friendList = data;
@@ -45,5 +47,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.activeFrien = userId;
     console.log(this.activeFrien);
    }
-   
+
 }
