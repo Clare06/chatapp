@@ -1,0 +1,104 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.popupactive {
+  display: flex!important;
+  z-index: 100 !important;
+}
+
+.popup {
+  background: rgb(0, 255, 0);
+  background: radial-gradient(
+    circle,
+    rgb(5, 177, 5) 40%, /* Inner color */
+    rgba(0, 128, 0, 1) 100%/* Middle color with transparency */
+    /* rgba(0, 0, 0, 0.2) 100% Outer color with transparency */
+  );
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 50vw;
+  height: 30vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+}
+.pop-cont{
+   /* Red background color */
+  color: white; /* White text color */
+  /* padding: 10vw;  */
+  padding: 10px;
+  text-align: center; /* Center-align the text */
+  font-size: 25px; /* Font size */
+
+}
+
+
+
+
+/* Styling for the button in the popup */
+.email-verification-popup button {
+  margin-top: 50px;
+  background-color: #011300;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Styling for the button on hover */
+.email-verification-popup button:hover {
+  background-color: #012a0c;
+  transform: scale(1.05); /* Add a slight scale effect on hover */
+}
+
+/* Styling for the button when disabled */
+.email-verification-popup button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Styling for the button text when disabled */
+.email-verification-popup button:disabled span {
+  opacity: 0.7;
+}
+
+/* Styling for the button's icon or text */
+.email-verification-popup button span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Styling for the button's loading spinner (if applicable) */
+.email-verification-popup .loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffffff;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite; /* Add a spinning animation */
+  margin-right: 8px; /* Adjust the spacing between the icon and text */
+}
+
+/* Keyframes for the loading spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
