@@ -32,9 +32,9 @@ public class UserService {
         return usr;
     }
     public List<String> getFriends (String userid) {
-        System.out.println(userid);
+//        System.out.println(userid);
         Optional<User> user= userRepo.findByUserId(userid);
-        System.out.println(user);
+//        System.out.println(user);
         User usr = user.get();
         List<String> friends = usr.getFrienduidList();
         return friends;
@@ -112,7 +112,7 @@ public class UserService {
         user.setPasswordhash(encodedPass);
         User newUser=new User();
         BeanUtils.copyProperties(user,newUser);
-        System.out.println(newUser.getUsername()+ "  eg"+ newUser.getUserid());
+//        System.out.println(newUser.getUsername()+ "  eg"+ newUser.getUserid());
         userRepo.save(newUser);
     }
     public String bcryptPassword(String password){
