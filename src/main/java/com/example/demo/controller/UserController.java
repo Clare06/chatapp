@@ -97,6 +97,7 @@ public class UserController {
     @PostMapping("signup")
     public ResponseEntity<String> signup(@RequestBody User user) throws MessagingException {
         Optional<User> usr = userService.getUser(user.getUserid());
+//        System.out.println(usr.get());
 
         if (usr.isPresent()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("UserID already available");

@@ -148,4 +148,15 @@ public class UserService {
         user.setTempToken(null);
         userRepo.save(user);
     }
+//    public EncryptedKey messageEncryptionKey() throws NoSuchAlgorithmException {
+//        KeyPair encryptedPair= generateKeyPair();
+//        EncryptedKey encryptedKey = new EncryptedKey(encryptedPair.);
+//
+//
+//    }
+//    public KeyPair generateKeyPair() throws NoSuchAlgorithmException {
+//        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+//        keyPairGenerator.initialize(2048, new SecureRandom());
+//        return keyPairGenerator.generateKeyPair();
+//    }
 }
