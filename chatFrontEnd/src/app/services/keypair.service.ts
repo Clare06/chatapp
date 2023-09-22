@@ -30,4 +30,25 @@ export class KeypairService {
     const privateKeyBase64 = btoa(String.fromCharCode(...privateKeyUint8Array));
     return privateKeyBase64;
   }
+  async importPrivateKeyFromBase64(privateKeyBase64: string): Promise<CryptoKey> {
+    try {
+      const privateKeyUint8Array = new Uint8Array(atob(privateKeyBase64).split('').map(char => char.charCodeAt(0)));
+      const privateKeyArrayBuffer = privateKeyUint8Array.buffer;
+      return await window.crypto.subtle.importKey(
+        'pkcs8',
+        privateKeyArrayBuffer,
+        {
+          name: 'RSA-OAEP',
+          hash: 'SHA-256',
+        },
+        true,
+        ['decrypt']
+      );
+    } catch (error) {
+      // Handle import errors
+      console.error('Error importing private key:', error);
+      throw error; // You can handle the error further up the call stack if needed
+    }
+  }
+
 }

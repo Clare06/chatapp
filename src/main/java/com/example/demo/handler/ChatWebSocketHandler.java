@@ -36,12 +36,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         URI uri = session.getUri();
-//        System.out.println(uri + "   Uri");
         String query = uri.getQuery();
-//        System.out.println(query+ "query");
         String decodedQuery = URLDecoder.decode(query, StandardCharsets.UTF_8.name());
-//        System.out.println(decodedQuery+ "deco");
-//        System.out.println(session);
         userSessions.put(decodedQuery,session);
     }
 
@@ -49,16 +45,18 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(message.getPayload());
+
         String recipientId = jsonNode.get("sendTo").asText();
-        // new added content
         String senderId = jsonNode.get("user").asText();
+
         Optional<User> sender = userService.getUser(senderId);
         Optional<User> recipient = userService.getUser(recipientId);
+
         String content = jsonNode.get("message").asText();
         String contentToSender = jsonNode.get("senderMessage").asText();
-        //
 
         WebSocketSession targetSession= userSessions.get(recipientId);
+
         if (targetSession != null){
             targetSession.sendMessage(message);
                 messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),true);
@@ -66,15 +64,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
                 messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),false);
         }
     }
-
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//        System.out.println(session + "end");
         URI uri = session.getUri();
         String query = uri.getQuery();
         String decodedQuery = URLDecoder.decode(query, StandardCharsets.UTF_8.name());
         userSessions.remove(decodedQuery);
-//        System.out.println(userSessions);
     }
 }
 

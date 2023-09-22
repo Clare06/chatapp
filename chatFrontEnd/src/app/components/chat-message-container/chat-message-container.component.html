@@ -7,7 +7,7 @@
     <li [ngClass]="{messageotherend: chatMessage.user!=jwtdeco.getID()}" class="message-li" *ngFor="let chatMessage of webSocketService.filterChatMessages()">
 
       <div class="message-text" [innerHTML]="chatMessage.message | newlineToBr" [ngClass]="{messagefrdiv: chatMessage.user!=jwtdeco.getID()}">
-        {{chatMessage.message | newlineToBr}}
+        {{chatMessage.message| newlineToBr}}
       </div>
 
     </li>
