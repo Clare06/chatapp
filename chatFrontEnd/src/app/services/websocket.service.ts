@@ -6,6 +6,8 @@ import { Status } from '../schemas/enum';
 import { SharedService } from './shared.service';
 import { KeypairService } from './keypair.service';
 import { db } from '../indexdb/db';
+import { HttpClient } from '@angular/common/http';
+import { ENDPOINTS } from '../endpoints/rest-endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +16,69 @@ export class WebsocketService {
   index: number = 0;
   pubKey: string = "";
   webSocket!: WebSocket;
+  userID!:string;
   chatMessages: ChatMessageDto[] = [];
   // activeChat: ChatMessageDto[] = [];
   activeFrien: string = "";
-  constructor(private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService) {
+  constructor(private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService) {
      this.shared.triggerFunction$.subscribe((event) => {
       this.activeFrien=event.value;
      })
+     this.userID=jwtdeco.getID();
+     this.pubKey=this.jwtdeco.getPubKey();
+
+      // Assuming you have imported the necessary dependencies
+
+// ...
+
+this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).subscribe(async (data) => {
+  const serverData = data;
+
+  // Use Promise.all to await all asynchronous operations
+  this.chatMessages = await Promise.all(serverData.map(async (item) => {
+    const user = db.getUserByName(this.jwtdeco.getUserName());
+
+    try {
+      const data = await user;
+      const dbKey = data?.hiddenInfo?.encryptedPrivateKey;
+
+      if (dbKey) {
+        // Import the private key from base64
+        const privateKey = await this.key.importPrivateKeyFromBase64(dbKey);
+
+        if (item.user === this.jwtdeco.getID()) {
+          const decryptedMessage = await this.decryptMessage(item.senderMessage, privateKey);
+          item.senderMessage = decryptedMessage;
+        } else {
+          const decryptedMessage = await this.decryptMessage(item.message, privateKey);
+          item.message = decryptedMessage;
+        }
+      } else {
+        console.error('Private key not found in data?.hiddenInfo');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+    return new ChatMessageDto(
+      item.user,
+      item.senderMessage,
+      item.message,
+      item.sendTo,
+      item.status
+    );
+  }));
+
+  console.log("websocke " + this.chatMessages[0]?.message);
+});
+
+     
+
+
   }
   ngOnInit(): void {
-    this.pubKey=this.jwtdeco.getPubKey();
+
+
 
   }
   public openWebSocket(){

@@ -14,4 +14,5 @@ export const ENDPOINTS = {
   OTP: `${root}/forgotpass/verify-otp`,
   NEWPASS: `${root}/forgotpass/new-pass`,
   GETKEY:`${root}/get-friend-key/`,
+  GETMESSAGE:`${root}/messages/`,
 }
