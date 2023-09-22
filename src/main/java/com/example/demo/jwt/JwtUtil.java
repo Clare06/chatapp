@@ -54,6 +54,7 @@ public class JwtUtil {
         claims.put("userid", usr.get().getUserid());
         claims.put("username",usr.get().getUsername());
         claims.put("verify", usr.get().isVerified());
+        claims.put("publickey", usr.get().getPublicKey());
         return createToken(claims);
     }
     public String generateSignUpToken(User user){

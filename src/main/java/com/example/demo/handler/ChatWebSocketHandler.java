@@ -55,14 +55,15 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         Optional<User> sender = userService.getUser(senderId);
         Optional<User> recipient = userService.getUser(recipientId);
         String content = jsonNode.get("message").asText();
+        String contentToSender = jsonNode.get("senderMessage").asText();
         //
 
         WebSocketSession targetSession= userSessions.get(recipientId);
         if (targetSession != null){
             targetSession.sendMessage(message);
-                messageService.addMessage(sender.get(),content,recipient.get(),true);
+                messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),true);
         }else {
-                messageService.addMessage(sender.get(),content,recipient.get(),false);
+                messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),false);
         }
     }
 

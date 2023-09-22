@@ -128,29 +128,5 @@ export class LoginComponent {
     return `-----BEGIN PUBLIC KEY-----\n${base64PublicKey}\n-----END PUBLIC KEY-----`;
   }
 
-  async importPublicKeyFromPEM(pemPublicKey: string): Promise<CryptoKey> {
-    const pemHeader = '-----BEGIN PUBLIC KEY-----';
-    const pemFooter = '-----END PUBLIC KEY-----';
-    const pemContents = pemPublicKey
-      .replace(pemHeader, '')
-      .replace(pemFooter, '')
-      .replace(/\s/g, '');
-
-    const binaryDer = atob(pemContents);
-    const publicKeyBuffer = new Uint8Array(binaryDer.length);
-    for (let i = 0; i < binaryDer.length; i++) {
-      publicKeyBuffer[i] = binaryDer.charCodeAt(i);
-    }
-
-    return await window.crypto.subtle.importKey(
-      'spki',
-      publicKeyBuffer,
-      {
-        name: 'RSA-OAEP',
-        hash: 'SHA-256',
-      },
-      true,
-      ['encrypt']
-    );
-  }
+  
 }

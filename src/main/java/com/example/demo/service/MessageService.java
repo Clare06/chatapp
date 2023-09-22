@@ -20,10 +20,10 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public void addMessage(User sender, String content, User recipient,Boolean direct) {
-        Message message= new Message(sender, content, recipient);
+    public void addMessage(User sender, String contentToSender, String contentToReciever, User recipient,Boolean direct) {
+        Message message= new Message(sender, contentToSender, contentToReciever , recipient);
         message.setTimestamp(new Date());
-        message.setContent(content);
+//        message.setContent(content);
         if (direct){
             message.setDirect(true);
         }

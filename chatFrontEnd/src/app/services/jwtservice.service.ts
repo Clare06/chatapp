@@ -8,6 +8,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class JwtService {
   userID!: string;
   userName!: string;
+  publickey!: string;
   verify: boolean=false;
   private jwtHelper: JwtHelperService = new JwtHelperService();
 
@@ -43,6 +44,19 @@ export class JwtService {
     }
 
     return  this.verify;
+
+  }
+  public getPubKey() : string {
+
+    const token = localStorage.getItem('token');
+
+    if(token){
+      this.publickey = this.jwtHelper.decodeToken(token).publickey;
+      return this.publickey;
+    }
+
+    return  "";
+
 
   }
 

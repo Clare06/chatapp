@@ -23,8 +23,11 @@ public class Message implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "content_to_sender",length = 4096)
+    private String contentToSender;
+
+    @Column(name = "content_to_reciever",length = 4096)
+    private String contentToReciever;
 
     @Column(name = "is_read", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isRead;
@@ -32,10 +35,11 @@ public class Message implements Serializable {
     @Column(name = "is_direct", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDirect;
 
-    public Message(User sender,String content, User receiver ) {
+    public Message(User sender,String contentToSender, String contentToReciever, User receiver ) {
         this.sender = sender;
         this.receiver = receiver;
-        this.content = content;
+        this.contentToSender=contentToSender;
+        this.contentToReciever=contentToReciever;
     }
 
     public Message() {
@@ -77,12 +81,20 @@ public class Message implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getContent() {
-        return content;
+    public String getContentToSender() {
+        return contentToSender;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContentToSender(String contentToSender) {
+        this.contentToSender = contentToSender;
+    }
+
+    public String getContentToReciever() {
+        return contentToReciever;
+    }
+
+    public void setContentToReciever(String contentToReciever) {
+        this.contentToReciever = contentToReciever;
     }
 
     public boolean isRead() {

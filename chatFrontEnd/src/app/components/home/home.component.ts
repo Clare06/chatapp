@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   usrID: string | null = null;
   activeFrien: string = "";
   verify!: boolean;
+  friendKeys: any;
   constructor(public webSocketService: WebsocketService, private jwtdeco:JwtService, private http:HttpClient, private router:Router) {
   }
 
@@ -30,7 +31,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.friendList = data;
       }
     )
-    console.log(this.friendList[0]);
+    
+    // console.log(this.friendKeys[0]+" key");
+    // console.log(this.friendList[0]);
     this.webSocketService.openWebSocket();
   }
 

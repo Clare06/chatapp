@@ -6,10 +6,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.WebSocketSession;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
@@ -148,15 +151,21 @@ public class UserService {
         user.setTempToken(null);
         userRepo.save(user);
     }
-//    public EncryptedKey messageEncryptionKey() throws NoSuchAlgorithmException {
-//        KeyPair encryptedPair= generateKeyPair();
-//        EncryptedKey encryptedKey = new EncryptedKey(encryptedPair.);
-//
-//
-//    }
-//    public KeyPair generateKeyPair() throws NoSuchAlgorithmException {
-//        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-//        keyPairGenerator.initialize(2048, new SecureRandom());
-//        return keyPairGenerator.generateKeyPair();
-//    }
+    public Map<String, String> friendsPublicKey(String userid){
+        Optional<User> user = userRepo.findByUserId(userid);
+        Map<String, String> friendKeys = new ConcurrentHashMap<>();
+        if(!user.isPresent()){
+            return friendKeys;
+        }
+        if(user.get().getFrienduidList() != null){
+            List<String> friends= user.get().getFrienduidList();
+            for (String friendID : friends){
+                Optional<User> friend = userRepo.findByUserId(friendID);
+                friendKeys.put(friendID, friend.get().getPublicKey());
+            }
+            return friendKeys;
+        }
+        return friendKeys ;
+    }
+
 }

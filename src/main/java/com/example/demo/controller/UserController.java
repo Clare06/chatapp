@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -110,6 +111,16 @@ public class UserController {
         emailService.sendVerificationEmail(user.getEmail(),token);
         return ResponseEntity.ok("Signed up");
     }
+    @GetMapping("get-friend-key/{userid}")
+    public ResponseEntity<Map<String, String>> getFriendPublicKeys(@PathVariable("userid") String userid) {
+        Map<String, String> friendPublicKeys = userService.friendsPublicKey(userid);
+
+        if (friendPublicKeys.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(friendPublicKeys, HttpStatus.OK);
+    }
     @GetMapping("/verify-user")
     public String verifyUser(@RequestParam(required = false) String token) {
         if (token != null && !token.isEmpty()) {
@@ -125,4 +136,6 @@ public class UserController {
             return "Token not provided in the URL.";
         }
     }
+
+
 }
