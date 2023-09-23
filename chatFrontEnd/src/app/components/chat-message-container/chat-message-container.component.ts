@@ -20,13 +20,11 @@ export class ChatMessageContainerComponent {
   publickey: string = "";
   friendKeys:any;
   message: any;
-  // chat: ChatMessageDto[] = [];
   constructor(public webSocketService: WebsocketService, public jwtdeco:JwtService,
      private http:HttpClient, private router:Router,
      private shared:SharedService) {
       this.shared.triggerFunction$.subscribe((event) => {
         this.activeFrien=event.value;
-        // this.chat=event.chat;
     });
 }
 ngOnInit(): void {
@@ -41,13 +39,10 @@ ngOnInit(): void {
 }
 async encryptMessage(message: string, recipientPublicKey: string): Promise<string> {
   try {
-    // Parse the recipient's PEM public key and convert it to CryptoKey
     const publicKey = await this.importPublicKeyFromPEM(recipientPublicKey);
 
-    // Convert the message to ArrayBuffer
     const messageBuffer = new TextEncoder().encode(message);
 
-    // Encrypt the message using the recipient's public key
     const encryptedMessage = await window.crypto.subtle.encrypt(
       {
         name: 'RSA-OAEP',
@@ -56,7 +51,6 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
       messageBuffer
     );
 
-    // Convert the encrypted message to Base64 for easier transmission
     const encryptedMessageBase64 = btoa(String.fromCharCode(...new Uint8Array(encryptedMessage)));
 
     return encryptedMessageBase64;
@@ -71,31 +65,27 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
     const message = sendForm.value.message;
 
   if (!message) {
-    return; // Exit if the message is empty
+    return;
   }
 
-  // Check if the recipient's public key is available
+
 
   const recipientPublicKey = this.friendKeys[this.activeFrien];
   if (!recipientPublicKey) {
-    // Handle the case where the recipient's public key is not available
+
     console.error(`Recipient's public key not found for user ${this.activeFrien}`);
     return;
   }
 
     try {
-    // Encrypt the message using the recipient's public key
     const encryptedSenderMessage = await this.encryptMessage(message, this.publickey);
     const encryptedMessage = await this.encryptMessage(message, recipientPublicKey);
 
-    // Create a ChatMessageDto with the encrypted message
     const chatMessageDto = new ChatMessageDto(this.usrID,encryptedSenderMessage ,encryptedMessage, this.activeFrien, true);
 
-    // Send the encrypted message
     this.webSocketService.sendMessage(chatMessageDto);
     sendForm.controls['message'].reset();
   } catch (error) {
-    // Handle encryption errors
     console.error('Error encrypting the message:', error);
   }
   }

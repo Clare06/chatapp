@@ -53,7 +53,7 @@ export class ForgotPasswordComponent {
 
     onSubmit() {
       if (this.forgotPassForm.invalid) {
-        return;  // Exit if the form is invalid
+        return;
       }
       const forgotPassReq = this.forgotPassForm.value;
       const forgEmail=new ForgotPassReq(forgotPassReq.email);
@@ -64,7 +64,6 @@ export class ForgotPasswordComponent {
         next: (res:any)=>{
 
             this.sendOtp=true;
-            // this.responseText=res;
             this.email=forgEmail.email;
             console.log(this.sendOtp);
             this.timer();
@@ -87,7 +86,7 @@ export class ForgotPasswordComponent {
     }
     onSubmitOtp() {
       if (this.otpForm.invalid) {
-        return;  // Exit if the form is invalid
+        return;
       }
       const otpInput= this.otpForm.value;
       const otp= new Otp(otpInput.otp,this.email)
@@ -97,7 +96,6 @@ export class ForgotPasswordComponent {
 
             this.setNewPass=true;
             this.otp=otp.otp;
-            // this.otpResponse=res;
 
         },
         error: (err: any)=>{
@@ -116,20 +114,20 @@ export class ForgotPasswordComponent {
       }
       onSubmitPass() {
         if (this.newPassForm.invalid) {
-          return;  // Exit if the form is invalid
+          return;
         }
         const newPassInput= this.newPassForm.value;
         const newPass= new NewPass(newPassInput.newPass,newPassInput.confPass,this.email,this.otp)
         this.http.post(ENDPOINTS.NEWPASS,newPass,{responseType: 'text'}).subscribe({
           next: (res:any)=>{
-            // this.responseText=res;
+
             this.router.navigate(['../login']).then(()=>
             {
               window.location.reload();
             });
           },
           error: (err: any)=>{
-            // this.responseText=err.error;
+
             this.navigateToForgotPassword();
           }
         })
@@ -147,20 +145,10 @@ export class ForgotPasswordComponent {
       }
 
       }
-      //  startTimer(delay: number): void {
-      //   setTimeout(() => {
-      //     this.router.navigate(['../forgotPassword']).then(()=>
-      //       {
-      //         window.location.reload();
-      //       });
 
-      //     console.log('Timer has elapsed!');
-      //   }, delay);
-      // }
       timer(): void{
 
         setInterval(() => {
-          // Decrement the remaining time
           if (this.time > 0) {
             this.time--;
           }

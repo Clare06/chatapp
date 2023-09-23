@@ -27,10 +27,6 @@ export class WebsocketService {
      this.userID=jwtdeco.getID();
      this.pubKey=this.jwtdeco.getPubKey();
 
-      // Assuming you have imported the necessary dependencies
-
-// ...
-
 this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).subscribe(async (data) => {
   const serverData = data;
 
@@ -69,10 +65,10 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
     );
   }));
 
-  console.log("websocke " + this.chatMessages[0]?.message);
+
 });
 
-     
+
 
 
   }
@@ -185,9 +181,9 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
 
       return decryptedMessage;
     } catch (error) {
-      // Handle decryption errors
+     
       console.error('Error decrypting the message:', error);
-      throw error; // You can handle the error further up the call stack if needed
+      throw error;
     }
   }
 

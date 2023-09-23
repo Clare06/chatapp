@@ -42,7 +42,6 @@ export class ChatListComponent implements OnInit, OnDestroy {
         this.friendList = data;
       }
     )
-    // console.log(this.friendList[0]);
   }
 
   ngOnDestroy(): void {

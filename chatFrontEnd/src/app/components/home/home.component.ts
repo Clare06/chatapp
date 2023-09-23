@@ -31,9 +31,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.friendList = data;
       }
     )
-    
-    // console.log(this.friendKeys[0]+" key");
-    // console.log(this.friendList[0]);
+
+
     this.webSocketService.openWebSocket();
   }
 
@@ -41,11 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.webSocketService.closeWebSocket();
   }
 
-  // sendMessage(sendForm: NgForm) {
-  //   const chatMessageDto = new ChatMessageDto(this.jwtdeco.getID(), sendForm.value.message, this.activeFrien);
-  //   this.webSocketService.sendMessage(chatMessageDto);
-  //   sendForm.controls['message'].reset();
-  // }
+  
    public textTo (userId : string): void{
     this.activeFrien = userId;
     console.log(this.activeFrien);

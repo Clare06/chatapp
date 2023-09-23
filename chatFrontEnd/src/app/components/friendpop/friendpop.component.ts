@@ -11,7 +11,7 @@ import { ChangeDetectorRef } from '@angular/core';
   selector: 'app-friendpop',
   templateUrl: './friendpop.component.html',
   styleUrls: ['./friendpop.component.css'],
-  
+
 })
 export class FriendpopComponent implements OnInit {
 
@@ -28,7 +28,7 @@ export class FriendpopComponent implements OnInit {
   sentReq$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor(private http:HttpClient, private jwt:JwtService) { }
-  
+
   ngOnInit(): void {
     this.usrID = this.jwt.getID();
     this.http.get<string[]>(ENDPOINTS.GETREQ+this.usrID).subscribe(
@@ -37,7 +37,7 @@ export class FriendpopComponent implements OnInit {
         this.reqsAvailable= this.friendReq.length > 0;
       }
     )
-    
+
     this.getSentReq().subscribe((data)=>{
       this.sentReq=data;
       this.sentReq$.next(data);
@@ -52,12 +52,12 @@ export class FriendpopComponent implements OnInit {
           this.reqsAvailable= this.friendReq.length > 0;
       }
     )
-  
+
 
   }
 
   rejectFriend(frd: string,index:number) {
-    // throw new Error('Method not implemented.');
+    
     const senderReciever= new SenderReciever(this.usrID, frd);
     this.http.put(ENDPOINTS.DECLINE,senderReciever, {responseType: 'text'}).subscribe(
       (data) => {
@@ -66,7 +66,7 @@ export class FriendpopComponent implements OnInit {
           this.reqsAvailable= this.friendReq.length > 0;
       }
     )
-    // this.ngOnInit();
+
 
     }
 
@@ -86,11 +86,11 @@ export class FriendpopComponent implements OnInit {
       this.http.post(ENDPOINTS.SENDREQ,senderReciever, {responseType: 'text'}).subscribe(
         (data) => {
             this.mess=data;
-            // const index=this.sentReq.indexOf(frd);
+
             this.sentReq.push(frd);
         }
       )
-    //  this.sentReq$= this.getSentReq();
+
     this.getSentReq().subscribe((data)=>{
       this.sentReq=data;
       this.sentReq$.next(data);
@@ -99,11 +99,11 @@ export class FriendpopComponent implements OnInit {
     getSentReq(): Observable<string[]>{
      return this.http.get<string[]>(ENDPOINTS.GETSENT+this.usrID)
     }
-    
-    
+
+
     isSent(usr:string): boolean{
 
       return !this.sentReq.includes(usr);
-      
+
     }
 }

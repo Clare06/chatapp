@@ -45,9 +45,9 @@ export class KeypairService {
         ['decrypt']
       );
     } catch (error) {
-      // Handle import errors
+      
       console.error('Error importing private key:', error);
-      throw error; // You can handle the error further up the call stack if needed
+      throw error;
     }
   }
 

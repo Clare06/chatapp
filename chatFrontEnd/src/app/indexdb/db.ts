@@ -12,7 +12,7 @@ export class AppDB extends Dexie {
   constructor() {
     super('ngdexieliveQuery');
     this.version(1).stores({
-      users: '++id,user,hiddenInfo.encryptedPrivateKey', // Include hiddenInfo.encryptedPrivateKey in the schema
+      users: '++id,user,hiddenInfo.encryptedPrivateKey',
     });
   }
 
@@ -20,11 +20,11 @@ export class AppDB extends Dexie {
     await this.users.put(user);
   }
 
-  // Retrieve a user by user name
+ 
   async getUserByName(userName: string): Promise<User | undefined> {
     return this.users.where('user').equals(userName).first();
   }
-  
+
 }
 
 export const db = new AppDB();
