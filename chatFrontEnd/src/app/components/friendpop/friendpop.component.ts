@@ -17,6 +17,8 @@ export class FriendpopComponent implements OnInit {
 
   @Input() isOpen = false;
   @Output() close = new EventEmitter<void>();
+  @Output() friendReqs: EventEmitter<any> = new EventEmitter();
+
   friendReq: string[] = [];
   usrID: string = "";
   mess:string="";
@@ -28,13 +30,18 @@ export class FriendpopComponent implements OnInit {
   sentReq$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
   constructor(private http:HttpClient, private jwt:JwtService) { }
+  sendFriendRequest() {
+    // You can emit data along with the event if needed
 
+  }
   ngOnInit(): void {
     this.usrID = this.jwt.getID();
     this.http.get<string[]>(ENDPOINTS.GETREQ+this.usrID).subscribe(
       (data) => {
         this.friendReq = data;
         this.reqsAvailable= this.friendReq.length > 0;
+        const eventData = data.length;
+        this.friendReqs.emit(eventData);
       }
     )
 
@@ -57,7 +64,7 @@ export class FriendpopComponent implements OnInit {
   }
 
   rejectFriend(frd: string,index:number) {
-    
+
     const senderReciever= new SenderReciever(this.usrID, frd);
     this.http.put(ENDPOINTS.DECLINE,senderReciever, {responseType: 'text'}).subscribe(
       (data) => {

@@ -20,7 +20,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   usrID: string | null = null;
   activeFrien: string = "";
   chat: ChatMessageDto[] = [];
-  x: number = 0;
+  x !: number ;
   isPopupOpen = false;
   searchQuery: string = '';
   username: string = '';
@@ -36,7 +36,6 @@ export class ChatListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.usrID = this.jwtdeco.getID();
     this.username = this.jwtdeco.getUserName();
-    console.log(this.usrID);
     this.http.get<string[]>(ENDPOINTS.GETFRIEND+this.usrID).subscribe(
       (data) => {
         this.friendList = data;
@@ -48,7 +47,9 @@ export class ChatListComponent implements OnInit, OnDestroy {
 
   }
 
-
+  onFriendRequest(eventData: any) {
+    this.x = eventData;
+  }
    public textTo (userId : string): void{
     this.activeFrien = userId;
     this.shared.triggerFunction(userId,this.chat);
