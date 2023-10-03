@@ -29,6 +29,8 @@ public class User implements Serializable {
     @Column(length = 4096)
     private String publicKey;
 
+
+
     public String getPublicKey() {
         return publicKey;
     }

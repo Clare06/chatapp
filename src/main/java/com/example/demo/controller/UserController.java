@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.EmailPri;
 import com.example.demo.entity.SenderReciever;
 import com.example.demo.entity.User;
 import com.example.demo.jwt.JwtUtil;
@@ -135,6 +136,10 @@ public class UserController {
 
             return "Token not provided in the URL.";
         }
+    }
+    @PostMapping("/send-email")
+    public void sendEmail(@RequestBody EmailPri emailPri) throws MessagingException {
+        emailService.sendEmail(emailPri);
     }
 
 

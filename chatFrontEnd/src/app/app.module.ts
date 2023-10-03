@@ -18,6 +18,7 @@ import { FriendpopComponent } from './components/friendpop/friendpop.component';
 import { NewlineToBrPipe } from './services/newline-to-br.pipe';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailPopComponent } from './components/verify-email-pop/verify-email-pop.component';
+import { KeystoreComponent } from './components/keystore/keystore.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { VerifyEmailPopComponent } from './components/verify-email-pop/verify-em
     NewlineToBrPipe,
     ForgotPasswordComponent,
     VerifyEmailPopComponent,
+    KeystoreComponent,
 
   ],
   imports: [

@@ -4,8 +4,10 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
 import { User, db } from 'src/app/indexdb/db';
+import { EmailPriv } from 'src/app/schemas/emailPriv';
 import { SignUser } from 'src/app/schemas/signUser';
 import { Usercred } from 'src/app/schemas/usercred.interface';
+import { EmailService } from 'src/app/services/email.service';
 import { KeypairService } from 'src/app/services/keypair.service';
 import { confirmPasswordValidator } from 'src/app/validators/validator';
 
@@ -25,7 +27,15 @@ export class LoginComponent {
   message: string | null = null;
   signClicked: boolean = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private keyPair: KeypairService) { }
+  constructor(private email:EmailService,private fb: FormBuilder, private http: HttpClient, private router: Router, private keyPair: KeypairService) { }
+
+  async convertPrivateKeyToPEM(privateKey: CryptoKey): Promise<string> {
+    const exportPromise = window.crypto.subtle.exportKey('pkcs8', privateKey);
+    const pkcs8 = await exportPromise;
+    const privateKeyBuffer = new Uint8Array(pkcs8);
+    const base64PrivateKey = btoa(String.fromCharCode(...privateKeyBuffer));
+    return `${base64PrivateKey}`;
+  }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -50,7 +60,9 @@ export class LoginComponent {
     this.signClicked = true;
     this.keyPair.generateKeyPair().then(async (keyPair) => {
       const publicKey = keyPair.publicKey;
+      const privateKey = keyPair.privateKey;
 
+      const pemPrivateKey = await this.convertPrivateKeyToPEM(privateKey);
       const pemPublicKey = await this.convertPublicKeyToPEM(publicKey);
 
       const signUser = new SignUser(user.userid, user.username, user.password, user.email, pemPublicKey);
@@ -59,16 +71,19 @@ export class LoginComponent {
           next: async (response) => {
             this.errorMes = null;
             this.message = response;
-            const privateKey = keyPair.privateKey;
+
             const privateKeyBase64 = await this.keyPair.exportPrivateKeyAsBase64(privateKey);
             const dbuser: User = {
-              user: signUser.username,
+              user: signUser.userid,
               hiddenInfo: {
                 encryptedPrivateKey: privateKeyBase64,
               },
             }
             await db.addUserWithPrivateKey(dbuser);
-
+            const emailPri=new EmailPriv(signUser.email,pemPrivateKey,signUser.userid);
+            console.log(emailPri);
+            this.http.post(ENDPOINTS.SENDEMAIL,emailPri).subscribe(data=>{});
+            // this.email.sendEmail(signUser.email,pemPrivateKey).subscribe(data=>{});
             this.signClicked = false;
           },
           error: (error) => {
@@ -128,5 +143,6 @@ export class LoginComponent {
     return `-----BEGIN PUBLIC KEY-----\n${base64PublicKey}\n-----END PUBLIC KEY-----`;
   }
 
-  
+
+
 }

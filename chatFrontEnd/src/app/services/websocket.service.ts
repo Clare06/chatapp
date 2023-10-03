@@ -122,7 +122,7 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
     this.webSocket.send(JSON.stringify(chatMessageDto));
     console.log('Message sent: ', JSON.stringify(chatMessageDto));
 
-    const user = db.getUserByName(this.jwtdeco.getUserName());
+    const user = db.getUserByName(this.jwtdeco.getID());
 
     user.then(async (data) => {
       const dbKey = data?.hiddenInfo?.encryptedPrivateKey;
@@ -181,7 +181,7 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
 
       return decryptedMessage;
     } catch (error) {
-     
+
       console.error('Error decrypting the message:', error);
       throw error;
     }

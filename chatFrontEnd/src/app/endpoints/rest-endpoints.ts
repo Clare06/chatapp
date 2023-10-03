@@ -15,4 +15,5 @@ export const ENDPOINTS = {
   NEWPASS: `${root}/forgotpass/new-pass`,
   GETKEY:`${root}/get-friend-key/`,
   GETMESSAGE:`${root}/messages/`,
+  SENDEMAIL:`${root}/send-email`,
 }
