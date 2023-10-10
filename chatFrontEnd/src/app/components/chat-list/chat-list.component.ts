@@ -9,6 +9,7 @@ import { JwtService } from 'src/app/services/jwtservice.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { SharedchatService } from 'src/app/services/sharedchat.service';
 import { WebsocketService } from 'src/app/services/websocket.service';
+import { ChatMessageContainerComponent } from '../chat-message-container/chat-message-container.component';
 
 @Component({
   selector: 'app-chat-list',

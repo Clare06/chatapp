@@ -19,6 +19,7 @@ import { NewlineToBrPipe } from './services/newline-to-br.pipe';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { VerifyEmailPopComponent } from './components/verify-email-pop/verify-email-pop.component';
 import { KeystoreComponent } from './components/keystore/keystore.component';
+import { NokeyComponent } from './components/nokey/nokey.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { KeystoreComponent } from './components/keystore/keystore.component';
     ForgotPasswordComponent,
     VerifyEmailPopComponent,
     KeystoreComponent,
+    NokeyComponent,
 
   ],
   imports: [

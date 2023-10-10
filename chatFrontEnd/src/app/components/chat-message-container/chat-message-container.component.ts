@@ -25,6 +25,7 @@ export class ChatMessageContainerComponent {
      private shared:SharedService) {
       this.shared.triggerFunction$.subscribe((event) => {
         this.activeFrien=event.value;
+        this.ngOnInit();
     });
 }
 ngOnInit(): void {
@@ -37,6 +38,7 @@ ngOnInit(): void {
   );
 
 }
+
 async encryptMessage(message: string, recipientPublicKey: string): Promise<string> {
   try {
     const publicKey = await this.importPublicKeyFromPEM(recipientPublicKey);

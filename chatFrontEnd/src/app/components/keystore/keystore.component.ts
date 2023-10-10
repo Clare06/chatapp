@@ -9,6 +9,8 @@ import { KeypairService } from 'src/app/services/keypair.service';
   styleUrls: ['./keystore.component.css']
 })
 export class KeystoreComponent {
+  set: boolean = false;
+  errr: string = "";
   constructor(private route: ActivatedRoute, private keyPair: KeypairService){
 
   }
@@ -29,7 +31,13 @@ export class KeystoreComponent {
                 encryptedPrivateKey: privateKeyBase64,
               },
             }
-            await db.addUserWithPrivateKey(dbuser);
+            await db.addUserWithPrivateKey(dbuser).then(() => {
+              this.set=true;
+            }).catch((err) => {
+              this.errr=err;
+            });
+
+
     });
 
   }

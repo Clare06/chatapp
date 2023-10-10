@@ -8,6 +8,7 @@ import { KeypairService } from './keypair.service';
 import { db } from '../indexdb/db';
 import { HttpClient } from '@angular/common/http';
 import { ENDPOINTS } from '../endpoints/rest-endpoints';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class WebsocketService {
   chatMessages: ChatMessageDto[] = [];
   // activeChat: ChatMessageDto[] = [];
   activeFrien: string = "";
-  constructor(private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService) {
+  constructor(private router:Router ,private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService) {
      this.shared.triggerFunction$.subscribe((event) => {
       this.activeFrien=event.value;
      })
@@ -82,8 +83,12 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
     const userId = this.jwtgetid.getID(); // Replace with the actual user ID
     this.webSocket = new WebSocket(`ws://localhost:8080/chat?${encodeURIComponent(userId)}`);
 
-    this.webSocket.onopen = (event) => {
+    this.webSocket.onopen = async (event) => {
       console.log('Open: ', event);
+      const user = db.getUserByName(this.jwtdeco.getUserName());
+      if( ! await user){
+      this.router.navigate(['../nokey']).then(() => {});
+      }
     };
 
     this.webSocket.onmessage = (event) => {
@@ -140,6 +145,7 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
         }
       } else {
         console.error('Private key not found in data?.hiddenInfo');
+
       }
     });
   }

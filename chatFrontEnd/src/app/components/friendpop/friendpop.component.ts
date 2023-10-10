@@ -57,6 +57,7 @@ export class FriendpopComponent implements OnInit {
           this.mess=data;
           this.friendReq.splice(index,1);
           this.reqsAvailable= this.friendReq.length > 0;
+          this.friendReqs.emit(this.friendReq.length);
       }
     )
 
@@ -71,6 +72,7 @@ export class FriendpopComponent implements OnInit {
           this.mess=data;
           this.friendReq.splice(index,1);
           this.reqsAvailable= this.friendReq.length > 0;
+          this.friendReqs.emit(this.friendReq.length);
       }
     )
 
