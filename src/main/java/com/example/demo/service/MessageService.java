@@ -41,7 +41,7 @@ public class MessageService {
         List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
 
         for (Message msg : messages) {
-            ChatMessageDto chat = new ChatMessageDto(msg.getSender().getUserid(), msg.getContentToSender(), msg.getContentToReciever(), msg.getReceiver().getUserid(), msg.isRead());
+            ChatMessageDto chat = new ChatMessageDto(msg.getSender().getUserid(), msg.getContentToSender(), msg.getContentToReciever(), msg.getReceiver().getUserid(), msg.isRead(),msg.getTimestamp());
             chatMessageDtos.add(chat);
         }
 

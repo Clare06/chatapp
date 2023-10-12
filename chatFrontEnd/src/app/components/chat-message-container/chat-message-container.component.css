@@ -87,11 +87,10 @@
 
 .message-li {
   /* right: 0; */
+  position: relative;
   text-align: right;
   margin-right: 25px;
   margin-bottom: 15px;
-
-
 
 }
 
@@ -100,13 +99,14 @@
   margin-left: 10px;
 }
 .message-text{
-  padding: 8px;
+  padding: 5px;
   background-color: rgba(70, 203, 252, 0.487);
   font-size: large;
   color: #041d39;
   border-radius: 15px 0 15px 15px;
   display: inline-block;
   max-width: 80%;
+  position: relative;
 }
 .messagefrdiv{
   border-radius: 0 15px 15px 15px !important;
@@ -131,3 +131,30 @@
     /* font-size: xx-large; */
 
 }
+.time {
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 1px;
+  /* text-align: right; */
+  padding: 0;
+  /* margin-left: 0!important; */
+  /* right: 0; */
+  font-size:x-small;
+}
+.dateClass{
+  position: relative;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+
+}
+.innerClass{
+  margin: 20px;
+  width: 250px;
+  text-align: center;
+  background-color: #fcfdfe;
+  border-radius: 5px;
+  padding: 5px;
+  color: #000;
+}
+

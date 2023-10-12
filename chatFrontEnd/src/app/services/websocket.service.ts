@@ -30,11 +30,11 @@ export class WebsocketService {
 
 this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).subscribe(async (data) => {
   const serverData = data;
-
+  // console.log(serverData);
   // Use Promise.all to await all asynchronous operations
   this.chatMessages = await Promise.all(serverData.map(async (item) => {
     const user = db.getUserByName(this.jwtdeco.getUserName());
-
+    // console.log(serverData);
     try {
       const data = await user;
       const dbKey = data?.hiddenInfo?.encryptedPrivateKey;
@@ -62,10 +62,11 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
       item.senderMessage,
       item.message,
       item.sendTo,
-      item.status
+      item.status,
+      item.timestamp
     );
   }));
-
+  // console.log(this.chatMessages[0]);
 
 });
 

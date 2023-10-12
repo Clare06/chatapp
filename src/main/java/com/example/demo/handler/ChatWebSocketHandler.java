@@ -58,6 +58,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         WebSocketSession targetSession= userSessions.get(recipientId);
 
         if (targetSession != null){
+
             targetSession.sendMessage(message);
                 messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),true);
         }else {

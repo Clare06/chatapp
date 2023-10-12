@@ -4,14 +4,21 @@
 
 <div *ngIf="activeFrien!=''" class="message-content">
   <ul class="message-ul">
-    <li [ngClass]="{messageotherend: chatMessage.user!=jwtdeco.getID()}" class="message-li" *ngFor="let chatMessage of webSocketService.filterChatMessages()">
-
-      <div *ngIf="chatMessage.user != jwtdeco.getID()" class="message-text" [innerHTML]="chatMessage.message | newlineToBr" [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
-        {{chatMessage.message | newlineToBr}}
+    <li [ngClass]="{messageotherend: chatMessage.user!=jwtdeco.getID()}" class="message-li" *ngFor="let chatMessage of webSocketService.filterChatMessages();let i = index;">
+      <div *ngIf="shouldShowDate(chatMessage,i)" class="dateClass">
+          <div class="innerClass">
+            {{chatMessage.timestamp | date:'EEEE, MMMM d, y'}}
+          </div>
+      </div>
+      <div *ngIf="chatMessage.user != jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
+       <div [innerHTML]="chatMessage.message | newlineToBr">{{chatMessage.message | newlineToBr}}</div>
+       <p class="time lt">{{ chatMessage.timestamp | date:'h:mm a' }}
       </div>
 
-      <div *ngIf="chatMessage.user == jwtdeco.getID()" class="message-text" [innerHTML]="chatMessage.senderMessage | newlineToBr" [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
-        {{chatMessage.senderMessage | newlineToBr}}
+      <div *ngIf="chatMessage.user == jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
+       <div [innerHTML]="chatMessage.senderMessage | newlineToBr"> {{chatMessage.senderMessage | newlineToBr}}</div>
+       <p class="time">{{ chatMessage.timestamp | date:'h:mm a' }}
+      </p>
       </div>
 
     </li>

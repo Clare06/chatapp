@@ -15,6 +15,7 @@ import { WebsocketService } from 'src/app/services/websocket.service';
   styleUrls: ['./chat-message-container.component.css']
 })
 export class ChatMessageContainerComponent {
+[x: string]: any;
   activeFrien: string = "";
   usrID: string  = "";
   publickey: string = "";
@@ -37,6 +38,22 @@ ngOnInit(): void {
     }
   );
 
+}
+
+shouldShowDate(currentMessage:ChatMessageDto, currentIndex:number): boolean {
+  if (currentIndex === 0) {
+    return true;
+  }
+  const currentMessageDate = this.getDatePart(currentMessage.timestamp);
+  const previousMessage = this.webSocketService.filterChatMessages()[currentIndex - 1];
+  const previousMessageDate = this.getDatePart(previousMessage.timestamp);
+
+  
+  return currentMessageDate !== previousMessageDate;
+  // return currentMessage.timestamp !== previousMessage.timestamp;
+}
+getDatePart(timestamp: string): string {
+  return new Date(timestamp).toISOString().split('T')[0];
 }
 
 async encryptMessage(message: string, recipientPublicKey: string): Promise<string> {
@@ -83,7 +100,7 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
     const encryptedSenderMessage = await this.encryptMessage(message, this.publickey);
     const encryptedMessage = await this.encryptMessage(message, recipientPublicKey);
 
-    const chatMessageDto = new ChatMessageDto(this.usrID,encryptedSenderMessage ,encryptedMessage, this.activeFrien, true);
+    const chatMessageDto = new ChatMessageDto(this.usrID,encryptedSenderMessage ,encryptedMessage, this.activeFrien, true,"");
 
     this.webSocketService.sendMessage(chatMessageDto);
     sendForm.controls['message'].reset();
