@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -48,12 +49,20 @@ shouldShowDate(currentMessage:ChatMessageDto, currentIndex:number): boolean {
   const previousMessage = this.webSocketService.filterChatMessages()[currentIndex - 1];
   const previousMessageDate = this.getDatePart(previousMessage.timestamp);
 
-  
+
   return currentMessageDate !== previousMessageDate;
   // return currentMessage.timestamp !== previousMessage.timestamp;
 }
 getDatePart(timestamp: string): string {
   return new Date(timestamp).toISOString().split('T')[0];
+}
+
+isToday(timestamp: string): boolean {
+  const today = new Date();
+  const datePart = this.getDatePart(timestamp);
+  const todayDatePart = this.getDatePart(today.toISOString());
+
+  return datePart === todayDatePart;
 }
 
 async encryptMessage(message: string, recipientPublicKey: string): Promise<string> {
@@ -99,8 +108,9 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
     try {
     const encryptedSenderMessage = await this.encryptMessage(message, this.publickey);
     const encryptedMessage = await this.encryptMessage(message, recipientPublicKey);
+    const newDate = new Date();
 
-    const chatMessageDto = new ChatMessageDto(this.usrID,encryptedSenderMessage ,encryptedMessage, this.activeFrien, true,"");
+    const chatMessageDto = new ChatMessageDto(this.usrID,encryptedSenderMessage ,encryptedMessage, this.activeFrien, true,this.formatDate(newDate));
 
     this.webSocketService.sendMessage(chatMessageDto);
     sendForm.controls['message'].reset();
@@ -109,6 +119,11 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
   }
   }
 
+
+  formatDate(date: Date): string {
+    const datePipe = new DatePipe('en-US');
+    return datePipe.transform(date, 'yyyy-MM-dd HH:mm:ss.SSS')!;
+  }
 
   async importPublicKeyFromPEM(pemPublicKey: string): Promise<CryptoKey> {
     const pemHeader = '-----BEGIN PUBLIC KEY-----';

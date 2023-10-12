@@ -7,7 +7,12 @@
     <li [ngClass]="{messageotherend: chatMessage.user!=jwtdeco.getID()}" class="message-li" *ngFor="let chatMessage of webSocketService.filterChatMessages();let i = index;">
       <div *ngIf="shouldShowDate(chatMessage,i)" class="dateClass">
           <div class="innerClass">
+            <p class="ndate" *ngIf="!isToday(chatMessage.timestamp)">
             {{chatMessage.timestamp | date:'EEEE, MMMM d, y'}}
+            </p>
+            <p class="today" *ngIf="isToday(chatMessage.timestamp)">
+            Today
+            </p>
           </div>
       </div>
       <div *ngIf="chatMessage.user != jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">

@@ -107,7 +107,7 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
           const decryptedMessage = await this.decryptMessage(chatMessageDto.message, privateKey);
           chatMessageDto.message = decryptedMessage;
           this.chatMessages.push(chatMessageDto);
-          console.log('Private key imported:', privateKey);
+          
           console.log('Message: ', chatMessageDto);
         } catch (error) {
           console.error('Error importing private key:', error);
