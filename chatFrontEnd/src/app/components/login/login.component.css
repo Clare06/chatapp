@@ -153,3 +153,27 @@
   cursor: not-allowed; /* Change cursor for disabled button */
   /* Add any other styles you want for disabled button */
 }
+
+/* Responsiveness added for Modern UI Requirements */
+@media (max-width: 768px) {
+  .log-container {
+    flex-direction: column;
+  }
+  .theme, .content {
+    width: 100vw;
+  }
+  .theme {
+    height: 40vh;
+  }
+  .content {
+    height: 60vh;
+  }
+  .bubble {
+    width: 50vw;
+    height: 50vw;
+    font-size: large;
+  }
+  .log-input input, .formbutton {
+    width: 80vw;
+  }
+}

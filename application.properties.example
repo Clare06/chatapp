@@ -16,3 +16,6 @@ spring.mail.password=YOUR_GMAIL_APP_PASSWORD
 # Additional properties
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Optional JWT Secret Key
+# jwt.secret=YOUR_JWT_SECRET_KEY_HERE_MIN_256_BITS

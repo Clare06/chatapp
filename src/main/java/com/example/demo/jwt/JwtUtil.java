@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,12 +24,20 @@ public class JwtUtil {
     @Autowired
     public JwtUtil(UserService userService){this.userService=userService;}
 
-    private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    @Value("${jwt.secret:}")
+    private String secretString;
 
-    //    public String extractUsername(String token) {
-//        return extractClaim(token, Claims::getSubject);
-//    }
-//
+    private Key secretKey;
+
+    @PostConstruct
+    public void init() {
+        if (secretString == null || secretString.isEmpty()) {
+            this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        } else {
+            this.secretKey = Keys.hmacShaKeyFor(secretString.getBytes());
+        }
+    }
+
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
@@ -39,7 +48,7 @@ public class JwtUtil {
     }
 
     public Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -68,7 +77,7 @@ public class JwtUtil {
     private String createToken(Map<String, Object> claims) {
         return Jwts.builder().setClaims(claims).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // token will expire after 10 hours
-                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
+                .signWith(secretKey, SignatureAlgorithm.HS256).compact();
     }
 
 }
