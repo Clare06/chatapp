@@ -133,3 +133,17 @@
     transform: translateY(-10px);
   }
 }
+
+@media (max-width: 768px) {
+  .profile {
+    padding-left: 20px;
+    font-size: large;
+  }
+  .search {
+    width: 95%;
+    margin-left: 2.5%;
+  }
+  .list div {
+    font-size: medium;
+  }
+}

@@ -165,3 +165,20 @@ margin: 0;
 }
 
 
+
+@media (max-width: 768px) {
+  .message-header {
+    padding-right: 20px;
+    font-size: large;
+  }
+  .send-message {
+    width: 70%;
+  }
+  .send-button {
+    width: 20%;
+  }
+  .message-text {
+    max-width: 90%;
+    font-size: medium;
+  }
+}
