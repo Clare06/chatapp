@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.DataOutputStream;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ChatMessageDto {
@@ -24,9 +24,9 @@ public class ChatMessageDto {
     private boolean status;
 
     @JsonProperty("timestamp")
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
-    public ChatMessageDto(String user, String senderMessage, String message, String sendTo, boolean status, Date timestamp) {
+    public ChatMessageDto(String user, String senderMessage, String message, String sendTo, boolean status, LocalDateTime timestamp) {
         this.user = user;
         this.senderMessage = senderMessage;
         this.message = message;

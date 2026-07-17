@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: nish
+      changes:
+        - tagDatabase:
+            tag: initial-schema-managed-by-hibernate

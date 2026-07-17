@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +25,9 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public void addMessage(User sender, String contentToSender, String contentToReciever, User recipient,Boolean direct) {
-        Message message= new Message(sender, contentToSender, contentToReciever , recipient);
-        message.setTimestamp(new Date());
+    public void addMessage(User sender, String contentToSender, String contentToReceiver, User recipient,Boolean direct) {
+        Message message= new Message(sender, contentToSender, contentToReceiver , recipient);
+        message.setTimestamp(LocalDateTime.now());
 //        message.setContent(content);
         if (direct){
             message.setDirect(true);
@@ -41,7 +41,7 @@ public class MessageService {
         List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
 
         for (Message msg : messages) {
-            ChatMessageDto chat = new ChatMessageDto(msg.getSender().getUserid(), msg.getContentToSender(), msg.getContentToReciever(), msg.getReceiver().getUserid(), msg.isRead(),msg.getTimestamp());
+            ChatMessageDto chat = new ChatMessageDto(msg.getSender().getUserid(), msg.getContentToSender(), msg.getContentToReceiver(), msg.getReceiver().getUserid(), msg.isRead(),msg.getTimestamp());
             chatMessageDtos.add(chat);
         }
 

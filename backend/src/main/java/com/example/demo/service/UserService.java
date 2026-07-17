@@ -35,57 +35,60 @@ public class UserService {
         return usr;
     }
     public List<String> getFriends (String userid) {
-//        System.out.println(userid);
         Optional<User> user= userRepo.findByUserId(userid);
-//        System.out.println(user);
         User usr = user.get();
-        List<String> friends = usr.getFrienduidList();
+        List<String> friends = usr.getFriends().stream().map(User::getUserid).collect(Collectors.toList());
         return friends;
     }
     public void acceptFriend(String userid, String friendid){
         Optional<User> user = userRepo.findByUserId(userid);
         User usr= user.get();
-        usr.addFriend(friendid);
-
         Optional<User> friend = userRepo.findByUserId(friendid);
         User frd= friend.get();
-        frd.addFriend(userid);
+
+        usr.addFriend(frd);
+        frd.addFriend(usr);
+        
         userRepo.save(usr);
         userRepo.save(frd);
     }
     public void addFriendReq(String userid , String frienid){
         Optional<User> user = userRepo.findByUserId(frienid);
         User usr = user.get();
-        usr.addFriendReq(userid);
+        User requester = userRepo.findByUserId(userid).get();
+        usr.addFriendReq(requester);
         userRepo.save(usr);
     }
     public void removeFriend(String userid, String friendid){
         Optional<User> usr = userRepo.findByUserId(userid);
         User user = usr.get();
-        user.removeFriend(friendid);
-        userRepo.save(user);
-
         Optional<User> friend = userRepo.findByUserId(friendid);
         User frd= friend.get();
-        frd.removeFriend(userid);
+
+        user.removeFriend(frd);
+        frd.removeFriend(user);
+        
+        userRepo.save(user);
         userRepo.save(frd);
     }
     public void decReq (String userid , String friendid){
         Optional<User> user = userRepo.findByUserId(userid);
         User usr = user.get();
-        usr.remFrdReq(friendid);
+        User requester = userRepo.findByUserId(friendid).get();
+        usr.remFrdReq(requester);
         userRepo.save(usr);
     }
     public List<String> getFReq(String userid) {
         Optional<User> user = userRepo.findByUserId(userid);
-        List<String> req= user.get().getFriendReq();
-    return req;
+        List<String> req = user.get().getFriendRequests().stream().map(User::getUserid).collect(Collectors.toList());
+        return req;
     }
 
     public List<String> searchUsers(String userid, String searchQuery) {
         List<String> users=userRepo.searchUsersByUserIdLike(searchQuery);
-        List<String> friends=userRepo.findByUserId(userid).get().getFrienduidList();
-        List<String> frdreq=userRepo.findByUserId(userid).get().getFriendReq();
+        User currentUser = userRepo.findByUserId(userid).get();
+        List<String> friends = currentUser.getFriends().stream().map(User::getUserid).collect(Collectors.toList());
+        List<String> frdreq = currentUser.getFriendRequests().stream().map(User::getUserid).collect(Collectors.toList());
 
         List<String> otherUsers = users.stream()
                 .filter(user -> !friends.contains(user) && !user.equals(userid) && !frdreq.contains(user))
@@ -96,18 +99,21 @@ public class UserService {
     public void addSentReq(String userid, String friendid){
         Optional<User> user = userRepo.findByUserId(userid);
         User usr = user.get();
-        usr.addSentReq(friendid);
+        User target = userRepo.findByUserId(friendid).get();
+        usr.addSentReq(target);
         userRepo.save(usr);
     }
 
     public void remSentReq(String userid, String friendid){
         Optional<User> user = userRepo.findByUserId(userid);
         User usr = user.get();
-        usr.removeSentReq(friendid);
+        User target = userRepo.findByUserId(friendid).get();
+        usr.removeSentReq(target);
         userRepo.save(usr);
     }
     public  List<String> getSentReqList(String userid) {
-        return userRepo.findByUserId(userid).get().getSentReq();
+        User usr = userRepo.findByUserId(userid).get();
+        return usr.getSentRequests().stream().map(User::getUserid).collect(Collectors.toList());
     }
 
     public void saveUser(User user){
@@ -115,7 +121,6 @@ public class UserService {
         user.setPasswordhash(encodedPass);
         User newUser=new User();
         BeanUtils.copyProperties(user,newUser);
-//        System.out.println(newUser.getUsername()+ "  eg"+ newUser.getUserid());
         userRepo.save(newUser);
     }
     public String bcryptPassword(String password){
@@ -141,9 +146,7 @@ public class UserService {
         userRepo.save(user);
     }
     public Optional<User> userWithToken(String token){
-
         Optional<User> user = userRepo.findByToken(token);
-
         return user;
     }
     public void updateVerification(User user){
@@ -157,11 +160,10 @@ public class UserService {
         if(!user.isPresent()){
             return friendKeys;
         }
-        if(user.get().getFrienduidList() != null){
-            List<String> friends= user.get().getFrienduidList();
-            for (String friendID : friends){
-                Optional<User> friend = userRepo.findByUserId(friendID);
-                friendKeys.put(friendID, friend.get().getPublicKey());
+        if(user.get().getFriends() != null){
+            List<User> friends = user.get().getFriends();
+            for (User friend : friends){
+                friendKeys.put(friend.getUserid(), friend.getPublicKey());
             }
             return friendKeys;
         }

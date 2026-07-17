@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message")
@@ -20,14 +20,13 @@ public class Message implements Serializable {
     private User receiver;
 
     @Column(name = "timestamp")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @Column(name = "content_to_sender",length = 4096)
     private String contentToSender;
 
-    @Column(name = "content_to_reciever",length = 4096)
-    private String contentToReciever;
+    @Column(name = "content_to_receiver",length = 4096)
+    private String contentToReceiver;
 
     @Column(name = "is_read", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isRead;
@@ -35,11 +34,11 @@ public class Message implements Serializable {
     @Column(name = "is_direct", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDirect;
 
-    public Message(User sender,String contentToSender, String contentToReciever, User receiver ) {
+    public Message(User sender,String contentToSender, String contentToReceiver, User receiver ) {
         this.sender = sender;
         this.receiver = receiver;
         this.contentToSender=contentToSender;
-        this.contentToReciever=contentToReciever;
+        this.contentToReceiver=contentToReceiver;
     }
 
     public Message() {
@@ -73,11 +72,11 @@ public class Message implements Serializable {
         this.receiver = receiver;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -89,12 +88,12 @@ public class Message implements Serializable {
         this.contentToSender = contentToSender;
     }
 
-    public String getContentToReciever() {
-        return contentToReciever;
+    public String getContentToReceiver() {
+        return contentToReceiver;
     }
 
-    public void setContentToReciever(String contentToReciever) {
-        this.contentToReciever = contentToReciever;
+    public void setContentToReceiver(String contentToReceiver) {
+        this.contentToReceiver = contentToReceiver;
     }
 
     public boolean isRead() {

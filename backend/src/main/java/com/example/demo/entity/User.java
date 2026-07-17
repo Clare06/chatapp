@@ -14,13 +14,16 @@ public class User implements Serializable {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer uid;
 
+    @Column(unique = true)
     private String username;
 
+    @Column(unique = true)
     private String userid;
 
     private String role;
     private String passwordhash;
 
+    @Column(unique = true)
     private String email;
 
     private String tempToken;
@@ -63,59 +66,67 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    @ElementCollection
-    private List<String> frienduidList;
-    @ElementCollection
-    private List<String> friendReq;
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_friends",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private List<User> friends = new ArrayList<>();
 
-    @ElementCollection
-    private List<String> sentReq;
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_friend_requests",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "requester_id")
+    )
+    private List<User> friendRequests = new ArrayList<>();
 
-    public List<String> getSentReq() {
-        return sentReq;
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_sent_requests",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "target_id")
+    )
+    private List<User> sentRequests = new ArrayList<>();
+
+    public List<User> getSentRequests() {
+        return sentRequests;
     }
-    public void addSentReq(String friendUid) {
-        if (sentReq == null) {
-            sentReq = new ArrayList<>();
-        }
-        if (!sentReq.contains(friendUid)) {
-            sentReq.add(friendUid);
-        }
-    }
-    public void removeSentReq(String friendUid) {
-        sentReq.remove(friendUid);
-    }
-    public List<String> getFriendReq() {
-        return friendReq;
-    }
-    public void addFriendReq(String friendUid) {
-        if (friendReq == null) {
-            friendReq = new ArrayList<>();
-        }
-        if (!friendReq.contains(friendUid)) {
-            friendReq.add(friendUid);
+    public void addSentReq(User targetUser) {
+        if (!sentRequests.contains(targetUser)) {
+            sentRequests.add(targetUser);
         }
     }
-    public List<String> getFrienduidList() {
-        return frienduidList;
+    public void removeSentReq(User targetUser) {
+        sentRequests.remove(targetUser);
     }
 
-//    public void setFrienduidList(List<String> frienduidList) {
-//        this.frienduidList = frienduidList;
-//    }
-    public void addFriend(String friendUid) {
-        if (frienduidList == null) {
-            frienduidList = new ArrayList<>();
-        }
-        if(!frienduidList.contains(friendUid)){
-            frienduidList.add(friendUid);
+    public List<User> getFriendRequests() {
+        return friendRequests;
+    }
+    public void addFriendReq(User requester) {
+        if (!friendRequests.contains(requester)) {
+            friendRequests.add(requester);
         }
     }
-    public void removeFriend(String friendUid) {
-        frienduidList.remove(friendUid);
+    public void remFrdReq(User requester) {
+        friendRequests.remove(requester);
     }
-    public void remFrdReq(String friendUid){
-        friendReq.remove(friendUid);
+
+    public List<User> getFriends() {
+        return friends;
+    }
+    public void addFriend(User friend) {
+        if(!friends.contains(friend)){
+            friends.add(friend);
+        }
+    }
+    public void removeFriend(User friend) {
+        friends.remove(friend);
     }
     public Integer getUid() {
         return uid;
