@@ -1,5 +1,6 @@
-const root="http://localhost:8080";
+import { environment } from '../../environments/environment';
 
+const root = environment.apiUrl;
 export const ENDPOINTS = {
   LOGIN: `${root}/authenticate`,
   GETFRIEND: `${root}/friend-ids/`,

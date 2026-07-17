@@ -1,62 +1,25 @@
 # ChatApp
 
-Nish's Chat App - A modern real-time chat application.
+Nish's chat app.
 
-## Technologies Used
+## Project Structure
 
-*   **Backend:** Spring Boot 3.3.4, Spring Security, Spring Websockets, Spring Data JPA
-*   **Frontend:** Angular 22, Bootstrap, Angular Material
-*   **Database:** MySQL
+This project follows an industry-standard monolithic repository structure containing both the frontend and backend applications.
 
-## Getting Started
+- `/frontend` - Angular frontend application.
+- `/backend`  - Spring Boot backend application.
 
-### Prerequisites
+## Setup
 
-*   Node.js (v22+)
-*   npm (v10+)
-*   Java Development Kit (JDK) 17+
-*   MySQL Server
+### Backend
+1. Navigate to the `/backend` directory.
+2. Ensure you have a `.env` file in the `/backend` directory with your database and mail credentials. You can copy the structure from `.env.example` if available.
+3. Run the application using Maven: `./mvnw spring-boot:run`.
 
-### Backend Setup (Spring Boot)
+### Frontend
+1. Navigate to the `/frontend` directory.
+2. Install dependencies: `npm install`.
+3. Run the development server: `npm start` or `ng serve`.
 
-1. Navigate to the root directory of the project.
-2. Ensure you have a running MySQL database. Update the `src/main/resources/application.properties` (or equivalent) with your database credentials if necessary.
-3. Build the backend using Maven:
-   ```
-   ./mvnw clean install -DskipTests
-   ```
-4. Run the Spring Boot application:
-   ```
-   ./mvnw spring-boot:run
-   ```
-   The backend will start on `http://localhost:8080`.
-
-### Frontend Setup (Angular)
-
-1. Navigate to the frontend directory:
-   ```
-   cd chatFrontEnd
-   ```
-2. Install the necessary dependencies:
-   ```
-   npm install
-   ```
-3. Build the frontend:
-   ```
-   npm run build
-   ```
-4. To start the development server, run:
-   ```
-   ng serve
-   ```
-   The frontend will be available at `http://localhost:4200`.
-
-### Environment Variables for Backend
-
-The backend expects certain environment variables to be set for the database and email configuration. You can see `application.properties.example` for details.
-
-When running the app, you can pass them as such:
-
-```bash
-DB_PASSWORD=yourpassword MAIL_USERNAME=youremail@gmail.com MAIL_PASSWORD=your_app_password ./mvnw spring-boot:run
-```
+## Environment Variables
+Credentials should be supplied in a `.env` file within the `backend/` directory. These are automatically picked up by Spring Boot via `spring-dotenv`.
