@@ -32,7 +32,16 @@ public class User implements Serializable {
     @Column(length = 4096)
     private String publicKey;
 
+    @Column(length = 4096)
+    private String encryptedPrivateKey;
 
+    public String getEncryptedPrivateKey() {
+        return encryptedPrivateKey;
+    }
+
+    public void setEncryptedPrivateKey(String encryptedPrivateKey) {
+        this.encryptedPrivateKey = encryptedPrivateKey;
+    }
 
     public String getPublicKey() {
         return publicKey;

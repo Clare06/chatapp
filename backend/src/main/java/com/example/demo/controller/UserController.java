@@ -142,5 +142,12 @@ public class UserController {
         emailService.sendEmail(emailPri);
     }
 
-
+    @GetMapping("/get-encrypted-key/{userid}")
+    public ResponseEntity<String> getEncryptedKey(@PathVariable("userid") String userid) {
+        Optional<User> user = userService.getUser(userid);
+        if (user.isPresent() && user.get().getEncryptedPrivateKey() != null) {
+            return ResponseEntity.ok(user.get().getEncryptedPrivateKey());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Key not found");
+    }
 }
