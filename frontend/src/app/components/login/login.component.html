@@ -10,8 +10,8 @@
   <div class="content">
         <form *ngIf="!signup" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="log-input">
-          <label for="userid" class="loglabel">User </label><br>
-          <input type="text" id="userid" formControlName="userid" placeholder="UserId" autocomplete="username">
+          <label for="userid" class="loglabel">User ID</label><br>
+          <input type="text" id="userid" formControlName="userid" placeholder="Enter your User ID" autocomplete="username">
           <div *ngIf="loginForm.get('userid')?.invalid && loginForm.get('userid')?.touched">
             <div  *ngIf="loginForm.get('userid')?.errors">
                 <label class="warne">*UserID required</label>
@@ -37,20 +37,20 @@
         <!--  -->
         <form *ngIf="signup" [formGroup]="signForm" (ngSubmit)="onSignSubmit()" >
           <div class="log-input">
-            <label for="userid" class="loglabel">User </label><br>
-            <input type="text" id="userid" class="" formControlName="userid" placeholder="UserId" autocomplete="username">
+            <label for="userid" class="loglabel">Unique User ID (Login ID)</label><br>
+            <input type="text" id="userid" class="" formControlName="userid" placeholder="e.g. john123" autocomplete="username">
             <div *ngIf="signForm.get('userid')?.invalid && signForm.get('userid')?.touched">
               <div  *ngIf="signForm.get('userid')?.errors">
-                  <label class="warne">*UserID required</label>
+                  <label class="warne">*Unique UserID required</label>
               </div>
             </div>
           </div>
           <div class="log-input">
-            <label for="username" class="loglabel">User Name </label><br>
-            <input type="text" id="username" class="" formControlName="username" placeholder="User Name" autocomplete="username">
+            <label for="username" class="loglabel">Display Name</label><br>
+            <input type="text" id="username" class="" formControlName="username" placeholder="e.g. John Doe" autocomplete="username">
             <div *ngIf="signForm.get('username')?.invalid && signForm.get('username')?.touched">
               <div  *ngIf="signForm.get('username')?.errors">
-                  <label class="warne">*User Name required</label>
+                  <label class="warne">*Display Name required</label>
               </div>
             </div>
           </div>

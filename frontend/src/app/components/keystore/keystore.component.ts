@@ -1,70 +1,22 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { User, db } from 'src/app/indexdb/db';
-import { KeypairService } from 'src/app/services/keypair.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-keystore',
   templateUrl: './keystore.component.html',
   styleUrls: ['./keystore.component.css']
 })
-export class KeystoreComponent {
+export class KeystoreComponent implements OnInit {
   set: boolean = false;
-  errr: string = "";
-  constructor(private route: ActivatedRoute, private keyPair: KeypairService){
+  errr: string = "This email verification method has been deprecated for security reasons.";
 
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(async params => {
-      console.log(params['privateKey']);
-      console.log(params['username']);
-      const queryKey=params['privateKey'];
-      const decodedPrivateKey = decodeURIComponent(queryKey);
-      const privateKey = await this.importPrivateKeyFromPEM(decodedPrivateKey);
-
-
-      const privateKeyBase64 = await this.keyPair.exportPrivateKeyAsBase64(privateKey);
-            const dbuser: User = {
-              user: params['username'],
-              hiddenInfo: {
-                encryptedPrivateKey: privateKeyBase64,
-              },
-            }
-            await db.addUserWithPrivateKey(dbuser).then(() => {
-              this.set=true;
-            }).catch((err) => {
-              this.errr=err;
-            });
-
-
-    });
-
+    // The previous implementation of sending private keys via email in URLs was a critical security flaw.
+    // This route is now disabled. Users should login directly to generate or access their keys securely.
+    setTimeout(() => {
+        this.router.navigate(['../login']);
+    }, 3000);
   }
-
-  async importPrivateKeyFromPEM(pemPrivateKey: string): Promise<CryptoKey> {
-    try {
-      // Decode the base64-encoded PEM contents into a binary string.
-      const binaryDer = atob(pemPrivateKey);
-      const privateKeyBuffer = new Uint8Array(binaryDer.length);
-      for (let i = 0; i < binaryDer.length; i++) {
-        privateKeyBuffer[i] = binaryDer.charCodeAt(i);
-      }
-
-      // Import the binary private key into a CryptoKey.
-      const privateKey = await window.crypto.subtle.importKey(
-        'pkcs8',
-        privateKeyBuffer,
-        { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
-        true,
-        ['sign']
-      );
-
-      return privateKey;
-    } catch (error) {
-      console.error('Error importing private key from PEM:', error);
-      return Promise.reject(error);
-    }
-  }
-
 }

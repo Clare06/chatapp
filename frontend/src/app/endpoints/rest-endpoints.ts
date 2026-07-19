@@ -17,4 +17,5 @@ export const ENDPOINTS = {
   GETKEY:`${root}/get-friend-key/`,
   GETMESSAGE:`${root}/messages/`,
   SENDEMAIL:`${root}/send-email`,
+  GET_ENCRYPTED_KEY:`${root}/get-encrypted-key/`,
 }

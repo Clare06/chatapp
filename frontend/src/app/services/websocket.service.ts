@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { ChatMessageDto } from '../schemas/chatMessageDto';
 import { JwtService } from './jwtservice.service';
 import { SharedchatService } from './sharedchat.service';
@@ -13,14 +13,14 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketService {
+export class WebsocketService implements OnInit {
   index: number = 0;
   pubKey: string = "";
   webSocket!: WebSocket;
   userID!:string;
   chatMessages: ChatMessageDto[] = [];
-  // activeChat: ChatMessageDto[] = [];
   activeFrien: string = "";
+
   constructor(private router:Router ,private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService) {
      this.shared.triggerFunction$.subscribe((event) => {
       this.activeFrien=event.value;
@@ -28,95 +28,64 @@ export class WebsocketService {
      this.userID=jwtdeco.getID();
      this.pubKey=this.jwtdeco.getPubKey();
 
-this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).subscribe(async (data) => {
-  const serverData = data;
-  // console.log(serverData);
-  // Use Promise.all to await all asynchronous operations
-  this.chatMessages = await Promise.all(serverData.map(async (item) => {
-    const user = db.getUserByName(this.jwtdeco.getUserName());
-    // console.log(serverData);
-    try {
-      const data = await user;
-      const dbKey = data?.hiddenInfo?.encryptedPrivateKey;
-
-      if (dbKey) {
-        // Import the private key from base64
-        const privateKey = await this.key.importPrivateKeyFromBase64(dbKey);
-
-        if (item.user === this.jwtdeco.getID()) {
-          const decryptedMessage = await this.decryptMessage(item.senderMessage, privateKey);
-          item.senderMessage = decryptedMessage;
-        } else {
-          const decryptedMessage = await this.decryptMessage(item.message, privateKey);
-          item.message = decryptedMessage;
+    this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).subscribe(async (data) => {
+      const serverData = data;
+      this.chatMessages = await Promise.all(serverData.map(async (item) => {
+        try {
+          const privateKey = this.key.sessionPrivateKey;
+          if (privateKey) {
+            if (item.user === this.jwtdeco.getID()) {
+              item.senderMessage = await this.decryptMessage(item.senderMessage, privateKey);
+            } else {
+              item.message = await this.decryptMessage(item.message, privateKey);
+            }
+          } else {
+            console.error('Private key not unlocked in memory!');
+          }
+        } catch (error) {
+          console.error('Error decrypting message on load:', error);
         }
-      } else {
-        console.error('Private key not found in data?.hiddenInfo');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-
-    return new ChatMessageDto(
-      item.user,
-      item.senderMessage,
-      item.message,
-      item.sendTo,
-      item.status,
-      item.timestamp
-    );
-  }));
-  // console.log(this.chatMessages[0]);
-
-});
-
-
-
-
+        return new ChatMessageDto(
+          item.user,
+          item.senderMessage,
+          item.message,
+          item.sendTo,
+          item.status,
+          item.timestamp
+        );
+      }));
+    });
   }
+
   ngOnInit(): void {
-
-
-
   }
-  public openWebSocket(){
 
-    const userId = this.jwtgetid.getID(); // Replace with the actual user ID
+  public openWebSocket(){
+    const userId = this.jwtgetid.getID(); 
     this.webSocket = new WebSocket(`ws://localhost:8080/chat?${encodeURIComponent(userId)}`);
 
     this.webSocket.onopen = async (event) => {
       console.log('Open: ', event);
-      const user = db.getUserByName(this.jwtdeco.getUserName());
-      if( ! await user){
-      this.router.navigate(['../nokey']).then(() => {});
+      if(!this.key.sessionPrivateKey){
+          // If they refresh the page, their JWT logs them in but they lost the RAM key.
+          this.router.navigate(['../nokey']).then(() => {});
       }
     };
 
-    this.webSocket.onmessage = (event) => {
+    this.webSocket.onmessage = async (event) => {
       const chatMessageDto = JSON.parse(event.data);
+      const privateKey = this.key.sessionPrivateKey;
 
-      const user = db.getUserByName(this.jwtdeco.getUserName());
-
-    user.then(async (data) => {
-      const dbKey = data?.hiddenInfo?.encryptedPrivateKey;
-
-      if (dbKey) {
-        // Import the private key from base64
+      if (privateKey) {
         try {
-          const privateKey = await this.key.importPrivateKeyFromBase64(dbKey);
-          const decryptedMessage = await this.decryptMessage(chatMessageDto.message, privateKey);
-          chatMessageDto.message = decryptedMessage;
+          chatMessageDto.message = await this.decryptMessage(chatMessageDto.message, privateKey);
           this.chatMessages.push(chatMessageDto);
-          
-          console.log('Message: ', chatMessageDto);
         } catch (error) {
-          console.error('Error importing private key:', error);
+          console.error('Error decrypting incoming message:', error);
         }
       } else {
-        console.error('Private key not found in data?.hiddenInfo');
+        console.error('Cannot decrypt incoming message: Private key missing in memory.');
       }
-    });
-
     };
 
     this.webSocket.onclose = (event) => {
@@ -124,57 +93,43 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
     };
   }
 
-  public sendMessage(chatMessageDto: ChatMessageDto) {
+  public async sendMessage(chatMessageDto: ChatMessageDto) {
     this.webSocket.send(JSON.stringify(chatMessageDto));
-    console.log('Message sent: ', JSON.stringify(chatMessageDto));
-
-    const user = db.getUserByName(this.jwtdeco.getID());
-
-    user.then(async (data) => {
-      const dbKey = data?.hiddenInfo?.encryptedPrivateKey;
-
-      if (dbKey) {
-        // Import the private key from base64
+    
+    const privateKey = this.key.sessionPrivateKey;
+    if (privateKey) {
         try {
-          const privateKey = await this.key.importPrivateKeyFromBase64(dbKey);
-          const decryptedMessage = await this.decryptMessage(chatMessageDto.senderMessage, privateKey);
-          chatMessageDto.senderMessage = decryptedMessage;
+          chatMessageDto.senderMessage = await this.decryptMessage(chatMessageDto.senderMessage, privateKey);
           this.chatMessages.push(chatMessageDto);
-          console.log('Private key imported:', privateKey);
         } catch (error) {
-          console.error('Error importing private key:', error);
+          console.error('Error decrypting own outgoing message:', error);
         }
-      } else {
-        console.error('Private key not found in data?.hiddenInfo');
-
-      }
-    });
+    } else {
+        console.error('Cannot decrypt own message: Private key missing in memory.');
+    }
   }
 
   public filterChatMessages(): ChatMessageDto[] {
-    const filteredMessages: ChatMessageDto[] = this.chatMessages.filter((chatMessageDto) => {
+    return this.chatMessages.filter((chatMessageDto) => {
       return (
         (chatMessageDto.user === this.jwtdeco.getID() && chatMessageDto.sendTo === this.activeFrien) ||
         (chatMessageDto.user === this.activeFrien && chatMessageDto.sendTo === this.jwtdeco.getID())
       );
     });
-
-    return filteredMessages;
   }
 
   public closeWebSocket() {
     this.webSocket.close();
   }
+
   async decryptMessage(encryptedMessageBase64: string, privateKey: CryptoKey): Promise<string> {
     try {
-      // Convert the Base64-encoded encrypted message back to an ArrayBuffer
       const encryptedMessageBuffer = new Uint8Array(
         atob(encryptedMessageBase64)
           .split('')
           .map((char) => char.charCodeAt(0))
       );
 
-      // Decrypt the message using the recipient's private key
       const decryptedMessageBuffer = await window.crypto.subtle.decrypt(
         {
           name: 'RSA-OAEP',
@@ -183,15 +138,10 @@ this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).sub
         encryptedMessageBuffer
       );
 
-      // Convert the decrypted message ArrayBuffer to a string
-      const decryptedMessage = new TextDecoder().decode(decryptedMessageBuffer);
-
-      return decryptedMessage;
+      return new TextDecoder().decode(decryptedMessageBuffer);
     } catch (error) {
-
       console.error('Error decrypting the message:', error);
       throw error;
     }
   }
-
 }
