@@ -22,6 +22,7 @@ export class ChatMessageContainerComponent {
   publickey: string = "";
   friendKeys:any;
   message: any;
+  lastTypingTime: number = 0;
   constructor(public webSocketService: WebsocketService, public jwtdeco:JwtService,
      private http:HttpClient, private router:Router,
      private shared:SharedService) {
@@ -117,6 +118,15 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
   } catch (error) {
     console.error('Error encrypting the message:', error);
   }
+  }
+
+  onTyping() {
+    const now = Date.now();
+    if (now - this.lastTypingTime > 1500 && this.activeFrien) {
+      this.lastTypingTime = now;
+      const typingMsg = new ChatMessageDto(this.usrID, "", "", this.activeFrien, true, new Date().toISOString(), 'TYPING', false);
+      this.webSocketService.webSocket.send(JSON.stringify(typingMsg));
+    }
   }
 
 

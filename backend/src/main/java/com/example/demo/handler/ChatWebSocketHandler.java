@@ -49,20 +49,35 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         String recipientId = jsonNode.get("sendTo").asText();
         String senderId = jsonNode.get("user").asText();
 
+        String type = jsonNode.has("type") ? jsonNode.get("type").asText() : "MESSAGE";
+
+        WebSocketSession targetSession= userSessions.get(recipientId);
+
+        if ("TYPING".equals(type) || "READ".equals(type)) {
+            // Just forward TYPING and READ events directly to the recipient if they are online
+            if (targetSession != null) {
+                targetSession.sendMessage(message);
+            }
+            
+            if ("READ".equals(type)) {
+                // Future: Update message read status in the DB if needed
+                // messageService.markAsRead(...)
+            }
+            return;
+        }
+
+        // Handle standard MESSAGE
         Optional<User> sender = userService.getUser(senderId);
         Optional<User> recipient = userService.getUser(recipientId);
 
         String content = jsonNode.get("message").asText();
         String contentToSender = jsonNode.get("senderMessage").asText();
 
-        WebSocketSession targetSession= userSessions.get(recipientId);
-
         if (targetSession != null){
-
             targetSession.sendMessage(message);
-                messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),true);
+            messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),true);
         }else {
-                messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),false);
+            messageService.addMessage(sender.get(),contentToSender,content,recipient.get(),false);
         }
     }
     @Override

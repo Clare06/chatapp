@@ -8,7 +8,7 @@
   </div>
 
   <div class="content">
-        <form *ngIf="!signup" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <form *ngIf="!signup" class="glass-panel animate-fade-in" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="log-input">
           <label for="userid" class="loglabel">User ID</label><br>
           <input type="text" id="userid" formControlName="userid" placeholder="Enter your User ID" autocomplete="username">
@@ -35,7 +35,7 @@
         <!--  -->
         <!-- Sign UP -->
         <!--  -->
-        <form *ngIf="signup" [formGroup]="signForm" (ngSubmit)="onSignSubmit()" >
+        <form *ngIf="signup" class="glass-panel animate-fade-in" [formGroup]="signForm" (ngSubmit)="onSignSubmit()" >
           <div class="log-input">
             <label for="userid" class="loglabel">Unique User ID (Login ID)</label><br>
             <input type="text" id="userid" class="" formControlName="userid" placeholder="e.g. john123" autocomplete="username">

@@ -23,17 +23,22 @@
       <div *ngIf="chatMessage.user == jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
        <div [innerHTML]="chatMessage.senderMessage | newlineToBr"> {{chatMessage.senderMessage | newlineToBr}}</div>
        <p class="time">{{ chatMessage.timestamp | date:'h:mm a' }}
-      </p>
+         <span class="read-receipt" *ngIf="chatMessage.read">✓✓</span>
+         <span class="read-receipt" style="color: rgba(255,255,255,0.7);" *ngIf="!chatMessage.read">✓</span>
+       </p>
       </div>
 
     </li>
 </ul>
+<div *ngIf="webSocketService.isTyping" class="typing-indicator">
+  {{activeFrien}} is typing...
+</div>
 
 </div>
 
 <form *ngIf="activeFrien!=''" class="send" (ngSubmit)="sendMessage(sendForm)" #sendForm="ngForm">
   <div class="send-message">
-    <textarea name="message" placeholder="Type message here ..." ngModel></textarea>
+    <textarea name="message" placeholder="Type message here ..." ngModel (input)="onTyping()"></textarea>
   </div>
   <div class="send-button">
     <button type="submit">

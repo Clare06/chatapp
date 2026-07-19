@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnInit, NgZone } from '@angular/core';
 import { ChatMessageDto } from '../schemas/chatMessageDto';
 import { JwtService } from './jwtservice.service';
 import { SharedchatService } from './sharedchat.service';
@@ -20,8 +20,10 @@ export class WebsocketService implements OnInit {
   userID!:string;
   chatMessages: ChatMessageDto[] = [];
   activeFrien: string = "";
+  isTyping: boolean = false;
+  typingTimeout: any;
 
-  constructor(private router:Router ,private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService) {
+  constructor(private router:Router ,private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService, private ngZone: NgZone) {
      this.shared.triggerFunction$.subscribe((event) => {
       this.activeFrien=event.value;
      })
@@ -73,12 +75,36 @@ export class WebsocketService implements OnInit {
     };
 
     this.webSocket.onmessage = async (event) => {
-      const chatMessageDto = JSON.parse(event.data);
+      this.ngZone.run(async () => {
+        const chatMessageDto = JSON.parse(event.data);
+        if (chatMessageDto.type === 'TYPING') {
+        if (chatMessageDto.user === this.activeFrien) {
+          this.isTyping = true;
+          clearTimeout(this.typingTimeout);
+          this.typingTimeout = setTimeout(() => this.isTyping = false, 2000);
+        }
+        return;
+      }
+
+      if (chatMessageDto.type === 'READ') {
+        this.chatMessages.forEach(msg => {
+          if (msg.sendTo === chatMessageDto.user && msg.user === this.jwtdeco.getID()) {
+            msg.read = true;
+          }
+        });
+        return;
+      }
+
       const privateKey = this.key.sessionPrivateKey;
 
       if (privateKey) {
         try {
           chatMessageDto.message = await this.decryptMessage(chatMessageDto.message, privateKey);
+          // Auto-read receipt logic
+          if (chatMessageDto.user === this.activeFrien) {
+             const readReceipt = new ChatMessageDto(this.jwtdeco.getID(), "", "", chatMessageDto.user, true, new Date().toISOString(), "READ", true);
+             this.webSocket.send(JSON.stringify(readReceipt));
+          }
           this.chatMessages.push(chatMessageDto);
         } catch (error) {
           console.error('Error decrypting incoming message:', error);
@@ -86,6 +112,7 @@ export class WebsocketService implements OnInit {
       } else {
         console.error('Cannot decrypt incoming message: Private key missing in memory.');
       }
+      });
     };
 
     this.webSocket.onclose = (event) => {

@@ -4,7 +4,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
   display: none;
   justify-content: center;
   align-items: center;
@@ -12,22 +13,26 @@
 }
 
 .popupactive {
-  display: flex!important;
+  display: flex !important;
   z-index: 100 !important;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .popup {
-  background-color: #fff;
-  /* padding: 20px; */
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: var(--bg-panel);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
   text-align: center;
   width: 40vw;
   height: 80vh;
   display: flex;
   flex-direction: column;
   position: relative;
-
+  color: var(--text-primary);
+  overflow: hidden;
 }
 
 .popup h2 {
@@ -36,101 +41,151 @@
 
 .popup-buttons {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  /* margin-top: 5px; */
+  top: 15px;
+  right: 15px;
+  z-index: 10;
 }
 
 .popup-buttons button {
   padding: 5px 10px;
-  background:transparent;
-  color: black;
+  background: transparent;
+  color: var(--text-secondary);
   border: none;
   cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s;
 }
 
-.search{
+.popup-buttons button:hover {
+  color: var(--error-color);
+}
+
+.search {
   width: 100%;
   height: 10vh; 
-  /* background-color: #007bff; */
-  border-radius: 5px 5px 0px 0px;
-
-
+  border-radius: 16px 16px 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
 }
-.friendreq{
+
+.search input {
+  padding: 10px 15px;
+  width: 80%;
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.friendreq {
   width: 100%;
   height: 20vh; 
   overflow-y: auto;
-  /* background-color: #275b93; */
-
+  border-bottom: 1px solid var(--glass-border);
+  padding-top: 10px;
 }
-.globaluser{
+
+.friendreq h5 {
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.globaluser {
   width: 100%;
-  height: 50vh; 
-  /* position: relative; */
+  flex: 1; 
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-
-  /* background-color: #82aedd; */
-  /* border-radius: 0px 0px 5px 5px; */
-
+  padding-top: 20px;
 }
-.reqlist{
-  position: relative;
+
+.reqlist {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background: rgba(255, 255, 255, 0.02);
+  margin: 5px 20px;
+  border-radius: 8px;
+}
 
+.reqname {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
-.reqname{
-  font-size: large;
+
+.reqlist button {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  margin: 0 5px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
 }
-.reqlist button{
-  color: #000;
-  background: transparent;
-  border: none;
-  margin: 10px;
+
+.reqlist button:hover {
+  background: rgba(255,255,255,0.1);
+  transform: scale(1.1);
 }
-.search input{
-  padding: 10px;
-  margin-right: 1vw;
-  margin-top: 2vh;
-  width: 80%;
-  height: 5vh;
-  border: none; 
-  outline: none;
-  background-color: rgba(191, 195, 196, 0.227);
-  color: #041d39;
-  font-size: larger;
-  border-radius: 5px;
+
+.reqlist .btn-accept:hover {
+  color: var(--success-color);
+  border-color: var(--success-color);
 }
-.display{
+
+.reqlist .btn-reject:hover {
+  color: var(--error-color);
+  border-color: var(--error-color);
+}
+
+.display {
   display: none !important;
 }
-.fulldisplay{
-  height: 70vh !important;
+
+.fulldisplay {
+  height: 100% !important;
 }
 
-.globelist{
-  /* position: relative; */
+.globelist {
   width: 100%;
-  height: 4vh;
-  position: relative;
+  padding: 15px 30px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
 }
+
 .globaluser button {
-  color: #000;
+  color: var(--primary-color);
   background: transparent;
   border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
-.usrname{
-  font-size: large;
-}
-.globelist div {
 
-  width: 50%;
+.globaluser button:hover {
+  transform: scale(1.1);
+  color: var(--secondary-color);
+}
+
+.usrname {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
