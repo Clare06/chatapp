@@ -1,4 +1,5 @@
 import { Injectable, OnInit, NgZone } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { ChatMessageDto } from '../schemas/chatMessageDto';
 import { JwtService } from './jwtservice.service';
 import { SharedchatService } from './sharedchat.service';
@@ -20,7 +21,7 @@ export class WebsocketService implements OnInit {
   userID!:string;
   chatMessages: ChatMessageDto[] = [];
   activeFrien: string = "";
-  isTyping: boolean = false;
+  isTyping$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   typingTimeout: any;
 
   constructor(private router:Router ,private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService, private ngZone: NgZone) {
@@ -79,9 +80,9 @@ export class WebsocketService implements OnInit {
         const chatMessageDto = JSON.parse(event.data);
         if (chatMessageDto.type === 'TYPING') {
         if (chatMessageDto.user === this.activeFrien) {
-          this.isTyping = true;
+          this.isTyping$.next(true);
           clearTimeout(this.typingTimeout);
-          this.typingTimeout = setTimeout(() => this.isTyping = false, 2000);
+          this.typingTimeout = setTimeout(() => this.isTyping$.next(false), 2000);
         }
         return;
       }

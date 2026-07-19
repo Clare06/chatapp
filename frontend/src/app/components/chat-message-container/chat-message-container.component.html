@@ -30,10 +30,13 @@
 
     </li>
 </ul>
-<div *ngIf="webSocketService.isTyping" class="typing-indicator">
-  {{activeFrien}} is typing...
 </div>
 
+<div *ngIf="(webSocketService.isTyping$ | async) && activeFrien!=''" class="typing-indicator-wrapper">
+  <div class="typing-indicator">
+    <div class="typing-dots"><span></span><span></span><span></span></div>
+    {{activeFrien}} is typing...
+  </div>
 </div>
 
 <form *ngIf="activeFrien!=''" class="send" (ngSubmit)="sendMessage(sendForm)" #sendForm="ngForm">
