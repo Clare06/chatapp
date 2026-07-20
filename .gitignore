@@ -92,7 +92,7 @@ ehthumbs_vista.db
 *.env
 .env.*
 !.env.example
-application.properties
+#application.properties
 !application.properties.example
 
 # Documentation
