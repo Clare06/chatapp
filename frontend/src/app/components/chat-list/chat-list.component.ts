@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
@@ -78,11 +78,9 @@ export class ChatListComponent implements OnInit, OnDestroy {
 
   isSettingsOpen = false;
 
-  openSettings() {
-    this.isSettingsOpen = true;
-  }
+  @Output() openSettingsEvent = new EventEmitter<void>();
 
-  closeSettings() {
-    this.isSettingsOpen = false;
+  openSettings() {
+    this.openSettingsEvent.emit();
   }
 }

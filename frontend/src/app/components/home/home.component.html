@@ -1,7 +1,7 @@
 
 <div class="home-container">
   <div class="chat-list">
-      <app-chat-list></app-chat-list>
+      <app-chat-list (openSettingsEvent)="openSettings()"></app-chat-list>
   </div>
   <div class="chat-message-container">
       <app-chat-message-container></app-chat-message-container>
@@ -9,3 +9,6 @@
 </div>
 <app-verify-email-pop [isOpen]="!verify">
 </app-verify-email-pop>
+
+<app-change-password *ngIf="isSettingsOpen" (close)="closeSettings()">
+</app-change-password>

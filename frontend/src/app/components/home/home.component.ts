@@ -45,4 +45,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log(this.activeFrien);
    }
 
+  isSettingsOpen = false;
+
+  openSettings() {
+    this.isSettingsOpen = true;
+  }
+
+  closeSettings() {
+    this.isSettingsOpen = false;
+  }
 }
