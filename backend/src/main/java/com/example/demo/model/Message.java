@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "message")
+@Table(name = "message", indexes = { @Index(name = "idx_sender_receiver", columnList = "sender_id, receiver_id"), @Index(name = "idx_timestamp", columnList = "timestamp") })
 public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

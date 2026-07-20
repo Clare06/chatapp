@@ -216,3 +216,10 @@ form {
     font-size: 2rem;
   }
 }
+
+.row-inputs { display: flex; gap: 1rem; width: 100%; }
+.flex-1 { flex: 1; }
+.scroll-content { overflow-y: auto; padding: 2rem 0; height: 100vh; justify-content: flex-start; }
+.global-success { text-align: center; background: rgba(34, 197, 94, 0.1); border-radius: 8px; padding: 0.5rem; border: 1px solid rgba(34, 197, 94, 0.3); }
+.success-msg { color: var(--success-color); font-size: 0.85rem; font-weight: 500; }
+

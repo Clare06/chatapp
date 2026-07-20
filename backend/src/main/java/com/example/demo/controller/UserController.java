@@ -182,6 +182,8 @@ public class UserController {
             profile.put("userid", user.get().getUserid());
             profile.put("username", user.get().getUsername());
             profile.put("email", user.get().getEmail());
+            profile.put("firstName", user.get().getFirstName());
+            profile.put("lastName", user.get().getLastName());
             profile.put("publickey", user.get().getPublicKey());
             return ResponseEntity.ok(profile);
         }
@@ -197,7 +199,7 @@ public class UserController {
             if (byEmail.isPresent() && !byEmail.get().getUserid().equals(request.getUserid())) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already taken");
             }
-            userService.updateProfile(request.getUserid(), request.getUsername(), request.getEmail());
+            userService.updateProfile(request.getUserid(), request.getUsername(), request.getEmail(), request.getFirstName(), request.getLastName());
             
             // Generate a fresh JWT with the updated username
             User updatedUser = userService.getUser(request.getUserid()).get();

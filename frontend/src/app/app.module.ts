@@ -15,6 +15,7 @@ import { HttpInterceptorService } from './services/http-interceptor.service';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { KeystoreComponent } from './components/keystore/keystore.component';
 import { NokeyComponent } from './components/nokey/nokey.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NokeyComponent } from './components/nokey/nokey.component';
     LoginComponent,
     ForgotPasswordComponent,
     KeystoreComponent,
-    NokeyComponent
+    NokeyComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

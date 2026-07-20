@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   display: flex;
-  background: radial-gradient(circle at top left, #1e1b4b, #0f172a 60%);
+  background: var(--gradient-deep-space);
   color: var(--text-primary);
 }
 
@@ -15,22 +15,25 @@
   overflow: hidden;
 }
 
-/* Glowing Orb replacing the old bubble */
+/* Glowing Orb */
 .bubble {
   width: 25vw;
   height: 25vw;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--gradient-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  font-weight: 700;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 800;
   color: white;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  text-shadow: 0 4px 15px rgba(0,0,0,0.4);
   box-shadow: 0 0 60px rgba(99, 102, 241, 0.6), inset 0 0 40px rgba(255, 255, 255, 0.2);
   animation: float 6s ease-in-out infinite, pulseGlow 4s alternate infinite;
   z-index: 2;
+  letter-spacing: 2px;
+  line-height: 1.2;
 }
 
 @keyframes float {
@@ -53,7 +56,6 @@
   z-index: 10;
 }
 
-/* Glassmorphism Form */
 form {
   padding: 3rem;
   width: 80%;
@@ -63,6 +65,23 @@ form {
   gap: 1.5rem;
 }
 
+.form-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.form-subtitle {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  text-align: center;
+  font-size: 0.95rem;
+}
+
 .log-input {
   display: flex;
   flex-direction: column;
@@ -70,17 +89,17 @@ form {
 }
 
 .loglabel {
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--text-secondary);
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .log-input input {
-  height: 45px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 48px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   padding: 0 1rem;
   color: white;
@@ -91,28 +110,40 @@ form {
 
 .log-input input:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.error-container {
+  min-height: 20px;
 }
 
 .warne {
   color: var(--error-color);
   font-size: 0.85rem;
-  margin-top: 4px;
+  font-weight: 500;
+}
+
+.global-error {
+  text-align: center;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .formbutton {
   height: 50px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  background: var(--gradient-primary);
   border: none;
   color: white;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .formbutton:hover {
@@ -124,49 +155,40 @@ form {
   transform: translateY(0);
 }
 
-.formbutton:disabled {
-  background: #334155;
-  color: #94a3b8;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.signup {
-  margin-top: 2rem;
+.form-footer {
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 
-.signup .formbutton {
-  background: transparent;
-  border: 1px solid var(--text-secondary);
+.text-link {
   color: var(--text-secondary);
-  width: 200px;
-  margin-top: 0;
-}
-
-.signup .formbutton:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
-  border-color: white;
-  transform: none;
-  box-shadow: none;
-}
-
-.forgotPass a {
-  color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.3s;
+  font-size: 0.95rem;
 }
 
-.forgotPass a:hover {
+.text-link:hover {
+  color: white;
+}
+
+.text-link.accent {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.text-link.accent:hover {
   color: var(--secondary-color);
-  text-decoration: underline;
+}
+
+.signup-prompt {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
 @media (max-width: 768px) {
@@ -177,20 +199,20 @@ form {
     width: 100vw;
   }
   .theme {
-    height: 35vh;
+    height: 30vh;
   }
   .content {
-    height: 65vh;
+    height: 70vh;
     justify-content: flex-start;
-    padding-top: 2rem;
+    padding-top: 1rem;
   }
   form {
     width: 90%;
     padding: 2rem;
   }
   .bubble {
-    width: 40vw;
-    height: 40vw;
-    font-size: 1.8rem;
+    width: 45vw;
+    height: 45vw;
+    font-size: 2rem;
   }
 }

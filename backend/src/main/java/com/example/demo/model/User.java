@@ -26,6 +26,9 @@ public class User implements Serializable {
     @Column(unique = true)
     private String email;
 
+    private String firstName;
+    private String lastName;
+
     private String tempToken;
 
     private boolean verified;
@@ -73,6 +76,22 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @com.fasterxml.jackson.annotation.JsonIgnore

@@ -147,12 +147,14 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public void updateProfile(String userid, String username, String email) {
+    public void updateProfile(String userid, String username, String email, String firstName, String lastName) {
         Optional<User> usr = userRepo.findByUserId(userid);
         if(usr.isPresent()){
             User user = usr.get();
             user.setUsername(username);
             user.setEmail(email);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
             userRepo.save(user);
         }
     }

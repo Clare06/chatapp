@@ -3,10 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
-import { User, db } from 'src/app/indexdb/db';
-import { SignUser } from 'src/app/schemas/signUser';
+import { db } from 'src/app/indexdb/db';
 import { KeypairService } from 'src/app/services/keypair.service';
-import { confirmPasswordValidator } from 'src/app/validators/validator';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +14,9 @@ import { confirmPasswordValidator } from 'src/app/validators/validator';
 export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
-  signForm !: FormGroup;
   token: any;
   errorMes: string | null = null;
-  signup: boolean = false;
   message: string | null = null;
-  signClicked: boolean = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private keyPair: KeypairService) { }
 
@@ -30,77 +25,14 @@ export class LoginComponent implements OnInit {
       userid: ['', Validators.required],
       passwordhash: ['', Validators.required]
     });
-    this.signForm = this.fb.group({
-      userid: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      conpassword: ['', [Validators.required, confirmPasswordValidator('password')]],
-      email: ['', [Validators.required, Validators.email]]
-    });
-  }
-
-  async onSignSubmit() {
-    if (this.signForm.invalid) {
-      return;
-    }
-    const user = this.signForm.value;
-    this.signClicked = true;
-    
-    try {
-        const keyPair = await this.keyPair.generateKeyPair();
-        const publicKey = keyPair.publicKey;
-        const privateKey = keyPair.privateKey;
-
-        const pemPublicKey = await this.convertPublicKeyToPEM(publicKey);
-
-        // Zero-Knowledge Architecture: Encrypt the private key with the user's plaintext password
-        const encryptedPrivateKeyBase64 = await this.keyPair.encryptPrivateKeyWithPassword(privateKey, user.password);
-
-        const signUser = new SignUser(user.userid, user.username, user.password, user.email, pemPublicKey, encryptedPrivateKeyBase64);
-        
-        this.http.post(ENDPOINTS.SIGNUP, signUser, { responseType: 'text' }).subscribe({
-          next: async (response) => {
-            this.errorMes = null;
-            this.message = response;
-            
-            const dbuser: User = {
-              user: signUser.userid,
-              hiddenInfo: {
-                encryptedPrivateKey: encryptedPrivateKeyBase64,
-              },
-            }
-            await db.addUserWithPrivateKey(dbuser);
-            
-            // NOTE: We absolutely DO NOT send the private key via email anymore. That is a critical security breach!
-            // The private key is strictly locked in IndexedDB via PBKDF2 encryption.
-            
-            this.signClicked = false;
-            this.signupTri();
-            
-            // Pre-fill login form for convenience
-            this.loginForm.patchValue({ userid: user.userid, passwordhash: user.password });
-          },
-          error: (error) => {
-            this.message = null;
-            this.signClicked = false;
-            if (error.status === 400) {
-              this.errorMes = error.error;
-            } else {
-              this.errorMes = "Server Error";
-            }
-          }
-        });
-    } catch(err) {
-        console.error(err);
-        this.errorMes = "Failed to generate security keys.";
-        this.signClicked = false;
-    }
   }
 
   forgotPass() {
-    this.router.navigate(['../forgotPassword']).then(() => {
-      window.location.reload();
-    });
+    this.router.navigate(['/forgotPassword']);
+  }
+
+  gotoSignup() {
+    this.router.navigate(['/signup']);
   }
 
   async onSubmit() {
@@ -133,25 +65,10 @@ export class LoginComponent implements OnInit {
         }
 
         localStorage.setItem('token', this.token);
-        this.router.navigate(['../home']);
+        this.router.navigate(['/home']);
       }
     ).catch((error) => {
         this.errorMes = "Login Failed";
     });
-  }
-
-  signupTri() {
-    this.errorMes = null;
-    this.signup = !this.signup;
-    this.loginForm.reset();
-    this.signForm.reset();
-  }
-
-  async convertPublicKeyToPEM(publicKey: CryptoKey): Promise<string> {
-    const exportPromise = window.crypto.subtle.exportKey('spki', publicKey);
-    const spki = await exportPromise;
-    const publicKeyBuffer = new Uint8Array(spki);
-    const base64PublicKey = btoa(String.fromCharCode(...publicKeyBuffer));
-    return `-----BEGIN PUBLIC KEY-----\n${base64PublicKey}\n-----END PUBLIC KEY-----`;
   }
 }

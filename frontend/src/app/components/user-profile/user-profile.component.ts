@@ -16,6 +16,8 @@ export class UserProfileComponent implements OnInit {
   profile: any = {
     userid: '',
     username: '',
+    firstName: '',
+    lastName: '',
     email: '',
     publickey: ''
   };
