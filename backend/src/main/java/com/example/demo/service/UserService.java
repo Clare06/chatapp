@@ -17,7 +17,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private  final UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
+
     @Autowired
     public UserService(UserRepo userRepo) {
         this.userRepo=userRepo;
@@ -26,7 +28,7 @@ public class UserService {
     public Boolean auth(User user) {
         Optional<User> usr = userRepo.findByUserId(user.getUserid());
         if(usr.isPresent()) {
-            return bcryptMatch(user.getPasswordhash(),usr.get().getPasswordhash());
+            return bCryptPasswordEncoder.matches(user.getPasswordhash(), usr.get().getPasswordhash());
         }
             return false;
     }
@@ -117,21 +119,17 @@ public class UserService {
     }
 
     public void saveUser(User user){
-        String encodedPass=bcryptPassword(user.getPasswordhash());
-        user.setPasswordhash(encodedPass);
+        bcryptPassword(user);
         User newUser=new User();
         BeanUtils.copyProperties(user,newUser);
         userRepo.save(newUser);
     }
-    public String bcryptPassword(String password){
-        int strength = 10; // work factor of bcrypt
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(strength, new SecureRandom());
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
-        return encodedPassword;
+    public void bcryptPassword(User user){
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPasswordhash());
+        user.setPasswordhash(encodedPassword);
     }
     public boolean bcryptMatch(String usrEntered, String dbPass) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return  encoder.matches(usrEntered,dbPass);
+        return bCryptPasswordEncoder.matches(usrEntered, dbPass);
     }
 
 
@@ -141,7 +139,7 @@ public class UserService {
 
     public void updatePassword(User user, String newPassword) {
         // Update the user's password
-        String encodedPassword=this.bcryptPassword(newPassword);
+        String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
         user.setPasswordhash(encodedPassword);
         userRepo.save(user);
     }

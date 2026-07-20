@@ -30,15 +30,27 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> userSessions = new ConcurrentHashMap<>();
 
     @Autowired
+    private com.example.demo.security.JwtUtil jwtUtil;
+
+    @Autowired
     public ChatWebSocketHandler(UserService userService){
         this.userService=userService;
     }
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         URI uri = session.getUri();
-        String query = uri.getQuery();
-        String decodedQuery = URLDecoder.decode(query, StandardCharsets.UTF_8.name());
-        userSessions.put(decodedQuery,session);
+        String query = uri.getQuery(); // Expected: token=xxx
+        if (query == null || !query.startsWith("token=")) {
+            session.close(CloseStatus.NOT_ACCEPTABLE);
+            return;
+        }
+        String token = query.substring(6);
+        try {
+            String userid = jwtUtil.extractClaim(token, claims -> claims.get("userid", String.class));
+            userSessions.put(userid, session);
+        } catch (Exception e) {
+            session.close(CloseStatus.NOT_ACCEPTABLE);
+        }
     }
 
     @Override

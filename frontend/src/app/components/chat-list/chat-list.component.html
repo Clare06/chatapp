@@ -8,8 +8,11 @@
 </div>
 
 <div class="list">
-  <div *ngFor="let friend of friendList" (click)="textTo(friend)" [ngClass]="{active: activeFrien==friend}">
+  <div *ngFor="let friend of filteredFriends" (click)="textTo(friend)" [ngClass]="{active: activeFrien==friend}">
     <strong>{{ friend }}</strong>
+  </div>
+  <div *ngIf="filteredFriends.length === 0" style="color: var(--text-secondary); text-align: center; padding: 20px;">
+    No friends yet. Click the + button to add friends!
   </div>
 </div>
 <div class="add-friend" (click)="openPopup()">

@@ -1,8 +1,13 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.*;
+
 public class ChangePasswordRequest {
+    @NotBlank
     private String userid;
+    @NotBlank
     private String oldPassword;
+    @NotBlank
     private String newPassword;
     private String newEncryptedPrivateKey;
 

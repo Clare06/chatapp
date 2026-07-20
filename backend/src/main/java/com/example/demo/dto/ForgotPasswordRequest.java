@@ -1,6 +1,10 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.*;
+
 public class ForgotPasswordRequest {
+    @NotBlank
+    @Email
     private String email;
 
     public String getEmail() {

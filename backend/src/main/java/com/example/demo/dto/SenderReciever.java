@@ -1,7 +1,11 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.*;
+
 public class SenderReciever {
+    @NotBlank
     private String userid;
+    @NotBlank
     private String friendid;
 
     public String getUserid() {

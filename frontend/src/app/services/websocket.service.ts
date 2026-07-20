@@ -2,7 +2,6 @@ import { Injectable, OnInit, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChatMessageDto } from '../schemas/chatMessageDto';
 import { JwtService } from './jwtservice.service';
-import { SharedchatService } from './sharedchat.service';
 import { Status } from '../schemas/enum';
 import { SharedService } from './shared.service';
 import { KeypairService } from './keypair.service';
@@ -65,7 +64,8 @@ export class WebsocketService implements OnInit {
 
   public openWebSocket(){
     const userId = this.jwtgetid.getID(); 
-    this.webSocket = new WebSocket(`ws://localhost:8080/chat?${encodeURIComponent(userId)}`);
+    const wsUrl = ENDPOINTS.GETMESSAGE.replace('http', 'ws').replace('/chat-message/get-message/', '/chat');
+    this.webSocket = new WebSocket(`${wsUrl}?token=${encodeURIComponent(userId)}`);
 
     this.webSocket.onopen = async (event) => {
       console.log('Open: ', event);

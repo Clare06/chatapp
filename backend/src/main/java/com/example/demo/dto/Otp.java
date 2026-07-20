@@ -1,7 +1,12 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.*;
+
 public class Otp {
+    @NotBlank
     private String otp;
+    @NotBlank
+    @Email
     private String email;
 
     public String getEmail() {

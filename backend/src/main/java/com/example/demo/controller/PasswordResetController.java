@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.Optional;
 import java.util.UUID;
-@RequestMapping("/forgotpass")
+
 @RestController
-@CrossOrigin(allowedHeaders = "*" ,origins = "*")
+@RequestMapping("/forgotpass")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
 public class PasswordResetController {
 
     @Autowired
@@ -30,7 +32,7 @@ public class PasswordResetController {
 //    private String otp;
 //    private boolean verified = false;
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody ForgotPasswordRequest request) {
+    public ResponseEntity<String> resetPassword(@Valid @RequestBody ForgotPasswordRequest request) {
         // Find the user by email
         Optional<User> user = userService.findUserByEmail(request.getEmail());
 
@@ -49,10 +51,10 @@ public class PasswordResetController {
         return  ResponseEntity.ok("Otp has been sent");
     }
     @PostMapping("/verify-otp")
-    public ResponseEntity<String> verifyOtp(@RequestBody Otp otp){
-            Optional<User> usr=userService.findUserByEmail(otp.getEmail());
+    public ResponseEntity<String> verifyOtp(@Valid @RequestBody Otp request){
+            Optional<User> usr=userService.findUserByEmail(request.getEmail());
 
-        if (otpTableService.verifyOtp(usr.get().getUid(),otp.getOtp())){
+        if (otpTableService.verifyOtp(usr.get().getUid(),request.getOtp())){
 
            return ResponseEntity.ok("Verified");
         }
@@ -61,12 +63,12 @@ public class PasswordResetController {
     }
 
     @PostMapping("/new-pass")
-    public ResponseEntity<String> setNewPass(@RequestBody NewPass newPass){
-            Optional<User> usr=userService.findUserByEmail(newPass.getEmail());
-        if (newPass.getNewPass().equals(newPass.getConfPass()) && otpTableService.verifyOtp(usr.get().getUid(), newPass.getOtp())){
-          Optional<User> user = userService.findUserByEmail(newPass.getEmail());
-          userService.updatePassword(user.get(),newPass.getNewPass());
-          otpTableService.delete(usr.get().getUid(), newPass.getOtp());
+    public ResponseEntity<String> setNewPass(@Valid @RequestBody NewPass request){
+            Optional<User> usr=userService.findUserByEmail(request.getEmail());
+        if (request.getNewPass().equals(request.getConfPass()) && otpTableService.verifyOtp(usr.get().getUid(), request.getOtp())){
+          Optional<User> user = userService.findUserByEmail(request.getEmail());
+          userService.updatePassword(user.get(),request.getNewPass());
+          otpTableService.delete(usr.get().getUid(), request.getOtp());
             return new ResponseEntity(HttpStatus.OK);
         }
         return new  ResponseEntity(HttpStatus.BAD_REQUEST);

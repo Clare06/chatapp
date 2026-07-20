@@ -1,10 +1,17 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.*;
+
 public class NewPass {
+    @NotBlank
     private String newPass;
+    @NotBlank
     private String confPass;
+    @NotBlank
+    @Email
     private String email;
 
+    @NotBlank
     private String otp;
 
     public String getOtp() {

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ENDPOINTS } from 'src/app/endpoints/rest-endpoints';
@@ -15,7 +15,8 @@ import { WebsocketService } from 'src/app/services/websocket.service';
   templateUrl: './chat-message-container.component.html',
   styleUrls: ['./chat-message-container.component.css']
 })
-export class ChatMessageContainerComponent {
+export class ChatMessageContainerComponent implements AfterViewChecked {
+  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 [x: string]: any;
   activeFrien: string = "";
   usrID: string  = "";
@@ -40,6 +41,18 @@ ngOnInit(): void {
     }
   );
 
+}
+
+ngAfterViewChecked() {
+    this.scrollToBottom();
+}
+
+scrollToBottom(): void {
+    try {
+        if (this.myScrollContainer) {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        }
+    } catch(err) { }
 }
 
 shouldShowDate(currentMessage:ChatMessageDto, currentIndex:number): boolean {

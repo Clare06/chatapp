@@ -17,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
-@CrossOrigin(allowedHeaders = "*" ,origins = "*")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
 public class UserController {
     private final UserService userService;
     @Autowired
@@ -40,7 +42,7 @@ public class UserController {
 //            userService.setUser();
             return ResponseEntity.ok(token);
         }
-         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @GetMapping("friend-ids/{id}")
@@ -49,7 +51,7 @@ public class UserController {
         return new ResponseEntity<>(friends,HttpStatus.OK);
     }
     @PostMapping("add-friend-req")
-    public ResponseEntity<String> addReq(@RequestBody SenderReciever senderReciever){
+    public ResponseEntity<String> addReq(@Valid @RequestBody SenderReciever senderReciever){
 
         userService.addFriendReq(senderReciever.getUserid(), senderReciever.getFriendid());
         userService.addSentReq(senderReciever.getUserid(), senderReciever.getFriendid());
@@ -57,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok("Request Sent");
     }
     @PostMapping("add-friend")
-    public ResponseEntity<String> addFrnd(@RequestBody SenderReciever senderReciever){
+    public ResponseEntity<String> addFrnd(@Valid @RequestBody SenderReciever senderReciever){
 
         userService.acceptFriend(senderReciever.getUserid(), senderReciever.getFriendid());
         userService.decReq(senderReciever.getUserid(), senderReciever.getFriendid());
@@ -65,14 +67,14 @@ public class UserController {
         return ResponseEntity.ok("Request Accepted");
     }
     @PutMapping("remove-friend")
-    public ResponseEntity<String> removeFriend(@RequestBody SenderReciever senderReciever){
+    public ResponseEntity<String> removeFriend(@Valid @RequestBody SenderReciever senderReciever){
 
         userService.removeFriend(senderReciever.getUserid(),senderReciever.getFriendid());
 
         return  ResponseEntity.ok("Friend Removed");
     }
     @PutMapping("decline-req")
-    public ResponseEntity<String> decReq(@RequestBody SenderReciever senderReciever){
+    public ResponseEntity<String> decReq(@Valid @RequestBody SenderReciever senderReciever){
 
         userService.decReq(senderReciever.getUserid(),senderReciever.getFriendid());
         userService.remSentReq(senderReciever.getFriendid(),senderReciever.getFriendid());
@@ -152,7 +154,7 @@ public class UserController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@RequestBody com.example.demo.dto.ChangePasswordRequest request) {
+    public ResponseEntity<String> changePassword(@Valid @RequestBody com.example.demo.dto.ChangePasswordRequest request) {
         Optional<User> usr = userService.getUser(request.getUserid());
         if (usr.isPresent()) {
             User user = usr.get();

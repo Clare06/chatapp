@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,18 +25,14 @@ public class JwtUtil {
     @Autowired
     public JwtUtil(UserService userService){this.userService=userService;}
 
-    @Value("${jwt.secret:}")
-    private String secretString;
+    @Value("${jwt.secret}")
+    private String secret;
 
     private Key secretKey;
 
     @PostConstruct
     public void init() {
-        if (secretString == null || secretString.isEmpty()) {
-            this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        } else {
-            this.secretKey = Keys.hmacShaKeyFor(secretString.getBytes());
-        }
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     public Date extractExpiration(String token) {

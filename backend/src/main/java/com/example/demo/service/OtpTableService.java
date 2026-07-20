@@ -35,8 +35,8 @@ public class OtpTableService {
         Optional<OtpTable> otpPresent=otpTableRepository.verifyOtp(uid, otp);
         return otpPresent.isPresent();
     }
-    @Scheduled(fixedDelay = 5000) // Run every 5 Seconds (10 Seconds = 5,000 milliseconds)
-    public void deleteOldData() {
+    @Scheduled(fixedDelay = 300000)
+    public void cleanupOtpTable() {
 
         LocalDateTime fiveMinutesAgo = LocalDateTime.now().minusMinutes(7);
         otpTableRepository.deleteByCreatedTimestampBefore(fiveMinutesAgo);

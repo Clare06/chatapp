@@ -23,7 +23,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry.addHandler(getChatWebSocketHandler(), CHAT_ENDPOINT)
-                .setAllowedOrigins("*");
+                .setAllowedOrigins("http://localhost:4200");
     }
 
     @Bean
