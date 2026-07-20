@@ -1,6 +1,11 @@
-package com.example.demo.otp;
+package com.example.demo.controller;
+import com.example.demo.service.OtpTableService;
+import com.example.demo.service.EmailServiceImpl;
+import com.example.demo.dto.Otp;
+import com.example.demo.dto.NewPass;
+import com.example.demo.dto.ForgotPasswordRequest;
 
-import com.example.demo.entity.User;
+import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

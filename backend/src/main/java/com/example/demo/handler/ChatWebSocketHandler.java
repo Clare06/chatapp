@@ -1,6 +1,6 @@
 package com.example.demo.handler;
 
-import com.example.demo.entity.User;
+import com.example.demo.model.User;
 import com.example.demo.service.MessageService;
 import com.example.demo.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;

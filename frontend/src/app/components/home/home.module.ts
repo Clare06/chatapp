@@ -8,6 +8,7 @@ import { ChatMessageContainerComponent } from '../chat-message-container/chat-me
 import { FriendpopComponent } from '../friendpop/friendpop.component';
 import { NewlineToBrPipe } from '../../services/newline-to-br.pipe';
 import { VerifyEmailPopComponent } from '../verify-email-pop/verify-email-pop.component';
+import { ChangePasswordComponent } from '../change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { VerifyEmailPopComponent } from '../verify-email-pop/verify-email-pop.co
     ChatMessageContainerComponent,
     FriendpopComponent,
     NewlineToBrPipe,
-    VerifyEmailPopComponent
+    VerifyEmailPopComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,

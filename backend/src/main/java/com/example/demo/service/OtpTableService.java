@@ -1,7 +1,10 @@
-package com.example.demo.otp;
+package com.example.demo.service;
+import com.example.demo.repository.OtpTableRepository;
+import com.example.demo.dto.ForgotPasswordRequest;
+import com.example.demo.model.OtpTable;
 
 
-import com.example.demo.entity.User;
+import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

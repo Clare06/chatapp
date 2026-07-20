@@ -1,6 +1,6 @@
-package com.example.demo.jwt;
+package com.example.demo.security;
 
-import com.example.demo.entity.User;
+import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -12,11 +12,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpInterceptorRecieverService } from './services/http-interceptor-reciever.service';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 
-
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { KeystoreComponent } from './components/keystore/keystore.component';
 import { NokeyComponent } from './components/nokey/nokey.component';
-
 
 @NgModule({
   declarations: [
@@ -24,7 +22,7 @@ import { NokeyComponent } from './components/nokey/nokey.component';
     LoginComponent,
     ForgotPasswordComponent,
     KeystoreComponent,
-    NokeyComponent,
+    NokeyComponent
   ],
   imports: [
     BrowserModule,
@@ -35,8 +33,6 @@ import { NokeyComponent } from './components/nokey/nokey.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatSlideToggleModule
-
-
   ],
   providers: [
     {
@@ -49,7 +45,6 @@ import { NokeyComponent } from './components/nokey/nokey.component';
       useClass: HttpInterceptorRecieverService,
       multi   : true,
     }
-
   ],
   bootstrap: [AppComponent]
 })

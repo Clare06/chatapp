@@ -70,7 +70,7 @@
   border-left: 4px solid var(--primary-color);
 }
 
-.add-friend, .logout {
+.add-friend, .logout, .settings {
   position: absolute;
   top: 10px;
   z-index: 10;
@@ -87,10 +87,11 @@
 
 .logout { right: 15px; }
 .add-friend { right: 70px; background-color: var(--secondary-color); }
+.settings { right: 125px; background-color: #3b82f6; }
 
-.add-friend:hover, .logout:hover {
+.add-friend:hover, .logout:hover, .settings:hover {
   transform: scale(1.1);
   box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
 }
 
-.add-friend p, .logout p, .add-friend a, .logout a { margin: 0; padding: 0; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;}
+.add-friend p, .logout p, .settings p, .add-friend a, .logout a, .settings a { margin: 0; padding: 0; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;}

@@ -1,6 +1,6 @@
-package com.example.demo.otp;
+package com.example.demo.model;
 
-import com.example.demo.entity.User;
+import com.example.demo.model.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

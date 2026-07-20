@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.dto;
 
 public class SenderReciever {
     private String userid;

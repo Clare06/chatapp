@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

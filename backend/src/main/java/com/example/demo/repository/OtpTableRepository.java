@@ -1,4 +1,5 @@
-package com.example.demo.otp;
+package com.example.demo.repository;
+import com.example.demo.model.OtpTable;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

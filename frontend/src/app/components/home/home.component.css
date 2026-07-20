@@ -49,10 +49,10 @@
     }
     .chat-list {
         width: 100%;
-        height: 40vh;
+        height: calc(40vh - 15px);
     }
     .chat-message-container {
         width: 100%;
-        height: 60vh;
+        height: calc(60vh - 15px);
     }
 }

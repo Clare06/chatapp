@@ -76,5 +76,13 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.isPopupOpen = false;
   }
 
+  isSettingsOpen = false;
 
+  openSettings() {
+    this.isSettingsOpen = true;
+  }
+
+  closeSettings() {
+    this.isSettingsOpen = false;
+  }
 }

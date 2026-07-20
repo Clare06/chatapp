@@ -1,8 +1,8 @@
-package com.example.demo.otp;
+package com.example.demo.service;
 
 
-import com.example.demo.entity.EmailPri;
-import com.example.demo.entity.User;
+import com.example.demo.dto.EmailPri;
+import com.example.demo.model.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

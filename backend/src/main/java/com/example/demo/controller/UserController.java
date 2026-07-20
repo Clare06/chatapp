@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.EmailPri;
-import com.example.demo.entity.SenderReciever;
-import com.example.demo.entity.User;
-import com.example.demo.jwt.JwtUtil;
-import com.example.demo.otp.EmailServiceImpl;
+import com.example.demo.dto.EmailPri;
+import com.example.demo.dto.SenderReciever;
+import com.example.demo.model.User;
+import com.example.demo.security.JwtUtil;
+import com.example.demo.service.EmailServiceImpl;
 import com.example.demo.service.UserService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,5 +149,25 @@ public class UserController {
             return ResponseEntity.ok(user.get().getEncryptedPrivateKey());
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Key not found");
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody com.example.demo.dto.ChangePasswordRequest request) {
+        Optional<User> usr = userService.getUser(request.getUserid());
+        if (usr.isPresent()) {
+            User user = usr.get();
+            User tempUser = new User();
+            tempUser.setUserid(request.getUserid());
+            tempUser.setPasswordhash(request.getOldPassword());
+            
+            if (userService.auth(tempUser)) {
+                user.setEncryptedPrivateKey(request.getNewEncryptedPrivateKey());
+                userService.updatePassword(user, request.getNewPassword());
+                return ResponseEntity.ok("Password changed successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid old password");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 }
