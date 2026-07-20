@@ -120,6 +120,13 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         Optional<User> sender = userService.getUser(senderId);
         Optional<User> recipient = userService.getUser(recipientId);
 
+        if (userService.isBlocked(senderId, recipientId) || userService.isBlocked(recipientId, senderId)) {
+            // Drop message silently or send error back to sender
+            String errorMsg = String.format("{\"type\":\"ERROR\",\"message\":\"You cannot send messages to this user.\"}");
+            session.sendMessage(new TextMessage(errorMsg));
+            return;
+        }
+
         String content = jsonNode.get("message").asText();
         String contentToSender = jsonNode.get("senderMessage").asText();
 

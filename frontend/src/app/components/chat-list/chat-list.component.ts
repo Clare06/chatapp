@@ -83,9 +83,15 @@ export class ChatListComponent implements OnInit, OnDestroy {
 
   isSettingsOpen = false;
 
+  @Output() friendSelectedEvent = new EventEmitter<string>();
   @Output() openSettingsEvent = new EventEmitter<void>();
+  @Output() openProfileEvent = new EventEmitter<void>();
 
   openSettings() {
     this.openSettingsEvent.emit();
+  }
+
+  openProfile() {
+    this.openProfileEvent.emit();
   }
 }

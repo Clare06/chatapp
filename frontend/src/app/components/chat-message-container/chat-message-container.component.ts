@@ -24,11 +24,15 @@ export class ChatMessageContainerComponent implements AfterViewChecked {
   friendKeys:any;
   message: any;
   lastTypingTime: number = 0;
+  searchQuery: string = "";
+  blockedUsers: string[] = [];
+  isBlockedByMe: boolean = false;
   constructor(public webSocketService: WebsocketService, public jwtdeco:JwtService,
      private http:HttpClient, private router:Router,
      private shared:SharedService) {
       this.shared.triggerFunction$.subscribe((event) => {
         this.activeFrien=event.value;
+        this.checkIfBlocked();
         this.ngOnInit();
     });
 }
@@ -41,6 +45,40 @@ ngOnInit(): void {
     }
   );
 
+  this.loadBlockedUsers();
+}
+
+loadBlockedUsers() {
+  this.http.get<string[]>(ENDPOINTS.GET_BLOCKED + this.usrID).subscribe({
+    next: (data) => {
+      this.blockedUsers = data;
+      this.checkIfBlocked();
+    }
+  });
+}
+
+checkIfBlocked() {
+  this.isBlockedByMe = this.blockedUsers.includes(this.activeFrien);
+}
+
+blockUser() {
+  if (confirm(`Are you sure you want to block ${this.activeFrien}? You won't receive messages from them.`)) {
+    this.http.post(ENDPOINTS.BLOCK_USER, { userid: this.usrID, friendid: this.activeFrien }, { responseType: 'text' }).subscribe({
+      next: () => {
+        this.loadBlockedUsers();
+      }
+    });
+  }
+}
+
+unblockUser() {
+  if (confirm(`Are you sure you want to unblock ${this.activeFrien}?`)) {
+    this.http.post(ENDPOINTS.UNBLOCK_USER, { userid: this.usrID, friendid: this.activeFrien }, { responseType: 'text' }).subscribe({
+      next: () => {
+        this.loadBlockedUsers();
+      }
+    });
+  }
 }
 
 ngAfterViewChecked() {
@@ -55,12 +93,12 @@ scrollToBottom(): void {
     } catch(err) { }
 }
 
-shouldShowDate(currentMessage:ChatMessageDto, currentIndex:number): boolean {
+shouldShowDate(currentMessage:ChatMessageDto, currentIndex:number, allMessages: ChatMessageDto[]): boolean {
   if (currentIndex === 0) {
     return true;
   }
   const currentMessageDate = this.getDatePart(currentMessage.timestamp);
-  const previousMessage = this.webSocketService.filterChatMessages()[currentIndex - 1];
+  const previousMessage = allMessages[currentIndex - 1];
   const previousMessageDate = this.getDatePart(previousMessage.timestamp);
 
 
@@ -161,6 +199,22 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
   formatDate(date: Date): string {
     const datePipe = new DatePipe('en-US');
     return datePipe.transform(date, 'yyyy-MM-dd HH:mm:ss.SSS')!;
+  }
+
+  getFilteredMessages(): ChatMessageDto[] {
+      let msgs = this.webSocketService.filterChatMessages();
+      if (this.searchQuery && this.searchQuery.trim() !== "") {
+          const lowerQuery = this.searchQuery.toLowerCase();
+          msgs = msgs.filter(msg => {
+              if (msg.deleted) return false;
+              if (msg.user === this.usrID) {
+                  return msg.senderMessage?.toLowerCase().includes(lowerQuery);
+              } else {
+                  return msg.message?.toLowerCase().includes(lowerQuery);
+              }
+          });
+      }
+      return msgs;
   }
 
   async importPublicKeyFromPEM(pemPublicKey: string): Promise<CryptoKey> {

@@ -19,5 +19,10 @@ export const ENDPOINTS = {
   SENDEMAIL:`${root}/send-email`,
   GET_ENCRYPTED_KEY:`${root}/get-encrypted-key/`,
   CHANGE_PASSWORD: `${root}/change-password`,
-  DELETEMESSAGE:`${root}/messages`
+  DELETEMESSAGE:`${root}/messages`,
+  GET_PROFILE: `${root}/profile/`,
+  UPDATE_PROFILE: `${root}/profile`,
+  BLOCK_USER: `${root}/block`,
+  UNBLOCK_USER: `${root}/unblock`,
+  GET_BLOCKED: `${root}/blocked/`
 }

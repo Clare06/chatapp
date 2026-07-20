@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.EmailPri;
 import com.example.demo.dto.SenderReciever;
+import com.example.demo.dto.UserProfileRequest;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.EmailServiceImpl;
@@ -171,5 +172,56 @@ public class UserController {
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }
+
+    @GetMapping("/profile/{userid}")
+    public ResponseEntity<Map<String, String>> getProfile(@PathVariable("userid") String userid) {
+        Optional<User> user = userService.getUser(userid);
+        if (user.isPresent()) {
+            Map<String, String> profile = new java.util.HashMap<>();
+            profile.put("userid", user.get().getUserid());
+            profile.put("username", user.get().getUsername());
+            profile.put("email", user.get().getEmail());
+            profile.put("publickey", user.get().getPublicKey());
+            return ResponseEntity.ok(profile);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<String> updateProfile(@Valid @RequestBody UserProfileRequest request) {
+        Optional<User> usr = userService.getUser(request.getUserid());
+        if (usr.isPresent()) {
+            // Check if email already belongs to someone else
+            Optional<User> byEmail = userService.findUserByEmail(request.getEmail());
+            if (byEmail.isPresent() && !byEmail.get().getUserid().equals(request.getUserid())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already taken");
+            }
+            userService.updateProfile(request.getUserid(), request.getUsername(), request.getEmail());
+            
+            // Generate a fresh JWT with the updated username
+            User updatedUser = userService.getUser(request.getUserid()).get();
+            String token = jwtUtil.generateToken(updatedUser);
+            return ResponseEntity.ok(token);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }
+
+    @PostMapping("/block")
+    public ResponseEntity<String> blockUser(@Valid @RequestBody SenderReciever request) {
+        userService.blockUser(request.getUserid(), request.getFriendid());
+        return ResponseEntity.ok("User blocked");
+    }
+
+    @PostMapping("/unblock")
+    public ResponseEntity<String> unblockUser(@Valid @RequestBody SenderReciever request) {
+        userService.unblockUser(request.getUserid(), request.getFriendid());
+        return ResponseEntity.ok("User unblocked");
+    }
+
+    @GetMapping("/blocked/{userid}")
+    public ResponseEntity<List<String>> getBlockedUsers(@PathVariable("userid") String userid) {
+        List<String> blockedUsers = userService.getBlockedUsers(userid);
+        return ResponseEntity.ok(blockedUsers);
     }
 }

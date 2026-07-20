@@ -1,7 +1,6 @@
-
 <div class="home-container">
   <div class="chat-list">
-      <app-chat-list (openSettingsEvent)="openSettings()"></app-chat-list>
+      <app-chat-list (openSettingsEvent)="openSettings()" (openProfileEvent)="openProfile()"></app-chat-list>
   </div>
   <div class="chat-message-container">
       <app-chat-message-container></app-chat-message-container>
@@ -12,3 +11,6 @@
 
 <app-change-password *ngIf="isSettingsOpen" (close)="closeSettings()">
 </app-change-password>
+
+<app-user-profile *ngIf="isProfileOpen" (close)="closeProfile()">
+</app-user-profile>

@@ -9,6 +9,7 @@ import { FriendpopComponent } from '../friendpop/friendpop.component';
 import { NewlineToBrPipe } from '../../services/newline-to-br.pipe';
 import { VerifyEmailPopComponent } from '../verify-email-pop/verify-email-pop.component';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
+import { UserProfileComponent } from '../user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ChangePasswordComponent } from '../change-password/change-password.comp
     FriendpopComponent,
     NewlineToBrPipe,
     VerifyEmailPopComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,

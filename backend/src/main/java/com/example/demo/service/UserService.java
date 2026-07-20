@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -144,6 +145,54 @@ public class UserService {
         String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
         user.setPasswordhash(encodedPassword);
         userRepo.save(user);
+    }
+
+    public void updateProfile(String userid, String username, String email) {
+        Optional<User> usr = userRepo.findByUserId(userid);
+        if(usr.isPresent()){
+            User user = usr.get();
+            user.setUsername(username);
+            user.setEmail(email);
+            userRepo.save(user);
+        }
+    }
+
+    public void blockUser(String userid, String targetid) {
+        Optional<User> userOpt = userRepo.findByUserId(userid);
+        Optional<User> targetOpt = userRepo.findByUserId(targetid);
+        if (userOpt.isPresent() && targetOpt.isPresent()) {
+            User user = userOpt.get();
+            User target = targetOpt.get();
+            user.addBlockedUser(target);
+            userRepo.save(user);
+        }
+    }
+
+    public void unblockUser(String userid, String targetid) {
+        Optional<User> userOpt = userRepo.findByUserId(userid);
+        Optional<User> targetOpt = userRepo.findByUserId(targetid);
+        if (userOpt.isPresent() && targetOpt.isPresent()) {
+            User user = userOpt.get();
+            User target = targetOpt.get();
+            user.removeBlockedUser(target);
+            userRepo.save(user);
+        }
+    }
+
+    public List<String> getBlockedUsers(String userid) {
+        Optional<User> userOpt = userRepo.findByUserId(userid);
+        if (userOpt.isPresent()) {
+            return userOpt.get().getBlockedUsers().stream().map(User::getUserid).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+    
+    public boolean isBlocked(String senderId, String receiverId) {
+        Optional<User> receiverOpt = userRepo.findByUserId(receiverId);
+        if (receiverOpt.isPresent()) {
+            return receiverOpt.get().getBlockedUsers().stream().anyMatch(u -> u.getUserid().equals(senderId));
+        }
+        return false;
     }
     public Optional<User> userWithToken(String token){
         Optional<User> user = userRepo.findByToken(token);

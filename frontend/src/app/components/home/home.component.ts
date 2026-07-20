@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
    }
 
   isSettingsOpen = false;
+  isProfileOpen = false;
 
   openSettings() {
     this.isSettingsOpen = true;
@@ -53,5 +54,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   closeSettings() {
     this.isSettingsOpen = false;
+  }
+  
+  openProfile() {
+    this.isProfileOpen = true;
+  }
+  
+  closeProfile() {
+    this.isProfileOpen = false;
   }
 }

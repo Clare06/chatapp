@@ -102,6 +102,27 @@ public class User implements Serializable {
     )
     private List<User> sentRequests = new ArrayList<>();
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_blocked",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "blocked_id")
+    )
+    private List<User> blockedUsers = new ArrayList<>();
+
+    public List<User> getBlockedUsers() {
+        return blockedUsers;
+    }
+    public void addBlockedUser(User user) {
+        if (!blockedUsers.contains(user)) {
+            blockedUsers.add(user);
+        }
+    }
+    public void removeBlockedUser(User user) {
+        blockedUsers.remove(user);
+    }
+
     public List<User> getSentRequests() {
         return sentRequests;
     }
