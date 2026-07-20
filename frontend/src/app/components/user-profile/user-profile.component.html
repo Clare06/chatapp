@@ -31,6 +31,7 @@
 
         <div class="actions">
           <button type="button" class="btn btn-secondary" *ngIf="!isEditing" (click)="toggleEdit()">Edit Profile</button>
+          <button type="button" class="btn btn-secondary" style="background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.5); color: #818cf8;" *ngIf="!isEditing" (click)="openSettings()">Change Password</button>
           
           <ng-container *ngIf="isEditing">
             <button type="button" class="btn btn-cancel" (click)="toggleEdit()" [disabled]="isSaving">Cancel</button>

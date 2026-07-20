@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class UserProfileComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
+  @Output() openSettingsEvent = new EventEmitter<void>();
 
   profile: any = {
     userid: '',
@@ -54,6 +55,11 @@ export class UserProfileComponent implements OnInit {
     this.isEditing = !this.isEditing;
     this.successMsg = '';
     this.errorMsg = '';
+  }
+
+  openSettings() {
+    this.close.emit();
+    this.openSettingsEvent.emit();
   }
 
   saveProfile() {

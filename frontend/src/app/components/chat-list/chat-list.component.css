@@ -1,122 +1,223 @@
-.profile {
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   width: 100%;
-  height: 70px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background: var(--bg-panel);
+  border-right: 1px solid var(--glass-border);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.user-info {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding-left: 20px;
-  font-size: 1.5rem;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.user-info:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.user-name {
+  font-size: 1.05rem;
   font-weight: 600;
   color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.search {
-  margin: 15px auto;
-  width: 90%;
-  height: 45px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
+.sidebar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 0;
 }
 
-.search input {
-  padding: 0 15px;
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  background-color: transparent;
+.action-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ef4444;
   color: white;
-  font-size: 1rem;
+  font-size: 10px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-panel);
 }
 
-.search input::placeholder {
+.search-bar {
+  padding: 15px;
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-secondary);
 }
 
-.list {
+.search-input-container input {
   width: 100%;
-  height: calc(100% - 130px);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 10px 10px 10px 36px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.search-input-container input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.friends-list {
+  flex: 1;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
+  padding: 0 10px 10px 10px;
 }
 
-.list div {
-  width: 100%;
-  height: 70px;
+.friend-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  color: var(--text-primary);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 1.1rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.list div:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 12px;
+  border-radius: 12px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 4px;
+  position: relative;
 }
 
-.active {
-  background: linear-gradient(90deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.05) 100%) !important;
-  border-left: 4px solid var(--primary-color);
+.friend-item:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.add-friend, .logout, .settings {
-  position: absolute;
-  top: 10px;
-  z-index: 10;
-  width: 45px;
-  height: 45px;
+.friend-item.active {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.15), transparent);
+  border-left: 3px solid var(--primary-color);
+}
+
+.friend-avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  position: relative;
+  margin-right: 12px;
 }
 
-.logout { right: 15px; }
-.add-friend { right: 70px; background-color: var(--secondary-color); }
-.settings { right: 125px; background-color: #3b82f6; }
-
-.add-friend:hover, .logout:hover, .settings:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);
-}
-
-.add-friend p, .logout p, .settings p, .add-friend a, .logout a, .settings a { margin: 0; padding: 0; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;}
-
-.presence-dot {
+.presence-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #6b7280; /* gray for offline */
-  display: inline-block;
-  transition: background-color 0.3s ease;
+  background: #64748b;
+  border: 2px solid var(--bg-panel);
 }
 
-.presence-dot.online {
-  background-color: #10b981; /* green for online */
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+.presence-indicator.online {
+  background: #10b981;
+}
+
+.friend-details {
+  flex: 1;
+}
+
+.friend-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
 }
 
 .unread-badge {
-  background-color: var(--primary-color, #6366f1);
+  background: var(--primary-color);
   color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px 6px;
   border-radius: 12px;
-  padding: 2px 8px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin-right: 15px;
-  box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 2px 5px rgba(99, 102, 241, 0.3);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-state svg {
+  margin-bottom: 15px;
 }

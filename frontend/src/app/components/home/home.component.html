@@ -12,5 +12,5 @@
 <app-change-password *ngIf="isSettingsOpen" (close)="closeSettings()">
 </app-change-password>
 
-<app-user-profile *ngIf="isProfileOpen" (close)="closeProfile()">
+<app-user-profile *ngIf="isProfileOpen" (close)="closeProfile()" (openSettingsEvent)="openSettings()">
 </app-user-profile>
