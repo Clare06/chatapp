@@ -19,4 +19,5 @@ export const ENDPOINTS = {
   SENDEMAIL:`${root}/send-email`,
   GET_ENCRYPTED_KEY:`${root}/get-encrypted-key/`,
   CHANGE_PASSWORD: `${root}/change-password`,
+  DELETEMESSAGE:`${root}/messages`
 }

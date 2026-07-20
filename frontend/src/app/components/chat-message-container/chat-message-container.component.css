@@ -254,3 +254,17 @@
   margin-left: 5px;
   color: var(--success-color);
 }
+
+.message-text .delete-btn {
+  position: absolute;
+  top: 5px;
+  left: -25px;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.message-text:hover .delete-btn {
+  opacity: 1;
+}

@@ -133,6 +133,21 @@ async encryptMessage(message: string, recipientPublicKey: string): Promise<strin
   }
   }
 
+  deleteMessage(msg: ChatMessageDto) {
+    if (confirm("Are you sure you want to delete this message?")) {
+      this.http.delete(`${ENDPOINTS.DELETEMESSAGE}/${msg.id}/${this.jwtdeco.getID()}`, { responseType: 'text' }).subscribe({
+         next: () => {
+             msg.deleted = true;
+             const deleteNotice = new ChatMessageDto(this.usrID, "", "", this.activeFrien, true, new Date().toISOString(), 'DELETE', false, msg.id);
+             this.webSocketService.sendMessage(deleteNotice);
+         },
+         error: (err) => {
+             console.error('Failed to delete', err);
+         }
+      });
+    }
+  }
+
   onTyping() {
     const now = Date.now();
     if (now - this.lastTypingTime > 1500 && this.activeFrien) {

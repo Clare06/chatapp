@@ -41,11 +41,24 @@ public class MessageService {
         List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
 
         for (Message msg : messages) {
-            ChatMessageDto chat = new ChatMessageDto(msg.getSender().getUserid(), msg.getContentToSender(), msg.getContentToReceiver(), msg.getReceiver().getUserid(), msg.isRead(),msg.getTimestamp());
+            ChatMessageDto chat = new ChatMessageDto(msg.getMessageId(), msg.getSender().getUserid(), msg.getContentToSender(), msg.getContentToReceiver(), msg.getReceiver().getUserid(), msg.isRead(), msg.getTimestamp(), msg.isDeleted());
             chatMessageDtos.add(chat);
         }
 
         return chatMessageDtos;
+    }
+
+    public boolean deleteMessage(Integer messageId, String userId) {
+        Optional<Message> messageOpt = messageRepository.findById(messageId);
+        if (messageOpt.isPresent()) {
+            Message message = messageOpt.get();
+            if (message.getSender().getUserid().equals(userId)) {
+                message.setDeleted(true);
+                messageRepository.save(message);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

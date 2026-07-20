@@ -34,6 +34,9 @@ public class Message implements Serializable {
     @Column(name = "is_direct", columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDirect;
 
+    @Column(name = "is_deleted", columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isDeleted;
+
     public Message(User sender,String contentToSender, String contentToReceiver, User receiver ) {
         this.sender = sender;
         this.receiver = receiver;
@@ -102,5 +105,13 @@ public class Message implements Serializable {
 
     public void setRead(boolean read) {
         isRead = read;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

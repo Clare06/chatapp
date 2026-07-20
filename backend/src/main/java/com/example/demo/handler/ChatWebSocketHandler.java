@@ -48,9 +48,47 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         try {
             String userid = jwtUtil.extractClaim(token, claims -> claims.get("userid", String.class));
             userSessions.put(userid, session);
+            session.getAttributes().put("userid", userid);
+            
+            broadcastPresence(userid, true);
+            sendOnlineFriends(userid, session);
         } catch (Exception e) {
             session.close(CloseStatus.NOT_ACCEPTABLE);
         }
+    }
+
+    private void broadcastPresence(String userid, boolean online) {
+        List<String> friends = userService.getFriends(userid);
+        if (friends == null) return;
+        String status = online ? "ONLINE" : "OFFLINE";
+        String messagePayload = String.format("{\"type\":\"PRESENCE\",\"user\":\"%s\",\"status\":\"%s\"}", userid, status);
+        TextMessage message = new TextMessage(messagePayload);
+        
+        for (String friendId : friends) {
+            WebSocketSession friendSession = userSessions.get(friendId);
+            if (friendSession != null && friendSession.isOpen()) {
+                try {
+                    friendSession.sendMessage(message);
+                } catch (Exception e) {}
+            }
+        }
+    }
+
+    private void sendOnlineFriends(String userid, WebSocketSession session) {
+        List<String> friends = userService.getFriends(userid);
+        if (friends == null) return;
+        List<String> onlineFriends = new ArrayList<>();
+        for (String friendId : friends) {
+            if (userSessions.containsKey(friendId) && userSessions.get(friendId).isOpen()) {
+                onlineFriends.add(friendId);
+            }
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String onlineFriendsJson = mapper.writeValueAsString(onlineFriends);
+            String messagePayload = String.format("{\"type\":\"PRESENCE_LIST\",\"onlineUsers\":%s}", onlineFriendsJson);
+            session.sendMessage(new TextMessage(messagePayload));
+        } catch (Exception e) {}
     }
 
     @Override
@@ -65,8 +103,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         WebSocketSession targetSession= userSessions.get(recipientId);
 
-        if ("TYPING".equals(type) || "READ".equals(type)) {
-            // Just forward TYPING and READ events directly to the recipient if they are online
+        if ("TYPING".equals(type) || "READ".equals(type) || "DELETE".equals(type)) {
+            // Just forward TYPING, READ, and DELETE events directly to the recipient if they are online
             if (targetSession != null) {
                 targetSession.sendMessage(message);
             }
@@ -94,10 +132,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     }
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        URI uri = session.getUri();
-        String query = uri.getQuery();
-        String decodedQuery = URLDecoder.decode(query, StandardCharsets.UTF_8.name());
-        userSessions.remove(decodedQuery);
+        String userid = (String) session.getAttributes().get("userid");
+        if (userid != null) {
+            userSessions.remove(userid);
+            broadcastPresence(userid, false);
+        }
     }
 }
 

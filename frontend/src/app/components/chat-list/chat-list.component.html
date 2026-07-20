@@ -8,8 +8,14 @@
 </div>
 
 <div class="list">
-  <div *ngFor="let friend of filteredFriends" (click)="textTo(friend)" [ngClass]="{active: activeFrien==friend}">
-    <strong>{{ friend }}</strong>
+  <div *ngFor="let friend of filteredFriends" (click)="textTo(friend)" [ngClass]="{active: activeFrien==friend}" style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span class="presence-dot" [class.online]="(webSocketService.onlineFriends$ | async)?.has(friend)"></span>
+      <strong>{{ friend }}</strong>
+    </div>
+    <div class="unread-badge" *ngIf="(webSocketService.unreadCounts$ | async)?.get(friend)">
+      {{ (webSocketService.unreadCounts$ | async)?.get(friend) }}
+    </div>
   </div>
   <div *ngIf="filteredFriends.length === 0" style="color: var(--text-secondary); text-align: center; padding: 20px;">
     No friends yet. Click the + button to add friends!

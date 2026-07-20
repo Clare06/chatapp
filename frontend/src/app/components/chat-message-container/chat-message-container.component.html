@@ -16,12 +16,19 @@
           </div>
       </div>
       <div *ngIf="chatMessage.user != jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
-       <div [innerHTML]="chatMessage.message | newlineToBr">{{chatMessage.message | newlineToBr}}</div>
+       <div *ngIf="!chatMessage.deleted" [innerHTML]="chatMessage.message | newlineToBr"></div>
+       <div *ngIf="chatMessage.deleted" style="font-style: italic; color: rgba(255,255,255,0.5);">This message was deleted</div>
        <p class="time lt">{{ chatMessage.timestamp | date:'h:mm a' }}
       </div>
 
-      <div *ngIf="chatMessage.user == jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
-       <div [innerHTML]="chatMessage.senderMessage | newlineToBr"> {{chatMessage.senderMessage | newlineToBr}}</div>
+      <div *ngIf="chatMessage.user == jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}" style="position: relative;" (mouseenter)="chatMessage.showDelete = true" (mouseleave)="chatMessage.showDelete = false">
+        
+        <div *ngIf="chatMessage.showDelete && !chatMessage.deleted" class="delete-btn" (click)="deleteMessage(chatMessage)">
+           🗑️
+        </div>
+
+       <div *ngIf="!chatMessage.deleted" [innerHTML]="chatMessage.senderMessage | newlineToBr"></div>
+       <div *ngIf="chatMessage.deleted" style="font-style: italic; color: rgba(255,255,255,0.5);">This message was deleted</div>
        <p class="time">{{ chatMessage.timestamp | date:'h:mm a' }}
          <span class="read-receipt" *ngIf="chatMessage.read">✓✓</span>
          <span class="read-receipt" style="color: rgba(255,255,255,0.7);" *ngIf="!chatMessage.read">✓</span>

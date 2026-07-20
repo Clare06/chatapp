@@ -30,5 +30,18 @@ public class MessageController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @DeleteMapping("/{messageId}/{userId}")
+    public ResponseEntity<String> deleteMessage(@PathVariable("messageId") Integer messageId, @PathVariable("userId") String userId) {
+        try {
+            boolean success = messageService.deleteMessage(messageId, userId);
+            if (success) {
+                return ResponseEntity.ok("Message deleted");
+            }
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to delete this message");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }

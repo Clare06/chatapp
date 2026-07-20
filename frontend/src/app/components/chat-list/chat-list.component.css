@@ -95,3 +95,28 @@
 }
 
 .add-friend p, .logout p, .settings p, .add-friend a, .logout a, .settings a { margin: 0; padding: 0; color: white; display: flex; align-items: center; justify-content: center; text-decoration: none;}
+
+.presence-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #6b7280; /* gray for offline */
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.presence-dot.online {
+  background-color: #10b981; /* green for online */
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.unread-badge {
+  background-color: var(--primary-color, #6366f1);
+  color: white;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-right: 15px;
+  box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+}
