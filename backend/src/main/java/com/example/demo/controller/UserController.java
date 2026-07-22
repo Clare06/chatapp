@@ -108,6 +108,10 @@ public class UserController {
         if (usr.isPresent()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("UserID already available");
         }
+        Optional<User> byEmail = userService.findUserByEmail(user.getEmail());
+        if (byEmail.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already taken");
+        }
         String token= jwtUtil.generateSignUpToken(user);
 //        String token= "hey bro";
         user.setTempToken(token);

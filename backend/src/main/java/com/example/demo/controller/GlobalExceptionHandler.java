@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -44,6 +45,15 @@ public class GlobalExceptionHandler {
         error.put("error", "Bad request");
         error.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        log.warn("Data integrity violation: {}", ex.getMessage());
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Conflict");
+        error.put("message", "A record with these details already exists.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ExceptionHandler(Exception.class)

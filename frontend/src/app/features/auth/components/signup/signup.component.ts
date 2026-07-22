@@ -94,8 +94,8 @@ export class SignupComponent implements OnInit {
           error: (error) => {
             this.message = null;
             this.signClicked = false;
-            if (error.status === 400) {
-              this.errorMes = error.error;
+            if (error.status === 400 || error.status === 409) {
+              this.errorMes = typeof error.error === 'string' ? error.error : error.error?.message || "An error occurred";
             } else {
               this.errorMes = "Server Error";
             }
