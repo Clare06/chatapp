@@ -70,10 +70,12 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.shared.triggerFunction(userId,this.chat);
    }
    logout(){
-    localStorage.removeItem('token');
-    this.router.navigate(["/login"]).then(()=>{
-      window.location.reload();
-    })
+    if (confirm("Are you sure you want to log out? Local messages may be cleared.")) {
+      localStorage.removeItem('token');
+      this.router.navigate(["/login"]).then(()=>{
+        window.location.reload();
+      })
+    }
   }
 
 

@@ -83,9 +83,15 @@ public class UserService {
         usr.remFrdReq(requester);
         userRepo.save(usr);
     }
-    public List<String> getFReq(String userid) {
+    public List<Map<String, String>> getFReq(String userid) {
         Optional<User> user = userRepo.findByUserId(userid);
-        List<String> req = user.get().getFriendRequests().stream().map(User::getUserid).collect(Collectors.toList());
+        List<Map<String, String>> req = user.get().getFriendRequests().stream().map(u -> {
+            Map<String, String> map = new java.util.HashMap<>();
+            map.put("userid", u.getUserid());
+            map.put("username", u.getUsername());
+            map.put("email", u.getEmail());
+            return map;
+        }).collect(Collectors.toList());
         return req;
     }
 

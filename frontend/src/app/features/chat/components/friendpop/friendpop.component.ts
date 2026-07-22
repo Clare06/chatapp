@@ -27,7 +27,7 @@ export class FriendpopComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() friendReqs: EventEmitter<any> = new EventEmitter();
 
-  friendReq: string[] = [];
+  friendReq: any[] = [];
   usrID: string = "";
   mess:string="";
   searchQuery: string = '';
@@ -44,7 +44,7 @@ export class FriendpopComponent implements OnInit {
   }
   ngOnInit(): void {
     this.usrID = this.jwt.getID();
-    this.http.get<string[]>(ENDPOINTS.GETREQ+this.usrID).subscribe(
+    this.http.get<any[]>(ENDPOINTS.GETREQ+this.usrID).subscribe(
       (data) => {
         this.friendReq = data;
         this.reqsAvailable= this.friendReq.length > 0;

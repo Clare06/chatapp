@@ -84,8 +84,8 @@ public class UserController {
         return ResponseEntity.ok("Declined");
     }
     @GetMapping("get-req/{id}")
-    public ResponseEntity<List<String>> getReq(@PathVariable("id") String id){
-        List<String> reqList= userService.getFReq(id);
+    public ResponseEntity<List<Map<String, String>>> getReq(@PathVariable("id") String id){
+        List<Map<String, String>> reqList = userService.getFReq(id);
         return new ResponseEntity<>(reqList,HttpStatus.OK);
     }
 
