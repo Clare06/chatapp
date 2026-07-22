@@ -71,18 +71,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.shared.triggerFunction(friend, this.chat);
    }
    logout() {
-     this.showLogoutConfirm = true;
-   }
-
-   confirmLogout() {
-      localStorage.removeItem('token');
-      this.router.navigate(["/login"]).then(()=>{
-        window.location.reload();
-      })
-   }
-
-   cancelLogout() {
-     this.showLogoutConfirm = false;
+     this.logoutEvent.emit();
    }
 
 
@@ -101,6 +90,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   isSettingsOpen = false;
 
   @Output() friendSelectedEvent = new EventEmitter<string>();
+  @Output() logoutEvent = new EventEmitter<void>();
   @Output() openSettingsEvent = new EventEmitter<void>();
   @Output() openProfileEvent = new EventEmitter<void>();
 

@@ -55,14 +55,3 @@
 
 <app-friendpop [isOpen]="isPopupOpen" (close)="closePopup()" (friendReqs)="onFriendRequest($event)">
 </app-friendpop>
-
-<div class="modal-overlay" *ngIf="showLogoutConfirm">
-  <div class="modal-content glass-panel">
-    <h3>Confirm Logout</h3>
-    <p>Are you sure you want to log out?</p>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" (click)="cancelLogout()">Cancel</button>
-      <button class="btn btn-danger" (click)="confirmLogout()">Log Out</button>
-    </div>
-  </div>
-</div>

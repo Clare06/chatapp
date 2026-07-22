@@ -76,4 +76,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   closeProfile() {
     this.isProfileOpen = false;
   }
+
+  showLogoutConfirm = false;
+
+  openLogoutConfirm() {
+    this.showLogoutConfirm = true;
+  }
+
+  confirmLogout() {
+    localStorage.removeItem('token');
+    this.router.navigate(["/login"]).then(()=>{
+      window.location.reload();
+    })
+  }
+
+  cancelLogout() {
+    this.showLogoutConfirm = false;
+  }
 }
