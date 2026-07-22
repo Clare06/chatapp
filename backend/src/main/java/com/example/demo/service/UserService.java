@@ -45,6 +45,18 @@ public class UserService {
         List<String> friends = usr.getFriends().stream().map(User::getUserid).collect(Collectors.toList());
         return friends;
     }
+    
+    public List<Map<String, String>> getFriendsDetails(String userid) {
+        Optional<User> user= userRepo.findByUserId(userid);
+        User usr = user.get();
+        return usr.getFriends().stream().map(u -> {
+            Map<String, String> map = new java.util.HashMap<>();
+            map.put("userid", u.getUserid());
+            map.put("username", u.getUsername());
+            map.put("email", u.getEmail());
+            return map;
+        }).collect(Collectors.toList());
+    }
     public void acceptFriend(String userid, String friendid){
         Optional<User> user = userRepo.findByUserId(userid);
         User usr= user.get();

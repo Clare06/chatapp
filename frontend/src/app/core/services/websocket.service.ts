@@ -34,19 +34,25 @@ export class WebsocketService implements OnInit {
   unreadCounts: Map<string, number> = new Map<string, number>();
   unreadCounts$: BehaviorSubject<Map<string, number>> = new BehaviorSubject<Map<string, number>>(new Map());
 
+  friendReqUpdates$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private router:Router ,private http:HttpClient,private jwtgetid:JwtService, private shared:SharedService,private jwtdeco:JwtService, private key:KeypairService, private ngZone: NgZone) {
      this.shared.triggerFunction$.subscribe((event) => {
-      this.activeFrien=event.value;
-      const currentUnread = new Map(this.unreadCounts);
-      if (currentUnread.has(this.activeFrien)) {
-          currentUnread.delete(this.activeFrien);
-          this.unreadCounts = currentUnread;
-          this.unreadCounts$.next(this.unreadCounts);
+      this.activeFrien = event.value.userid ? event.value.userid : event.value;
+      if (this.activeFrien) {
+        this.unreadCounts.set(this.activeFrien, 0);
+        this.unreadCounts$.next(new Map(this.unreadCounts));
       }
      })
-     this.userID=jwtdeco.getID();
-     this.pubKey=this.jwtdeco.getPubKey();
+  }
 
+  ngOnInit(): void {
+  }
+
+  public loadMessages() {
+     this.userID=this.jwtdeco.getID();
+     this.pubKey=this.jwtdeco.getPubKey();
+     
     this.http.get<ChatMessageDto[]>(ENDPOINTS.GETMESSAGE + this.jwtdeco.getID()).subscribe(async (data) => {
       const serverData = data;
       this.chatMessages = await Promise.all(serverData.map(async (item) => {
@@ -80,14 +86,10 @@ export class WebsocketService implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
-
   public openWebSocket(){
     this.isIntentionalClose = false;
-    const token = localStorage.getItem('token') || ''; 
-    const wsUrl = environment.apiUrl.replace('http', 'ws') + '/chat';
-    this.webSocket = new WebSocket(`${wsUrl}?token=${encodeURIComponent(token)}`);
+    const token = this.jwtgetid.getToken();
+    this.webSocket = new WebSocket(`${environment.wsUrl}/chat?token=${token}`);
 
     this.webSocket.onopen = async (event) => {
       console.log('Open: ', event);
@@ -95,6 +97,8 @@ export class WebsocketService implements OnInit {
       if(!this.key.sessionPrivateKey){
           // If they refresh the page, their JWT logs them in but they lost the RAM key.
           this.router.navigate(['/nokey']).then(() => {});
+      } else {
+          this.loadMessages();
       }
     };
 
@@ -141,6 +145,11 @@ export class WebsocketService implements OnInit {
       if (chatMessageDto.type === 'DELETE') {
          const msg = this.chatMessages.find(m => m.id === chatMessageDto.id);
          if (msg) msg.deleted = true;
+         return;
+      }
+
+      if (chatMessageDto.type === 'FRIEND_REQ' || chatMessageDto.type === 'FRIEND_ACCEPT') {
+         this.friendReqUpdates$.next(true);
          return;
       }
 

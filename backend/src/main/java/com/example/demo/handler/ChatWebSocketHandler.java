@@ -145,5 +145,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             broadcastPresence(userid, false);
         }
     }
+
+    public void sendNotification(String targetUserId, String type, Object data) {
+        WebSocketSession session = userSessions.get(targetUserId);
+        if (session != null && session.isOpen()) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonData = mapper.writeValueAsString(data);
+                String messagePayload = String.format("{\"type\":\"%s\",\"data\":%s}", type, jsonData);
+                session.sendMessage(new TextMessage(messagePayload));
+            } catch (Exception e) {}
+        }
+    }
 }
 

@@ -24,7 +24,7 @@ import { WebsocketService } from 'src/app/core/services/websocket.service';
   styleUrls: ['./chat-list.component.css']
 })
 export class ChatListComponent implements OnInit, OnDestroy {
-  friendList: string[] = [];
+  friendList: any[] = [];
   usrID: string | null = null;
   activeFrien: string = "";
   chat: ChatMessageDto[] = [];
@@ -33,11 +33,11 @@ export class ChatListComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   username: string = '';
 
-  get filteredFriends(): string[] {
+  get filteredFriends(): any[] {
     if (!this.searchQuery) {
       return this.friendList;
     }
-    return this.friendList.filter(f => f.toLowerCase().includes(this.searchQuery.toLowerCase()));
+    return this.friendList.filter(f => f.username.toLowerCase().includes(this.searchQuery.toLowerCase()));
   }
 
   constructor(public webSocketService: WebsocketService,
@@ -50,7 +50,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.usrID = this.jwtdeco.getID();
     this.username = this.jwtdeco.getUserName();
-    this.http.get<string[]>(ENDPOINTS.GETFRIEND+this.usrID).subscribe(
+    this.http.get<any[]>(ENDPOINTS.GETFRIENDDETAILS+this.usrID).subscribe(
       (data) => {
         this.friendList = data;
       }
@@ -64,10 +64,10 @@ export class ChatListComponent implements OnInit, OnDestroy {
   onFriendRequest(eventData: any) {
     this.x = eventData;
   }
-   public textTo (userId : string): void{
-    console.log('ChatList: Clicking friend:', userId);
-    this.activeFrien = userId;
-    this.shared.triggerFunction(userId,this.chat);
+   public textTo (friend : any): void{
+    console.log('ChatList: Clicking friend:', friend.userid);
+    this.activeFrien = friend.userid;
+    this.shared.triggerFunction(friend, this.chat);
    }
    logout(){
     if (confirm("Are you sure you want to log out? Local messages may be cleared.")) {

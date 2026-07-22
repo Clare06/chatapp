@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "otp")
+@Table(name = "otp", indexes = { @Index(name = "idx_created_timestamp", columnList = "created_timestamp") })
 public class OtpTable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

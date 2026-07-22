@@ -77,7 +77,7 @@ export class SignupComponent implements OnInit {
         this.http.post(ENDPOINTS.SIGNUP, signUser, { responseType: 'text' }).subscribe({
           next: async (response) => {
             this.errorMes = null;
-            this.message = response;
+            this.message = "Account created! A verification link has been sent to your email. Please check your inbox.";
             
             const dbuser: User = {
               user: signUser.userid,
@@ -88,8 +88,10 @@ export class SignupComponent implements OnInit {
             await db.addUserWithPrivateKey(dbuser);
             
             this.signClicked = false;
-            // Go back to login on success
-            this.router.navigate(['/login']);
+            // Wait 4 seconds for user to read message, then go to login
+            setTimeout(() => {
+                this.router.navigate(['/login']);
+            }, 4000);
           },
           error: (error) => {
             this.message = null;

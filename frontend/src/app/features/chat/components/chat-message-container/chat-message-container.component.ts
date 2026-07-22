@@ -43,12 +43,14 @@ export class ChatMessageContainerComponent implements AfterViewChecked {
   searchQuery: string = "";
   blockedUsers: string[] = [];
   isBlockedByMe: boolean = false;
+  activeFrienName: string = "";
   constructor(public webSocketService: WebsocketService, public jwtdeco:JwtService,
      private http:HttpClient, private router:Router,
      private shared:SharedService, private cdr: ChangeDetectorRef) {
       this.shared.triggerFunction$.subscribe((event) => {
         console.log('ChatMessageContainer: Received trigger for friend:', event.value);
-        this.activeFrien = event.value;
+        this.activeFrien = event.value.userid ? event.value.userid : event.value;
+        this.activeFrienName = event.value.username ? event.value.username : this.activeFrien;
         this.checkIfBlocked();
         this.ngOnInit();
         this.cdr.detectChanges();

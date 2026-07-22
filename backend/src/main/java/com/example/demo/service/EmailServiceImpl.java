@@ -50,8 +50,8 @@ public class EmailServiceImpl {
     public static String encodeString(String input) {
         try {
             return URLEncoder.encode(input, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error encoding string: " + e.getMessage());
             return null;
         }
     }

@@ -31,16 +31,16 @@
   </div>
 
   <div class="friends-list">
-    <div class="friend-item" *ngFor="let friend of filteredFriends" (click)="textTo(friend)" [ngClass]="{'active': activeFrien==friend}">
+    <div class="friend-item" *ngFor="let friend of filteredFriends" (click)="textTo(friend)" [ngClass]="{'active': activeFrien==friend.userid}">
       <div class="friend-avatar">
-        {{friend.charAt(0) | uppercase}}
-        <span class="presence-indicator" [class.online]="(webSocketService.onlineFriends$ | async)?.has(friend)"></span>
+        {{friend.username.charAt(0) | uppercase}}
+        <span class="presence-indicator" [class.online]="(webSocketService.onlineFriends$ | async)?.has(friend.userid)"></span>
       </div>
       <div class="friend-details">
-        <div class="friend-name">{{ friend }}</div>
+        <div class="friend-name">{{ friend.username }}</div>
       </div>
-      <div class="unread-badge" *ngIf="(webSocketService.unreadCounts$ | async)?.get(friend)">
-        {{ (webSocketService.unreadCounts$ | async)?.get(friend) }}
+      <div class="unread-badge" *ngIf="(webSocketService.unreadCounts$ | async)?.get(friend.userid)">
+        {{ (webSocketService.unreadCounts$ | async)?.get(friend.userid) }}
       </div>
     </div>
     

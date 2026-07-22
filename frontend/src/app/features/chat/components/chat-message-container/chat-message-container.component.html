@@ -1,6 +1,6 @@
 <div *ngIf="activeFrien!=''" class="message-header" style="display: flex; justify-content: space-between; align-items: center;">
   <span style="display: flex; align-items: center; gap: 10px;">
-    {{activeFrien}}
+    {{activeFrienName}}
     <button *ngIf="!isBlockedByMe" (click)="blockUser()" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; padding: 4px 8px; border-radius: 12px; font-size: 12px; cursor: pointer;">Block</button>
     <button *ngIf="isBlockedByMe" (click)="unblockUser()" style="background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); color: #86efac; padding: 4px 8px; border-radius: 12px; font-size: 12px; cursor: pointer;">Unblock</button>
   </span>
@@ -49,7 +49,7 @@
 <div *ngIf="(webSocketService.isTyping$ | async) && activeFrien!=''" class="typing-indicator-wrapper">
   <div class="typing-indicator">
     <div class="typing-dots"><span></span><span></span><span></span></div>
-    {{activeFrien}} is typing...
+    {{activeFrienName}} is typing...
   </div>
 </div>
 

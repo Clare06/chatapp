@@ -12,6 +12,8 @@ import { JwtService } from 'src/app/core/services/jwtservice.service';
 import { ChangeDetectorRef } from '@angular/core';
 
 
+import { WebsocketService } from 'src/app/core/services/websocket.service';
+
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
@@ -37,13 +39,31 @@ export class FriendpopComponent implements OnInit {
 
   sentReq$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
-  constructor(private http:HttpClient, private jwt:JwtService) { }
+  constructor(private http:HttpClient, private jwt:JwtService, private webSocketService: WebsocketService) { }
   sendFriendRequest() {
     // You can emit data along with the event if needed
 
   }
   ngOnInit(): void {
     this.usrID = this.jwt.getID();
+    
+    // Initial fetch
+    this.fetchRequests();
+
+    this.getSentReq().subscribe((data)=>{
+      this.sentReq=data;
+      this.sentReq$.next(data);
+    })
+
+    // Listen for realtime updates
+    this.webSocketService.friendReqUpdates$.subscribe((update) => {
+      if (update) {
+        this.fetchRequests();
+      }
+    });
+  }
+  
+  private fetchRequests() {
     this.http.get<any[]>(ENDPOINTS.GETREQ+this.usrID).subscribe(
       (data) => {
         this.friendReq = data;
@@ -52,11 +72,6 @@ export class FriendpopComponent implements OnInit {
         this.friendReqs.emit(eventData);
       }
     )
-
-    this.getSentReq().subscribe((data)=>{
-      this.sentReq=data;
-      this.sentReq$.next(data);
-    })
   }
   acceptFriend(frd:string,index:number){
     const senderReciever= new SenderReciever(this.usrID, frd);

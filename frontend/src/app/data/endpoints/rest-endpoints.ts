@@ -4,6 +4,7 @@ const root = environment.apiUrl;
 export const ENDPOINTS = {
   LOGIN: `${root}/authenticate`,
   GETFRIEND: `${root}/friend-ids/`,
+  GETFRIENDDETAILS: `${root}/friend-details/`,
   GETREQ: `${root}/get-req/`,
   ACCEPTFRIEND: `${root}/add-friend`,
   DECLINE:`${root}/decline-req`,

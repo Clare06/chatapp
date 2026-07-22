@@ -1,7 +1,13 @@
 <div class="log-container">
   <div class="theme">
     <div class="bubble">
-        <strong> Deep <br> Space</strong>
+      <div class="css-face">
+        <div class="eyes">
+          <div class="eye"></div>
+          <div class="eye"></div>
+        </div>
+        <div class="mouth"></div>
+      </div>
     </div>
   </div>
   <div class="content scroll-content">
@@ -60,7 +66,9 @@
         <span class="success-msg">{{message}}</span>
       </div>
 
-      <button type="submit" class="formbutton" [disabled]="signClicked">Sign Up</button>
+      <button type="submit" class="formbutton" [disabled]="signClicked">
+        {{ signClicked ? 'Creating Account & Sending Email...' : 'Sign Up' }}
+      </button>
       
       <div class="form-footer">
         <p class="signup-prompt">Already have an account? <a class="text-link accent" (click)="gotoLogin()">Log In</a></p>

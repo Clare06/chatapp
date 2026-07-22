@@ -24,6 +24,10 @@ export class JwtService {
     }
   }
 
+  public getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
   public getID(): string {
     const token = localStorage.getItem('token');
     if (token) {

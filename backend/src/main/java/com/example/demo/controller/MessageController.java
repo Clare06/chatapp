@@ -26,7 +26,7 @@ public class MessageController {
             List<ChatMessageDto> messages = messageService.getMessage(userid);
             return new ResponseEntity<>(messages, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging purposes
+            System.err.println("Error retrieving messages for user: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -39,8 +39,8 @@ public class MessageController {
             }
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to delete this message");
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            System.err.println("Error getting messages: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

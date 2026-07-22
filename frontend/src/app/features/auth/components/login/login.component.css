@@ -216,3 +216,41 @@ form {
     font-size: 2rem;
   }
 }
+
+/* CSS Face - "Jules made of dots" */
+.css-face {
+  position: relative;
+  width: 60%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15%;
+}
+.eyes {
+  display: flex;
+  gap: 30%;
+  width: 60%;
+  justify-content: center;
+}
+.eye {
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255,255,255,0.8);
+  animation: blink 4s infinite;
+}
+.mouth {
+  width: 40%;
+  height: 20%;
+  border: 5px dotted white;
+  border-top: none;
+  border-radius: 0 0 50px 50px;
+  box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+}
+@keyframes blink {
+  0%, 95%, 98%, 100% { transform: scaleY(1); }
+  96%, 97% { transform: scaleY(0.1); }
+}
