@@ -97,3 +97,6 @@ ehthumbs_vista.db
 
 # Documentation
 docs/
+
+# Custom Additions
+agent.md

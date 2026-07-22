@@ -15,8 +15,8 @@ public interface UserRepo extends JpaRepository<User,Integer> {
     @Query("SELECT usr FROM User usr WHERE usr.userid=:userid")
     Optional<User> findByUserId(@Param("userid") String userId);
 
-    @Query("SELECT u.userid FROM User u WHERE u.userid LIKE %:searchTerm%")
-    List<String> searchUsersByUserIdLike(@Param("searchTerm") String searchTerm);
+    @Query("SELECT u FROM User u WHERE u.email LIKE %:searchTerm% OR u.username LIKE %:searchTerm%")
+    List<User> searchUsersByEmailOrNameLike(@Param("searchTerm") String searchTerm);
 
     @Query("SELECT u from User u WHERE u.email=:email")
     Optional<User> findUserByEmail(@Param("email") String email);

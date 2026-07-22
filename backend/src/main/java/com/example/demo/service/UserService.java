@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public Boolean auth(User user) {
-        Optional<User> usr = userRepo.findByUserId(user.getUserid());
+        Optional<User> usr = userRepo.findUserByEmail(user.getEmail());
         if(usr.isPresent()) {
             return bCryptPasswordEncoder.matches(user.getPasswordhash(), usr.get().getPasswordhash());
         }
@@ -89,16 +89,22 @@ public class UserService {
         return req;
     }
 
-    public List<String> searchUsers(String userid, String searchQuery) {
-        List<String> users=userRepo.searchUsersByUserIdLike(searchQuery);
+    public List<Map<String, String>> searchUsers(String userid, String searchQuery) {
+        List<User> users = userRepo.searchUsersByEmailOrNameLike(searchQuery);
         User currentUser = userRepo.findByUserId(userid).get();
         List<String> friends = currentUser.getFriends().stream().map(User::getUserid).collect(Collectors.toList());
         List<String> frdreq = currentUser.getFriendRequests().stream().map(User::getUserid).collect(Collectors.toList());
 
-        List<String> otherUsers = users.stream()
-                .filter(user -> !friends.contains(user) && !user.equals(userid) && !frdreq.contains(user))
+        return users.stream()
+                .filter(user -> !friends.contains(user.getUserid()) && !user.getUserid().equals(userid) && !frdreq.contains(user.getUserid()))
+                .map(user -> {
+                    Map<String, String> map = new java.util.HashMap<>();
+                    map.put("userid", user.getUserid());
+                    map.put("username", user.getUsername());
+                    map.put("email", user.getEmail());
+                    return map;
+                })
                 .collect(Collectors.toList());
-        return otherUsers;
     }
 
     public void addSentReq(String userid, String friendid){

@@ -39,7 +39,8 @@ public class UserController {
     public ResponseEntity<String> authenticate(@RequestBody User user) {
 
         if (userService.auth(user)){
-            String token = jwtUtil.generateToken(user);
+            Optional<User> dbUser = userService.findUserByEmail(user.getEmail());
+            String token = jwtUtil.generateToken(dbUser.get());
 //            userService.setUser();
             return ResponseEntity.ok(token);
         }
@@ -89,8 +90,8 @@ public class UserController {
     }
 
     @GetMapping("search/{id}/{searchQuery}")
-    public ResponseEntity<List<String>> searchUser(@PathVariable("id")String userid, @PathVariable("searchQuery") String searchQuery){
-        List<String> users = userService.searchUsers(userid,searchQuery);
+    public ResponseEntity<List<Map<String, String>>> searchUser(@PathVariable("id")String userid, @PathVariable("searchQuery") String searchQuery){
+        List<Map<String, String>> users = userService.searchUsers(userid,searchQuery);
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
