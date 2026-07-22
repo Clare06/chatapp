@@ -32,6 +32,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   isPopupOpen = false;
   searchQuery: string = '';
   username: string = '';
+  showLogoutConfirm: boolean = false;
 
   get filteredFriends(): any[] {
     if (!this.searchQuery) {
@@ -69,14 +70,20 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.activeFrien = friend.userid;
     this.shared.triggerFunction(friend, this.chat);
    }
-   logout(){
-    if (confirm("Are you sure you want to log out? Local messages may be cleared.")) {
+   logout() {
+     this.showLogoutConfirm = true;
+   }
+
+   confirmLogout() {
       localStorage.removeItem('token');
       this.router.navigate(["/login"]).then(()=>{
         window.location.reload();
       })
-    }
-  }
+   }
+
+   cancelLogout() {
+     this.showLogoutConfirm = false;
+   }
 
 
 

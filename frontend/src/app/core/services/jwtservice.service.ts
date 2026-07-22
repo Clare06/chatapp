@@ -24,11 +24,15 @@ export class JwtService {
     }
   }
 
+  tokenCache: string | null = null;
   public getToken(): string | null {
-    return localStorage.getItem('token');
+    if (this.tokenCache) return this.tokenCache;
+    this.tokenCache = localStorage.getItem('token');
+    return this.tokenCache;
   }
 
   public getID(): string {
+    if (this.userID) return this.userID;
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = this.decodeToken(token);
@@ -41,6 +45,7 @@ export class JwtService {
   }
 
   public getUserName(): string {
+    if (this.userName) return this.userName;
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = this.decodeToken(token);
@@ -65,6 +70,7 @@ export class JwtService {
   }
 
   public getPubKey(): string {
+    if (this.publickey) return this.publickey;
     const token = localStorage.getItem('token');
     if (token) {
       const decoded = this.decodeToken(token);
