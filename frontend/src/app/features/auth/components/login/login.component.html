@@ -1,0 +1,46 @@
+<div class="log-container">
+  <div class="theme">
+    <div class="bubble">
+      <div class="css-face">
+        <div class="eyes">
+          <div class="eye"></div>
+          <div class="eye"></div>
+        </div>
+        <div class="mouth"></div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <form class="glass-panel animate-fade-in" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <h2 class="form-title">Welcome Back</h2>
+      <p class="form-subtitle">Enter your credentials to access the system</p>
+      
+      <div class="log-input">
+        <label for="email" class="loglabel">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter your Email" autocomplete="email">
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error-container">
+          <span class="warne">*Valid Email required</span>
+        </div>
+      </div>
+      
+      <div class="log-input">
+        <label for="password" class="loglabel">Password</label>
+        <input type="password" id="password" formControlName="passwordhash" placeholder="Enter your Password" autocomplete="current-password">
+        <div *ngIf="loginForm.get('passwordhash')?.invalid && loginForm.get('passwordhash')?.touched" class="error-container">
+          <span class="warne">*Password required</span>
+        </div>
+      </div>
+      
+      <div *ngIf="errorMes != null" class="error-container global-error">
+        <span class="warne">{{errorMes}}</span>
+      </div>
+      
+      <button type="submit" class="formbutton">Login</button>
+      
+      <div class="form-footer">
+        <a class="text-link" (click)="forgotPass()">Forgot Password?</a>
+        <p class="signup-prompt">Don't have an account? <a class="text-link accent" (click)="gotoSignup()">Sign Up</a></p>
+      </div>
+    </form>
+  </div>
+</div>

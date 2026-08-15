@@ -1,0 +1,79 @@
+<div *ngIf="activeFrien!=''" class="message-header" style="display: flex; justify-content: space-between; align-items: center;">
+  <span style="display: flex; align-items: center; gap: 10px;">
+    {{activeFrienName}}
+    <button *ngIf="!isBlockedByMe" (click)="blockUser()" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; padding: 4px 8px; border-radius: 12px; font-size: 12px; cursor: pointer;">Block</button>
+    <button *ngIf="isBlockedByMe" (click)="unblockUser()" style="background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); color: #86efac; padding: 4px 8px; border-radius: 12px; font-size: 12px; cursor: pointer;">Unblock</button>
+  </span>
+  <input type="text" [(ngModel)]="searchQuery" placeholder="Search messages..." class="chat-search-input" style="padding: 5px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white; outline: none; width: 200px; font-size: 14px;">
+</div>
+
+<div *ngIf="activeFrien!=''" class="message-content" #scrollMe>
+  <ng-container *ngIf="getFilteredMessages() as filteredMessages">
+  <ul class="message-ul">
+    <li [ngClass]="{messageotherend: chatMessage.user!=jwtdeco.getID()}" class="message-li" *ngFor="let chatMessage of filteredMessages;let i = index;">
+      <div *ngIf="shouldShowDate(chatMessage, i, filteredMessages)" class="dateClass">
+          <div class="innerClass">
+            <p class="ndate" *ngIf="!isToday(chatMessage.timestamp)">
+            {{chatMessage.timestamp | date:'EEEE, MMMM d, y'}}
+            </p>
+            <p class="today" *ngIf="isToday(chatMessage.timestamp)">
+            Today
+            </p>
+          </div>
+      </div>
+      <div *ngIf="chatMessage.user != jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}">
+       <div *ngIf="!chatMessage.deleted" [innerHTML]="chatMessage.message | newlineToBr"></div>
+       <div *ngIf="chatMessage.deleted" style="font-style: italic; color: rgba(255,255,255,0.5);">This message was deleted</div>
+       <p class="time lt">{{ chatMessage.timestamp | date:'h:mm a' }}
+      </div>
+
+      <div *ngIf="chatMessage.user == jwtdeco.getID()" class="message-text"  [ngClass]="{messagefrdiv: chatMessage.user != jwtdeco.getID()}" style="position: relative;" (mouseenter)="chatMessage.showDelete = true" (mouseleave)="chatMessage.showDelete = false">
+        
+        <div *ngIf="chatMessage.showDelete && !chatMessage.deleted" class="delete-btn" (click)="deleteMessage(chatMessage)">
+           🗑️
+        </div>
+
+       <div *ngIf="!chatMessage.deleted" [innerHTML]="chatMessage.senderMessage | newlineToBr"></div>
+       <div *ngIf="chatMessage.deleted" style="font-style: italic; color: rgba(255,255,255,0.5);">This message was deleted</div>
+       <p class="time">{{ chatMessage.timestamp | date:'h:mm a' }}
+         <span class="read-receipt" *ngIf="chatMessage.read">✓✓</span>
+         <span class="read-receipt" style="color: rgba(255,255,255,0.7);" *ngIf="!chatMessage.read">✓</span>
+       </p>
+      </div>
+
+    </li>
+</ul>
+</ng-container>
+</div>
+
+<div *ngIf="(webSocketService.isTyping$ | async) && activeFrien!=''" class="typing-indicator-wrapper">
+  <div class="typing-indicator">
+    <div class="typing-dots"><span></span><span></span><span></span></div>
+    {{activeFrienName}} is typing...
+  </div>
+</div>
+
+<form *ngIf="activeFrien!='' && !isBlockedByMe" class="send" (ngSubmit)="sendMessage(sendForm)" #sendForm="ngForm">
+  <div class="send-message">
+    <textarea name="message" placeholder="Type message here ..." ngModel (input)="onTyping()"></textarea>
+  </div>
+  <div class="send-button">
+    <button type="submit">
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+      <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+    </svg>
+    </button>
+  </div>
+</form>
+
+<div *ngIf="activeFrien!='' && isBlockedByMe" class="blocked-message-notice" style="text-align: center; padding: 20px; background: rgba(0,0,0,0.2); color: rgba(255,255,255,0.5); font-style: italic; border-top: 1px solid rgba(255,255,255,0.05);">
+  You blocked this user. Unblock them to send messages.
+</div>
+<div *ngIf="activeFrien ==''" class="bubble-chat">
+    <h2>Bubble Chat </h2>
+    <div class="bubble-text">
+      <strong>Chat with your friends</strong>
+    </div>
+
+
+</div>

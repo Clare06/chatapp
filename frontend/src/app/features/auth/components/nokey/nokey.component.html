@@ -1,0 +1,32 @@
+<div class="nokey-container">
+  <div class="panel">
+    <div class="icon-container">
+        <div class="lock-icon">🔒</div>
+    </div>
+    
+    <h2>Unlock Keychain</h2>
+    <p class="subtitle">
+      It appears you are logging in from a new browser or device. 
+      To ensure Zero-Knowledge End-to-End Encryption, please enter your password to unlock your Private Key.
+    </p>
+
+    <form [formGroup]="unlockForm" (ngSubmit)="onUnlock()">
+      <div class="log-input">
+        <input type="password" id="password" formControlName="password" placeholder="Enter your password">
+        <div *ngIf="unlockForm.get('password')?.invalid && unlockForm.get('password')?.touched">
+          <label class="warne">*Password required</label>
+        </div>
+        <div *ngIf="errorMes">
+          <label class="warne">*{{errorMes}}</label>
+        </div>
+      </div>
+      <button type="submit" class="formbutton" [disabled]="isLoading || unlockForm.invalid">
+        {{ isLoading ? 'Unlocking...' : 'Unlock & Continue' }}
+      </button>
+    </form>
+
+    <div class="actions">
+      <button class="text-button" (click)="logout()">Cancel & Log out</button>
+    </div>
+  </div>
+</div>

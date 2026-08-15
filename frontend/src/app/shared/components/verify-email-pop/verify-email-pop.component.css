@@ -1,0 +1,96 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.popupactive {
+  display: flex!important;
+  z-index: 100 !important;
+}
+
+.popup {
+  background: var(--bg-panel, rgba(15, 23, 42, 0.95));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  width: 50vw;
+  height: 30vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.pop-cont {
+  color: var(--text-primary, #e2e8f0);
+  padding: 10px;
+  text-align: center;
+  font-size: 25px;
+}
+
+/* Styling for the button in the popup */
+.email-verification-popup button {
+  margin-top: 50px;
+  background: var(--gradient-primary, linear-gradient(135deg, #6366f1, #a855f7));
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: opacity 0.3s, transform 0.2s;
+}
+
+/* Styling for the button on hover */
+.email-verification-popup button:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+/* Styling for the button when disabled */
+.email-verification-popup button:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary, #94a3b8);
+  cursor: not-allowed;
+}
+
+/* Styling for the button text when disabled */
+.email-verification-popup button:disabled span {
+  opacity: 0.7;
+}
+
+/* Styling for the button's icon or text */
+.email-verification-popup button span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Styling for the button's loading spinner (if applicable) */
+.email-verification-popup .loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #a855f7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+/* Keyframes for the loading spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

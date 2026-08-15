@@ -1,0 +1,78 @@
+<div class="log-container">
+  <div class="theme">
+    <div class="bubble">
+      <div class="css-face">
+        <div class="eyes">
+          <div class="eye"></div>
+          <div class="eye"></div>
+        </div>
+        <div class="mouth"></div>
+      </div>
+    </div>
+  </div>
+  <div class="content scroll-content">
+    <form class="glass-panel animate-fade-in" [formGroup]="signForm" (ngSubmit)="onSignSubmit()">
+      <h2 class="form-title">Create Account</h2>
+      <p class="form-subtitle">Join the Deep Space network</p>
+      
+
+
+      <div class="row-inputs">
+        <div class="log-input flex-1">
+          <label for="firstName" class="loglabel">First Name</label>
+          <input type="text" id="firstName" formControlName="firstName" placeholder="First Name">
+          <div *ngIf="signForm.get('firstName')?.invalid && signForm.get('firstName')?.touched" class="error-container">
+            <span class="warne">*Required</span>
+          </div>
+        </div>
+        <div class="log-input flex-1">
+          <label for="lastName" class="loglabel">Last Name</label>
+          <input type="text" id="lastName" formControlName="lastName" placeholder="Last Name">
+          <div *ngIf="signForm.get('lastName')?.invalid && signForm.get('lastName')?.touched" class="error-container">
+            <span class="warne">*Required</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="log-input">
+        <label for="email" class="loglabel">Email</label>
+        <input type="email" id="email" formControlName="email" placeholder="Enter your Email" autocomplete="username">
+        <div *ngIf="signForm.get('email')?.invalid && signForm.get('email')?.touched" class="error-container">
+          <span *ngIf="signForm.get('email')?.hasError('required')" class="warne">*Email is required</span>
+          <span *ngIf="signForm.get('email')?.hasError('email')" class="warne">*Invalid email format</span>
+        </div>
+      </div>
+
+      <div class="log-input">
+        <label for="password" class="loglabel">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Password" autocomplete="new-password">
+        <div *ngIf="signForm.get('password')?.invalid && signForm.get('password')?.touched" class="error-container">
+          <span class="warne">*Password required</span>
+        </div>
+      </div>
+
+      <div class="log-input">
+        <label for="conpassword" class="loglabel">Confirm Password</label>
+        <input type="password" id="conpassword" formControlName="conpassword" placeholder="Confirm Password" autocomplete="new-password">
+        <div *ngIf="signForm.get('conpassword')?.invalid && signForm.get('conpassword')?.touched" class="error-container">
+          <span *ngIf="signForm.get('conpassword')?.hasError('confirmPasswordMismatch')" class="warne">*Passwords do not match!</span>
+        </div>
+      </div>
+
+      <div *ngIf="errorMes != null" class="error-container global-error">
+        <span class="warne">{{errorMes}}</span>
+      </div>
+      <div *ngIf="message != null" class="error-container global-success">
+        <span class="success-msg">{{message}}</span>
+      </div>
+
+      <button type="submit" class="formbutton" [disabled]="signClicked">
+        {{ signClicked ? 'Creating Account & Sending Email...' : 'Sign Up' }}
+      </button>
+      
+      <div class="form-footer">
+        <p class="signup-prompt">Already have an account? <a class="text-link accent" (click)="gotoLogin()">Log In</a></p>
+      </div>
+    </form>
+  </div>
+</div>

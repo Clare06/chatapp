@@ -1,0 +1,57 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="user-info" (click)="openProfile()" title="Profile & Settings">
+      <div class="user-avatar">{{username.charAt(0) | uppercase}}</div>
+      <div class="user-name">{{username}}</div>
+    </div>
+    <div class="sidebar-actions">
+      <button class="action-btn" (click)="openPopup()" title="Add Friend">
+        <svg *ngIf="x == 0" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+          <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+        </svg>
+        <div class="badge" *ngIf="x != 0">{{x}}</div>
+      </button>
+      <button class="action-btn" (click)="logout()" title="Logout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+          <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <div class="search-input-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-icon" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+      </svg>
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Search chats...">
+    </div>
+  </div>
+
+  <div class="friends-list">
+    <div class="friend-item" *ngFor="let friend of filteredFriends" (click)="textTo(friend)" [ngClass]="{'active': activeFrien==friend.userid}">
+      <div class="friend-avatar">
+        {{friend.username.charAt(0) | uppercase}}
+        <span class="presence-indicator" [class.online]="(webSocketService.onlineFriends$ | async)?.has(friend.userid)"></span>
+      </div>
+      <div class="friend-details">
+        <div class="friend-name">{{ friend.username }}</div>
+      </div>
+      <div class="unread-badge" *ngIf="(webSocketService.unreadCounts$ | async)?.get(friend.userid)">
+        {{ (webSocketService.unreadCounts$ | async)?.get(friend.userid) }}
+      </div>
+    </div>
+    
+    <div class="empty-state" *ngIf="filteredFriends.length === 0">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+      </svg>
+      <p>No friends yet.</p>
+    </div>
+  </div>
+</div>
+
+<app-friendpop [isOpen]="isPopupOpen" (close)="closePopup()" (friendReqs)="onFriendRequest($event)">
+</app-friendpop>
